@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +66,7 @@
         }
 
         .logo {
-            height: 122px;
+            height: 52px;
             width: auto;
             border-radius: 12px;
             object-fit: contain;
@@ -492,6 +493,35 @@
             height: 6px;
             border-radius: 999px;
             background: #facc15;
+        }
+
+        /* Rarity badges */
+        .rarity-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            border-radius: 999px;
+            padding: 3px 9px;
+            font-size: 0.72rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(248,250,252,0.8);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 25px rgba(15,23,42,0.7);
+            color: #f9fafb;
+        }
+
+        .rarity-badge span.icon {
+            font-size: 0.9rem;
+        }
+
+        .rarity-super {
+            background: linear-gradient(135deg, #f97316, #ec4899);
+        }
+
+        .rarity-rare {
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
         }
 
         .photo-body {
@@ -1053,6 +1083,39 @@
   // Species list will be loaded from species-au.json (you create this file)
   let SPECIES = [];
 
+  // Rare + super rare birbs
+  const SUPER_RARE_SPECIES = new Set([
+    "Citrine Wagtail",
+    "Fairy Pitta",
+    "Forest Wagtail",
+    "Japanese Sparrowhawk",
+    "Northern Pintail",
+    "Oriental Honey-buzzard",
+    "Pechora Pipit",
+    "Red-backed Buttonquail"
+  ]);
+
+  const RARE_SPECIES = new Set([
+    "Asian Dowitcher",
+    "Broad-billed Sandpiper",
+    "Common Cuckoo",
+    "Eurasian Wigeon",
+    "Far Eastern Curlew",
+    "Garganey",
+    "Great Knot",
+    "Little Ringed Plover",
+    "Oriental Cuckoo",
+    "Oriental Plover",
+    "Oriental Pratincole",
+    "Pectoral Sandpiper",
+    "Pin-tailed Snipe",
+    "Swinhoe’s Snipe",
+    "Tree Pipit",
+    "Turquoise Parrot",
+    "Wandering Tattler",
+    "Yellow Wagtail"
+  ]);
+
   const photosCol = collection(db, "birdPhotos");
 
   // DOM references
@@ -1313,6 +1376,21 @@
         return `<span class="parrot ${i <= filledParrots ? "filled" : ""}">🦜</span>`;
       }).join("");
 
+      let rarityClass = "";
+      let rarityLabel = "";
+
+      if (SUPER_RARE_SPECIES.has(birdName)) {
+        rarityClass = "rarity-super";
+        rarityLabel = `<span class="icon">💎</span><span>Super rare find</span>`;
+      } else if (RARE_SPECIES.has(birdName)) {
+        rarityClass = "rarity-rare";
+        rarityLabel = `<span class="icon">⭐</span><span>Rare birb</span>`;
+      }
+
+      const rarityHtml = rarityLabel
+        ? `<div class="rarity-badge ${rarityClass}">${rarityLabel}</div>`
+        : "";
+
       const card = document.createElement("article");
       card.className = "photo-card";
       card.dataset.photoId = id;
@@ -1324,6 +1402,7 @@
             <span class="dot"></span>
             <span>${escapeHtml(birdName)}</span>
           </div>
+          ${rarityHtml}
         </div>
         <div class="photo-body">
           <div class="photo-title-row">
@@ -1592,3 +1671,4 @@
 </script>
 </body>
 </html>
+```
