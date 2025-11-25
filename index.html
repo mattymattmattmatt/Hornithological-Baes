@@ -116,24 +116,29 @@
     .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out}
     .photo-card:hover .photo-thumb img{transform:scale(1.03)}
 
-    /* Bottom-left badge where species chip used to be */
-    .rarity-chip{
-      position:absolute;left:8px;bottom:8px;
-      background:rgba(15,23,42,.82);padding:4px 9px;border-radius:999px;font-size:.72rem;color:#e5e7eb;
-      display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(148,163,184,.6);
+    /* Bottom-left rarity badge image */
+    .rarity-badge-wrap{
+      position:absolute;
+      left:8px;
+      bottom:8px;
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:rgba(15,23,42,.55);
+      border:1px solid rgba(148,163,184,.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
       backdrop-filter:blur(8px);
+      box-shadow:0 10px 25px rgba(15,23,42,.7);
+      pointer-events:none;
     }
-    .rarity-chip .dot{width:7px;height:7px;border-radius:999px}
-    .rarity-chip.super_rare{border-color:rgba(251,146,60,.8)}
-    .rarity-chip.super_rare .dot{background:#fb923c}
-    .rarity-chip.rare{border-color:rgba(34,197,94,.7)}
-    .rarity-chip.rare .dot{background:#22c55e}
-    .rarity-chip.uncommon{border-color:rgba(168,85,247,.75)}
-    .rarity-chip.uncommon .dot{background:#a855f7}
-    .rarity-chip.common{border-color:rgba(16,185,129,.7)}
-    .rarity-chip.common .dot{background:#10b981}
-    .rarity-chip.very_common{border-color:rgba(245,158,11,.8)}
-    .rarity-chip.very_common .dot{background:#f59e0b}
+    .rarity-badge{
+      width:32px;
+      height:32px;
+      object-fit:contain;
+      display:block;
+    }
 
     .photo-body{padding:10px 11px 9px;display:flex;flex-direction:column;gap:5px;flex-grow:1}
     .photo-title{font-size:.95rem;font-weight:600;color:#e5e7eb}
@@ -363,8 +368,8 @@
   // Format supported:
   // 1) { "species": [ { "name": "...", "rarity": "rare" }, ... ] }
   // 2) [ { "name": "...", "rarity": "rare" }, ... ]
-  let SPECIES = [];        // array of {name, rarity}
-  let SPECIES_INDEX = new Map(); // normalizedName -> {name, rarity}
+  let SPECIES = [];               // array of {name, rarity}
+  let SPECIES_INDEX = new Map();  // normalizedName -> {name, rarity}
   let speciesLoaded = false;
   let speciesLoadError = false;
 
@@ -611,9 +616,10 @@
 
       // rarity badge from species-au.json (surprise on post only)
       const rarity = getRarityForSpecies(birdName);
+      const rarityText = rarity ? rarityLabel(rarity) : "";
       const rarityHtml = rarity
-        ? `<div class="rarity-chip ${rarity}">
-             <span class="dot"></span><span>${rarityLabel(rarity)}</span>
+        ? `<div class="rarity-badge-wrap" title="${escapeHtml(rarityText)}">
+             <img class="rarity-badge" src="${rarity}.png" alt="${escapeHtml(rarityText)} badge" loading="lazy" />
            </div>`
         : "";
 
@@ -793,6 +799,7 @@
     closeSpeciesOverlay();
   });
 
+  // Helpers
   function escapeHtml(str) {
     if (typeof str !== "string") return "";
     return str.replace(/[&<>"']/g, (c) => (
