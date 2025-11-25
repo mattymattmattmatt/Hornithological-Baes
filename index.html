@@ -65,7 +65,7 @@
         }
 
         .logo {
-            height: 122px;
+            height: 52px;
             width: auto;
             border-radius: 12px;
             object-fit: contain;
@@ -165,8 +165,6 @@
             color: #c7d2fe;
             border: 1px solid var(--accent-strong);
         }
-
-        /* Upload form */
 
         .upload-card-body {
             margin-top: 6px;
@@ -307,6 +305,32 @@
             background: rgba(15,23,42,0.98);
         }
 
+        .species-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .species-input-row input {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .checklist-btn {
+            border-radius: 999px;
+            border: 1px solid rgba(129,140,248,0.7);
+            background: rgba(79,70,229,0.16);
+            color: #c7d2fe;
+            font-size: 0.78rem;
+            padding: 6px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .checklist-btn:hover {
+            background: rgba(79,70,229,0.26);
+        }
+
         .actions-row {
             margin-top: 12px;
             display: flex;
@@ -365,8 +389,6 @@
             font-size: 0.78rem;
             color: #bbf7d0;
         }
-
-        /* Gallery */
 
         .gallery-header {
             display: flex;
@@ -498,9 +520,26 @@
             color: var(--text-muted);
         }
 
+        .photo-location-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            align-items: center;
+        }
+
         .photo-location {
             font-size: 0.8rem;
             color: var(--text-muted);
+        }
+
+        .repeat-species-tag {
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            background: rgba(79,70,229,0.16);
+            border-radius: 999px;
+            padding: 2px 8px;
+            border: 1px solid rgba(129,140,248,0.5);
+            white-space: nowrap;
         }
 
         .photo-meta-row {
@@ -685,6 +724,140 @@
         .modal-cancel:hover {
             background: rgba(15,23,42,1);
         }
+
+        /* Species checklist overlay */
+
+        .species-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 60;
+        }
+
+        .species-overlay.show {
+            display: flex;
+        }
+
+        .species-panel {
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            background: rgba(15,23,42,0.98);
+            border-radius: 20px;
+            border: 1px solid rgba(148,163,184,0.5);
+            box-shadow: 0 24px 60px rgba(15,23,42,0.95);
+            padding: 16px 16px 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .species-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .species-panel-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .species-panel-header p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .species-close-btn {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: rgba(15,23,42,0.9);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .species-close-btn:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        .species-search-row {
+            margin-top: 10px;
+        }
+
+        .species-search-row input {
+            width: 100%;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(15,23,42,0.9);
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .species-search-row input:focus {
+            border-color: #a5b4fc;
+            box-shadow: 0 0 0 1px rgba(129,140,248,0.55);
+            background: rgba(15,23,42,0.98);
+        }
+
+        .species-list {
+            margin-top: 10px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .species-empty {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding: 8px 2px;
+        }
+
+        .species-item {
+            width: 100%;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.4);
+            background: rgba(15,23,42,0.9);
+            color: #e5e7eb;
+            font-size: 0.86rem;
+            padding: 6px 10px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .species-item:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        .species-item.seen {
+            border-color: rgba(129,140,248,0.8);
+            background: rgba(79,70,229,0.18);
+        }
+
+        .species-name {
+            text-align: left;
+        }
+
+        .species-status {
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(129,140,248,0.7);
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -740,7 +913,10 @@
                 <div class="form-grid">
                     <div class="field">
                         <label for="birdName">Burb species</label>
-                        <input id="birdName" type="text" placeholder="e.g. Rainbow Lorikeet" autocomplete="off" />
+                        <div class="species-input-row">
+                            <input id="birdName" type="text" placeholder="Choose from checklist" autocomplete="off" readonly />
+                            <button type="button" id="openChecklistBtn" class="checklist-btn">Checklist</button>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="location">Where spotted</label>
@@ -793,6 +969,23 @@
     </footer>
 </div>
 
+<!-- Species checklist "page" overlay -->
+<div id="speciesOverlay" class="species-overlay">
+    <div class="species-panel">
+        <div class="species-panel-header">
+            <div>
+                <h3>Select burb species</h3>
+                <p>Search and tap a species to fill the form. Species you've already logged are marked as seen.</p>
+            </div>
+            <button type="button" id="closeSpeciesOverlayBtn" class="species-close-btn">Close</button>
+        </div>
+        <div class="species-search-row">
+            <input id="speciesSearch" type="text" placeholder="Search Australian burb species…" />
+        </div>
+        <div id="speciesList" class="species-list"></div>
+    </div>
+</div>
+
 <!-- Rating modal -->
 <div id="ratingModalBackdrop" class="modal-backdrop">
     <div class="modal">
@@ -821,7 +1014,6 @@
 
 <!-- Firebase SDKs (v9 modular) -->
 <script type="module">
-  // Your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
     authDomain: "hornithological-baes.firebaseapp.com",
@@ -858,9 +1050,96 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
+  // Curated list of common Australian burb species (you can expand this over time)
+  const SPECIES = [
+    "Australian magpie",
+    "Magpie-lark",
+    "Laughing kookaburra",
+    "Blue-winged kookaburra",
+    "Rainbow lorikeet",
+    "Scaly-breasted lorikeet",
+    "Little corella",
+    "Long-billed corella",
+    "Sulphur-crested cockatoo",
+    "Galah",
+    "Major Mitchell's cockatoo",
+    "Crimson rosella",
+    "Eastern rosella",
+    "Green rosella",
+    "Red-rumped parrot",
+    "Australian king-parrot",
+    "Superb fairywren",
+    "Splendid fairywren",
+    "Variegated fairywren",
+    "Willie wagtail",
+    "Grey fantail",
+    "New Holland honeyeater",
+    "Red wattlebird",
+    "Little wattlebird",
+    "Noisy miner",
+    "White-plumed honeyeater",
+    "Yellow-faced honeyeater",
+    "Silvereye",
+    "Australian raven",
+    "Torresian crow",
+    "Little crow",
+    "Forest raven",
+    "Pied currawong",
+    "Grey butcherbird",
+    "Pied butcherbird",
+    "Black-faced cuckooshrike",
+    "Crested pigeon",
+    "Spotted dove",
+    "Rock dove",
+    "Pacific black duck",
+    "Australian wood duck",
+    "Chestnut teal",
+    "Black swan",
+    "Australian white ibis",
+    "Straw-necked ibis",
+    "Royal spoonbill",
+    "Little egret",
+    "Great egret",
+    "White-faced heron",
+    "Nankeen night heron",
+    "Masked lapwing",
+    "Red-capped plover",
+    "Superb lyrebird",
+    "Emu",
+    "Wedge-tailed eagle",
+    "Whistling kite",
+    "Brown goshawk",
+    "Little eagle",
+    "Nankeen kestrel",
+    "Peregrine falcon",
+    "Brown falcon",
+    "Black-shouldered kite",
+    "Eastern spinebill",
+    "Grey shrikethrush",
+    "Golden whistler",
+    "Eastern yellow robin",
+    "Flame robin",
+    "Scarlet robin",
+    "Dusky woodswallow",
+    "Welcome swallow",
+    "Tree martin",
+    "Fairy martin",
+    "Australian pelican",
+    "Silver gull",
+    "Caspian tern",
+    "Little penguin",
+    "Tawny frogmouth",
+    "Southern boobook",
+    "Australian masked owl",
+    "Eastern koel",
+    "Channel-billed cuckoo",
+    "Fan-tailed cuckoo",
+    "Shining bronze-cuckoo"
+  ];
+
   const photosCol = collection(db, "birdPhotos");
 
-  // DOM
+  // DOM references
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("fileInput");
   const preview = document.getElementById("preview");
@@ -881,10 +1160,17 @@
   const ratingModalCancel = document.getElementById("ratingModalCancel");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
 
+  const speciesOverlay = document.getElementById("speciesOverlay");
+  const speciesListEl = document.getElementById("speciesList");
+  const speciesSearch = document.getElementById("speciesSearch");
+  const openChecklistBtn = document.getElementById("openChecklistBtn");
+  const closeSpeciesOverlayBtn = document.getElementById("closeSpeciesOverlayBtn");
+
   let selectedFile = null;
   let ratingTargetPhotoId = null;
+  let currentSeenSpecies = new Set();
 
-  // Drag & drop
+  // Drag & drop handling
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
@@ -937,7 +1223,7 @@
       return;
     }
     if (!birdName) {
-      showError("Enter the burb species.");
+      showError("Choose a burb species from the checklist.");
       birdNameInput.focus();
       return;
     }
@@ -1013,7 +1299,7 @@
     successMsg.style.display = "none";
   }
 
-  // Ratings: localStorage to avoid multiple ratings per browser
+  // Local rating storage to prevent multiple ratings per photo from same browser
   const ratingsKey = "hornithological_baes_ratings_v1";
   let localRatings = {};
   try {
@@ -1036,18 +1322,31 @@
 
   onSnapshot(qPhotos, (snapshot) => {
     galleryGrid.innerHTML = "";
-    if (snapshot.empty) {
+    currentSeenSpecies = new Set();
+
+    const docs = [];
+    snapshot.forEach(docSnap => {
+      docs.push({ id: docSnap.id, data: docSnap.data() });
+    });
+
+    if (!docs.length) {
       galleryEmpty.style.display = "block";
       galleryCountLabel.textContent = "No sightings yet.";
       return;
     }
 
-    galleryEmpty.style.display = "none";
-    galleryCountLabel.textContent = `${snapshot.size} sighting${snapshot.size > 1 ? "s" : ""}`;
+    const speciesCounts = {};
+    docs.forEach(({ data }) => {
+      const name = (data.birdName || "Unknown burb").trim();
+      if (!name) return;
+      speciesCounts[name] = (speciesCounts[name] || 0) + 1;
+    });
+    currentSeenSpecies = new Set(Object.keys(speciesCounts));
 
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const id = docSnap.id;
+    galleryEmpty.style.display = "none";
+    galleryCountLabel.textContent = `${docs.length} sighting${docs.length > 1 ? "s" : ""}`;
+
+    docs.forEach(({ id, data }) => {
       const imgUrl = data.imageUrl || "";
       const birdName = data.birdName || "Unknown burb";
       const location = data.location || "Unknown location";
@@ -1057,6 +1356,9 @@
       const averageRating = ratingCount > 0 ? ratingTotal / ratingCount : 0;
       const rounded = ratingCount > 0 ? Math.round(averageRating * 10) / 10 : 0;
       const filledParrots = Math.round(averageRating || 0); // 0–10
+
+      const isRepeat = (speciesCounts[birdName] || 0) > 1;
+      const repeatTagHtml = isRepeat ? `<div class="repeat-species-tag">Repeat species</div>` : "";
 
       const createdAt = data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : null;
       const timeAgo = createdAt ? formatTimeAgo(createdAt) : "Just now";
@@ -1083,7 +1385,10 @@
             <div class="photo-title">${escapeHtml(birdName)}</div>
           </div>
           <div class="photo-uploaded-by">Uploaded by ${escapeHtml(uploadedBy)}</div>
-          <div class="photo-location">${escapeHtml(location)}</div>
+          <div class="photo-location-row">
+            <div class="photo-location">${escapeHtml(location)}</div>
+            ${repeatTagHtml}
+          </div>
           <div class="photo-meta-row">
             <div class="rating-wrapper">
               <div class="parrots">
@@ -1148,9 +1453,8 @@
     });
   });
 
-  // Star + delete click handler (now rate button + delete)
+  // Gallery click: delete + rate buttons
   galleryGrid.addEventListener("click", async (e) => {
-    // Delete
     const deleteBtn = e.target.closest(".delete-btn");
     if (deleteBtn) {
       const photoId = deleteBtn.dataset.photoId;
@@ -1168,7 +1472,6 @@
       return;
     }
 
-    // Rate button
     const rateBtn = e.target.closest(".rate-btn");
     if (rateBtn) {
       const photoId = rateBtn.dataset.photoId;
@@ -1227,6 +1530,72 @@
 
     await deleteDoc(docRef);
   }
+
+  // Species checklist overlay logic
+
+  function openSpeciesOverlay() {
+    speciesOverlay.classList.add("show");
+    speciesSearch.value = "";
+    renderSpeciesList("");
+    setTimeout(() => {
+      speciesSearch.focus();
+    }, 50);
+  }
+
+  function closeSpeciesOverlay() {
+    speciesOverlay.classList.remove("show");
+  }
+
+  openChecklistBtn.addEventListener("click", openSpeciesOverlay);
+  birdNameInput.addEventListener("click", openSpeciesOverlay);
+
+  closeSpeciesOverlayBtn.addEventListener("click", closeSpeciesOverlay);
+
+  speciesOverlay.addEventListener("click", (e) => {
+    if (e.target === speciesOverlay) {
+      closeSpeciesOverlay();
+    }
+  });
+
+  speciesSearch.addEventListener("input", (e) => {
+    renderSpeciesList(e.target.value);
+  });
+
+  function renderSpeciesList(filter) {
+    const term = filter.toLowerCase().trim();
+    speciesListEl.innerHTML = "";
+
+    const filtered = SPECIES.filter(name => name.toLowerCase().includes(term));
+
+    if (!filtered.length) {
+      const empty = document.createElement("div");
+      empty.className = "species-empty";
+      empty.textContent = "No matches. Try a different spelling.";
+      speciesListEl.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach(name => {
+      const isSeen = currentSeenSpecies.has(name);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "species-item" + (isSeen ? " seen" : "");
+      btn.dataset.name = name;
+      btn.innerHTML = `
+        <span class="species-name">${escapeHtml(name)}</span>
+        ${isSeen ? '<span class="species-status">Seen</span>' : ""}
+      `;
+      speciesListEl.appendChild(btn);
+    });
+  }
+
+  speciesListEl.addEventListener("click", (e) => {
+    const item = e.target.closest(".species-item");
+    if (!item) return;
+    const name = item.dataset.name;
+    birdNameInput.value = name;
+    closeSpeciesOverlay();
+  });
 
   // Helpers
   function escapeHtml(str) {
