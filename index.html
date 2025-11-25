@@ -65,7 +65,7 @@
         }
 
         .logo {
-            height: 102px;
+            height: 122px;
             width: auto;
             border-radius: 12px;
             object-fit: contain;
@@ -517,26 +517,20 @@
             gap: 3px;
         }
 
-        .stars {
+        .parrots {
             display: inline-flex;
             gap: 1px;
-            cursor: pointer;
             flex-wrap: wrap;
-        }
-
-        .star {
             font-size: 0.9rem;
-            color: #4b5563;
-            transition: transform 0.08s ease, color 0.12s ease;
         }
 
-        .star.filled {
-            color: #facc15;
-            text-shadow: 0 0 10px rgba(250,204,21,0.45);
+        .parrot {
+            opacity: 0.2;
+            transition: opacity 0.15s ease;
         }
 
-        .star:hover {
-            transform: translateY(-1px) scale(1.03);
+        .parrot.filled {
+            opacity: 1;
         }
 
         .rating-text {
@@ -555,8 +549,25 @@
 
         .card-footer-row {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             margin-top: 6px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .rate-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            background: rgba(79,70,229,0.18);
+            color: #c7d2fe;
+            border: 1px solid rgba(129,140,248,0.6);
+        }
+
+        .rate-btn:hover {
+            background: rgba(79,70,229,0.28);
         }
 
         .delete-btn {
@@ -584,6 +595,96 @@
             text-align: right;
             opacity: 0.8;
         }
+
+        /* Rating modal */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            background: rgba(15,23,42,0.96);
+            border-radius: 18px;
+            padding: 16px 16px 14px;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.5);
+        }
+
+        .modal-header {
+            margin-bottom: 8px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .modal-header p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .rating-options {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 6px;
+        }
+
+        .rating-option {
+            border-radius: 999px;
+            border: 1px solid rgba(129,140,248,0.7);
+            background: rgba(79,70,229,0.2);
+            padding: 4px 6px;
+            font-size: 0.78rem;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .rating-option span.emoji {
+            font-size: 1rem;
+        }
+
+        .rating-option:hover {
+            background: rgba(79,70,229,0.35);
+        }
+
+        .modal-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-cancel {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: rgba(15,23,42,0.9);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            cursor: pointer;
+        }
+
+        .modal-cancel:hover {
+            background: rgba(15,23,42,1);
+        }
     </style>
 </head>
 <body>
@@ -591,19 +692,17 @@
     <header>
         <div class="title-block">
             <div class="title-row">
-                <!-- Logo in root as Logo.png -->
                 <img src="Logo.png" alt="Hornithological Baes logo" class="logo">
                 <div>
                     <div class="title-pill">
                         <span class="title-pill-dot"></span>
-                        Live bird photo log
+                        Live burb photo log
                     </div>
                     <h1>Hornithological Baes</h1>
                 </div>
             </div>
-            <p>Drop your bird pics, tag where and what they are, and let the flock rate your shots out of 10.</p>
+            <p>Drop your burb pics, tag where and what they are, and let the flock rate your shots out of 10.</p>
         </div>
-        <!-- header-badge removed as requested -->
     </header>
 
     <div class="layout">
@@ -621,7 +720,7 @@
                             <path d="M5 19h14" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                     </div>
-                    <strong>Drop a bird photo</strong>
+                    <strong>Drop a burb photo</strong>
                     <p>or click to browse – JPG, PNG, HEIC etc.</p>
                     <div class="chip">
                         <span class="chip-dot"></span>
@@ -640,7 +739,7 @@
 
                 <div class="form-grid">
                     <div class="field">
-                        <label for="birdName">Bird species</label>
+                        <label for="birdName">Burb species</label>
                         <input id="birdName" type="text" placeholder="e.g. Rainbow Lorikeet" autocomplete="off" />
                     </div>
                     <div class="field">
@@ -672,17 +771,17 @@
         <section class="card">
             <div class="gallery-header">
                 <div>
-                    <h2>Latest photos</h2>
+                    <h2>Latest burbs</h2>
                     <small id="galleryCountLabel">Loading sightings…</small>
                 </div>
                 <div class="filter-badges">
                     <span class="filter-badge">Newest first</span>
-                    <span class="filter-badge">Tap to rate /10</span>
+                    <span class="filter-badge">Ratings use 🦜 out of 10</span>
                 </div>
             </div>
 
             <div id="galleryEmpty" class="gallery-empty" style="display:none;">
-                No bird photos yet. Upload the very first sighting and start the flock.
+                No burb photos yet. Upload the very first sighting and start the flock.
             </div>
 
             <div id="galleryGrid" class="gallery-grid"></div>
@@ -692,6 +791,32 @@
     <footer>
         Hornithological Baes · Firebase · GitHub Pages
     </footer>
+</div>
+
+<!-- Rating modal -->
+<div id="ratingModalBackdrop" class="modal-backdrop">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Rate this burb</h3>
+            <p>Pick a score out of 10.</p>
+        </div>
+        <div class="rating-options">
+            <!-- 10 options, 1–10 -->
+            <button class="rating-option" data-value="1"><span class="emoji">🦜</span><span>1</span></button>
+            <button class="rating-option" data-value="2"><span class="emoji">🦜</span><span>2</span></button>
+            <button class="rating-option" data-value="3"><span class="emoji">🦜</span><span>3</span></button>
+            <button class="rating-option" data-value="4"><span class="emoji">🦜</span><span>4</span></button>
+            <button class="rating-option" data-value="5"><span class="emoji">🦜</span><span>5</span></button>
+            <button class="rating-option" data-value="6"><span class="emoji">🦜</span><span>6</span></button>
+            <button class="rating-option" data-value="7"><span class="emoji">🦜</span><span>7</span></button>
+            <button class="rating-option" data-value="8"><span class="emoji">🦜</span><span>8</span></button>
+            <button class="rating-option" data-value="9"><span class="emoji">🦜</span><span>9</span></button>
+            <button class="rating-option" data-value="10"><span class="emoji">🦜</span><span>10</span></button>
+        </div>
+        <div class="modal-footer">
+            <button id="ratingModalCancel" class="modal-cancel">Cancel</button>
+        </div>
+    </div>
 </div>
 
 <!-- Firebase SDKs (v9 modular) -->
@@ -752,7 +877,12 @@
   const galleryEmpty = document.getElementById("galleryEmpty");
   const galleryCountLabel = document.getElementById("galleryCountLabel");
 
+  const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
+  const ratingModalCancel = document.getElementById("ratingModalCancel");
+  const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
+
   let selectedFile = null;
+  let ratingTargetPhotoId = null;
 
   // Drag & drop
   function handleFiles(files) {
@@ -803,11 +933,11 @@
     const uploadedBy = uploadedByInput.value.trim();
 
     if (!selectedFile) {
-      showError("Select or drop a bird photo first.");
+      showError("Select or drop a burb photo first.");
       return;
     }
     if (!birdName) {
-      showError("Enter the bird species name.");
+      showError("Enter the burb species.");
       birdNameInput.focus();
       return;
     }
@@ -919,17 +1049,22 @@
       const data = docSnap.data();
       const id = docSnap.id;
       const imgUrl = data.imageUrl || "";
-      const birdName = data.birdName || "Unknown bird";
+      const birdName = data.birdName || "Unknown burb";
       const location = data.location || "Unknown location";
       const uploadedBy = data.uploadedBy || "Anonymous";
       const ratingTotal = data.ratingTotal || 0;
       const ratingCount = data.ratingCount || 0;
       const averageRating = ratingCount > 0 ? ratingTotal / ratingCount : 0;
       const rounded = ratingCount > 0 ? Math.round(averageRating * 10) / 10 : 0;
-      const filledStars = Math.round(averageRating || 0); // 0–10
+      const filledParrots = Math.round(averageRating || 0); // 0–10
 
       const createdAt = data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : null;
       const timeAgo = createdAt ? formatTimeAgo(createdAt) : "Just now";
+
+      const parrotsHtml = Array.from({ length: 10 }, (_, idx) => {
+        const i = idx + 1;
+        return `<span class="parrot ${i <= filledParrots ? "filled" : ""}">🦜</span>`;
+      }).join("");
 
       const card = document.createElement("article");
       card.className = "photo-card";
@@ -951,17 +1086,8 @@
           <div class="photo-location">${escapeHtml(location)}</div>
           <div class="photo-meta-row">
             <div class="rating-wrapper">
-              <div class="stars" data-photo-id="${id}">
-                ${Array.from({ length: 10 }, (_, idx) => {
-                  const i = idx + 1;
-                  return `
-                    <span
-                      class="star ${i <= filledStars ? "filled" : ""}"
-                      data-star="${i}"
-                      title="${i} / 10"
-                    >★</span>
-                  `;
-                }).join("")}
+              <div class="parrots">
+                ${parrotsHtml}
               </div>
               <div class="rating-text">
                 ${ratingCount === 0
@@ -972,6 +1098,9 @@
             <span class="time-tag">${timeAgo}</span>
           </div>
           <div class="card-footer-row">
+            <button class="rate-btn" data-photo-id="${id}">
+              Tap here to rate /10
+            </button>
             <button class="delete-btn" data-photo-id="${id}">
               🗑 Delete
             </button>
@@ -982,7 +1111,44 @@
     });
   });
 
-  // Star + delete click handler
+  // Rating modal logic
+  function openRatingModal(photoId) {
+    ratingTargetPhotoId = photoId;
+    ratingModalBackdrop.classList.add("show");
+  }
+
+  function closeRatingModal() {
+    ratingTargetPhotoId = null;
+    ratingModalBackdrop.classList.remove("show");
+  }
+
+  ratingModalCancel.addEventListener("click", () => {
+    closeRatingModal();
+  });
+
+  ratingModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === ratingModalBackdrop) {
+      closeRatingModal();
+    }
+  });
+
+  ratingOptionButtons.forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!ratingTargetPhotoId) return;
+      const value = parseInt(btn.dataset.value, 10);
+      if (!value) return;
+      try {
+        await ratePhoto(ratingTargetPhotoId, value);
+      } catch (err) {
+        console.error(err);
+        showError("Could not save rating. Check Firebase rules.");
+      } finally {
+        closeRatingModal();
+      }
+    });
+  });
+
+  // Star + delete click handler (now rate button + delete)
   galleryGrid.addEventListener("click", async (e) => {
     // Delete
     const deleteBtn = e.target.closest(".delete-btn");
@@ -1002,20 +1168,13 @@
       return;
     }
 
-    // Rating
-    const star = e.target.closest(".star");
-    if (!star) return;
-
-    const starsContainer = star.closest(".stars");
-    const photoId = starsContainer?.dataset?.photoId;
-    const value = parseInt(star.dataset.star, 10);
-    if (!photoId || !value) return;
-
-    try {
-      await ratePhoto(photoId, value);
-    } catch (err) {
-      console.error(err);
-      showError("Could not save rating. Check Firebase rules.");
+    // Rate button
+    const rateBtn = e.target.closest(".rate-btn");
+    if (rateBtn) {
+      const photoId = rateBtn.dataset.photoId;
+      if (!photoId) return;
+      openRatingModal(photoId);
+      return;
     }
   });
 
@@ -1054,7 +1213,6 @@
     const data = snap.data();
     const storagePath = data.storagePath;
 
-    // Delete file from Storage if we know the path
     if (storagePath) {
       try {
         const fileRef = storageRef(storage, storagePath);
@@ -1064,11 +1222,9 @@
       }
     }
 
-    // Remove rating cache for this photo
     delete localRatings[photoId];
     saveLocalRatings();
 
-    // Delete Firestore document
     await deleteDoc(docRef);
   }
 
