@@ -658,16 +658,18 @@
 
 <!-- Firebase SDKs (v9 modular) -->
 <script type="module">
-    // TODO: replace with your Firebase project config
+    // Your Firebase config (from the Firebase console)
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
+      authDomain: "hornithological-baes.firebaseapp.com",
+      projectId: "hornithological-baes",
+      storageBucket: "hornithological-baes.firebasestorage.app",
+      messagingSenderId: "909306883752",
+      appId: "1:909306883752:web:daf920bede5aa6fadf1c9d",
+      measurementId: "G-T9VSSKQS0Q"
     };
 
+    // Import Firebase modules from the CDN (no build step needed)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
     import {
         getFirestore,
@@ -688,9 +690,14 @@
         getDownloadURL
     } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
 
+    // If you actually want Analytics in future, you could also do:
+    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
+    // const analytics = getAnalytics(app); // only if you imported analytics
 
     const photosCol = collection(db, "birdPhotos");
 
