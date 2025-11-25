@@ -1,599 +1,2384 @@
 {
   "species": [
-"Abbott's Booby",
-"Albert's Lyrebird",
-"Antarctic Prion",
-"Asian Dowitcher",
-"Asian Emerald Dove",
-"Asian Koel",
-"Australasian Bittern",
-"Australasian Darter",
-"Australasian Gannet",
-"Australasian Grebe",
-"Australasian Shoveler",
-"Australasian Swamphen",
-"Australian Brushturkey",
-"Australian Bustard",
-"Australian Crake",
-"Australian Darter",
-"Australian Golden Whistler",
-"Australian Golden-faced Honeyeater",
-"Australian Grasswren",
-"Australian Hobby",
-"Australian Ibis",
-"Australian Kestrel",
-"Australian King Parrot",
-"Australian Koel",
-"Australian Magpie",
-"Australian Magpie-Lark",
-"Australian Masked Owl",
-"Australian Owlet-nightjar",
-"Australian Painted Snipe",
-"Australian Pelican",
-"Australian Pipit",
-"Australian Pratincole",
-"Australian Raven",
-"Australian Reed-Warbler",
-"Australian Ringneck",
-"Australian Shelduck",
-"Australian Spotted Crake",
-"Australian Spotted Owlet-nightjar",
-"Australian Swiftlet",
-"Australian White Ibis",
-"Australian Wood Duck",
-"Australian Wood Owl",
-"Australian Woodswallow",
-"Azure Kingfisher",
-"Baillon's Crake",
-"Banded Honeyeater",
-"Banded Lapwing",
-"Banded Stilt",
-"Bar-breasted Honeyeater",
-"Bar-shouldered Dove",
-"Bar-tailed Godwit",
-"Bassian Thrush",
-"Baudin's Black-Cockatoo",
-"Beach Stone-curlew",
-"Beautiful Firetail",
-"Bell Miner",
-"Black Bittern",
-"Black Falcon",
-"Black Grasswren",
-"Black Honeyeater",
-"Black Kite",
-"Black Swan",
-"Black-backed Bittern",
-"Black-banded Fruit-Dove",
-"Black-bellied Plover",
-"Black-breasted Buttonquail",
-"Black-breasted Buzzard",
-"Black-breasted Kite",
-"Black-browed Albatross",
-"Black-chinned Honeyeater",
-"Black-crowned Night-Heron",
-"Black-eared Catbird",
-"Black-eared Cuckoo",
-"Black-eared Miner",
-"Black-faced Cormorant",
-"Black-faced Cuckoo-shrike",
-"Black-faced Monarch",
-"Black-fronted Dotterel",
-"Black-headed Honeyeater",
-"Black-necked Stork",
-"Black-shouldered Kite",
-"Black-tailed Godwit",
-"Black-tailed Nativehen",
-"Black-tailed Treecreeper",
-"Black-throated Finch",
-"Black-winged Stilt",
-"Blue Petrel",
-"Blue-billed Duck",
-"Blue-breasted Fairywren",
-"Blue-breasted Quail",
-"Blue-faced Honeyeater",
-"Blue-faced Parrotfinch",
-"Blue-winged Parrot",
-"Blue-winged Pitta",
-"Bourke's Parrot",
-"Brahminy Kite",
-"Bridled Honeyeater",
-"Broad-billed Sandpiper",
-"Brolga",
-"Brown Booby",
-"Brown Cuckoo-Dove",
-"Brown Falcon",
-"Brown Goshawk",
-"Brown Honeyeater",
-"Brown Quail",
-"Brown Skua",
-"Brown Songlark",
-"Brown Treecreeper",
-"Brown-backed Honeyeater",
-"Brown-headed Honeyeater",
-"Brush Bronzewing",
-"Budgerigar",
-"Buff-banded Rail",
-"Buff-breasted Buttonquail",
-"Buller's Albatross",
-"Bush Stone-curlew",
-"Bush Thick-knee",
-"California Quail",
-"Canada Goose",
-"Cape Barren Goose",
-"Cape Gannet",
-"Cape Petrel",
-"Carnaby's Black-Cockatoo",
-"Carpentarian Grasswren",
-"Caspian Tern",
-"Cattle Egret",
-"Channel-billed Cuckoo",
-"Chestnut Munia",
-"Chestnut Rail",
-"Chestnut Teal",
-"Chestnut-backed Buttonquail",
-"Chestnut-breasted Cuckoo",
-"Chestnut-breasted Mannikin",
-"Chestnut-quilled Rock-Pigeon",
-"Chestnut-rumped Heathwren",
-"Chestnut-winged Cuckoo",
-"Christmas Island Frigatebird",
-"Christmas Island Imperial-Pigeon",
-"Christmas Island Swiftlet",
-"Cinnamon Bittern",
-"Citrine Wagtail",
-"Clamorous Reed Warbler",
-"Cockatiel",
-"Coconut Lorikeet",
-"Collared Sparrowhawk",
-"Comb-crested Jacana",
-"Common Bronzewing",
-"Common Chaffinch",
-"Common Cuckoo",
-"Common Diving Petrel",
-"Common Greenshank",
-"Common Myna",
-"Common Noddy",
-"Common Ostrich",
-"Common Redshank",
-"Common Sandpiper",
-"Common Starling",
-"Common Swift",
-"Common Swiftlet",
-"Cook's Petrel",
-"Cotton Pygmy-Goose",
-"Crescent Honeyeater",
-"Crested Bellbird",
-"Crested Pigeon",
-"Crimson Chat",
-"Crimson Finch",
-"Crimson Rosella",
-"Cryptic Honeyeater",
-"Curlew Sandpiper",
-"Diamond Dove",
-"Diamond Firetail",
-"Diving Petrel",
-"Double-banded Plover",
-"Double-barred Finch",
-"Double-eyed Fig-Parrot",
-"Dusky Grasswren",
-"Dusky Honeyeater",
-"Dusky Moorhen",
-"Eastern Barn Owl",
-"Eastern Bristlebird",
-"Eastern Cattle Egret",
-"Eastern Curlew",
-"Eastern Grass Owl",
-"Eastern Osprey",
-"Eastern Rosella",
-"Eastern Spinebill",
-"Eastern Yellow Wagtail",
-"Eclectus Parrot",
-"Elegant Parrot",
-"Emu",
-"Eungella Honeyeater",
-"Eurasian Marsh Harrier",
-"Eurasian Tree Sparrow",
-"Eurasian Wigeon",
-"European Goldfinch",
-"European Greenfinch",
-"Eyrean Grasswren",
-"Fairy Martin",
-"Fairy Pitta",
-"Fairy Prion",
-"Fan-tailed Cuckoo",
-"Far Eastern Curlew",
-"Fawn-breasted Bowerbird",
-"Flock Bronzewing",
-"Forest Raven",
-"Fork-tailed Swift",
-"Freckled Duck",
-"Fuscous Honeyeater",
-"Galah",
-"Gang-gang Cockatoo",
-"Garganey",
-"Gibberbird",
-"Gilbert's Honeyeater",
-"Glossy Black-Cockatoo",
-"Glossy Ibis",
-"Glossy Swiftlet",
-"Golden Bowerbird",
-"Golden Whistler",
-"Golden-headed Cisticola",
-"Golden-shouldered Parrot",
-"Gouldian Finch",
-"Graceful Honeyeater",
-"Gray Wagtail",
-"Great Bowerbird",
-"Great Cormorant",
-"Great Egret",
-"Great Frigatebird",
-"Great Grebe",
-"Great Knot",
-"Great-billed Heron",
-"Greater Bluebonnet",
-"Greater Sand Plover",
-"Great-winged Petrel",
-"Green Catbird",
-"Green Junglefowl",
-"Green Pygmy-Goose",
-"Green Rosella",
-"Green-backed Honeyeater",
-"Green-winged Teal",
-"Grey Butcherbird",
-"Grey Currawong",
-"Grey Fantail",
-"Grey Goshawk",
-"Grey Grasswren",
-"Grey Honeyeater",
-"Grey Nightjar",
-"Grey Shrikethrush",
-"Grey Teal",
-"Grey-crowned Babbler",
-"Grey-fronted Honeyeater",
-"Grey-headed Albatross",
-"Grey-headed Honeyeater",
-"Grey-tailed Tattler",
-"Ground Parrot",
-"Gurney's Eagle",
-"Hardhead",
-"Heard Island Shag",
-"Helmeted Friarbird",
-"Helmeted Guineafowl",
-"Hoary-headed Grebe",
-"Hooded Parrot",
-"Hooded Pitta",
-"Hooded Plover",
-"Horsfield's Bronze-Cuckoo",
-"House Sparrow",
-"House Swift",
-"Indian Cuckoo",
-"Indian Peafowl",
-"Inland Dotterel",
-"Island Imperial-Pigeon",
-"Jacky Winter",
-"Japanese Sparrowhawk",
-"Java Sparrow",
-"Kalkadoon Grasswren",
-"Kelp Gull",
-"Kerguelen Shag",
-"Kimberley Honeyeater",
-"King Quail",
-"Large-tailed Nightjar",
-"Latham's Snipe",
-"Laughing Dove",
-"Laughing Kookaburra",
-"Lesser Coucal",
-"Lesser Frigatebird",
-"Lesser Sand Plover",
-"Letter-winged Kite",
-"Lewin's Honeyeater",
-"Lewin's Rail",
-"Little Black Cormorant",
-"Little Bronze-Cuckoo",
-"Little Buttonquail",
-"Little Corella",
-"Little Curlew",
-"Little Eagle",
-"Little Egret",
-"Little Friarbird",
-"Little Grassbird",
-"Little Grebe",
-"Little Lorikeet",
-"Little Penguin",
-"Little Pied Cormorant",
-"Little Ringed Plover",
-"Little Wattlebird",
-"Long-billed Corella",
-"Long-tailed Finch",
-"Long-tailed Honey-buzzard",
-"Long-tailed Koel",
-"Long-toed Stint",
-"Lord Howe Woodhen",
-"Lovely Fairywren",
-"Macleay's Honeyeater",
-"Macquarie Shag",
-"Magpie Goose",
-"Malayan Night-Heron",
-"Mallard",
-"Mallee Emuwren",
-"Malleefowl",
-"Maned Duck",
-"Mangrove Honeyeater",
-"Marbled Frogmouth",
-"Marsh Sandpiper",
-"Masked Booby",
-"Masked Finch",
-"Masked Lapwing",
-"Mistletoebird",
-"Mossy-nest Swiftlet",
-"Mulga Parrot",
-"Musk Duck",
-"Musk Lorikeet",
-"Mute Swan",
-"Nankeen Night Heron",
-"Naretha Bluebonnet",
-"Nazca Booby",
-"New Holland Honeyeater",
-"New Zealand Pigeon",
-"New Zealand Pipit",
-"Night Parrot",
-"Noisy Friarbird",
-"Noisy Miner",
-"Noisy Pitta",
-"Noisy Scrub-bird",
-"Norfolk Island Parakeet",
-"Northern Giant Petrel",
-"Northern Pintail",
-"Northern Rosella",
-"Northern Shoveler",
-"Opalton Grasswren",
-"Orange Chat",
-"Orange-bellied Fruit-Dove",
-"Orange-bellied Parrot",
-"Orange-footed Megapode",
-"Oriental Cuckoo",
-"Oriental Darter",
-"Oriental Honey-buzzard",
-"Oriental Plover",
-"Oriental Pratincole",
-"Oriental Turtle-Dove",
-"Ornate Sunbird",
-"Osprey",
-"Pacific Baza",
-"Pacific Black Duck",
-"Pacific Emerald Dove",
-"Pacific Golden-Plover",
-"Pacific Gull",
-"Pacific Heron",
-"Pacific Imperial-Pigeon",
-"Pacific Koel",
-"Pacific Reef-Heron",
-"Pacific Swift",
-"Painted Buttonquail",
-"Painted Firetail",
-"Painted Honeyeater",
-"Pale-headed Munia",
-"Pale-headed Rosella",
-"Pale-vented Bush-hen",
-"Pallid Cuckoo",
-"Palm Cockatoo",
-"Papuan Frogmouth",
-"Papuan Pit",
-"Papuan Spine-tailed Swift",
-"Paradise Shelduck",
-"Parasitic Jaeger",
-"Partridge Pigeon",
-"Peaceful Dove",
-"Pechora Pipit",
-"Pectoral Sandpiper",
-"Pheasant Coucal",
-"Pictorella Munia",
-"Pied Cormorant",
-"Pied Heron",
-"Pied Honeyeater",
-"Pied Oystercatcher",
-"Pied Stilt",
-"Pink Cockatoo",
-"Pink-eared Duck",
-"Pin-tailed Snipe",
-"Plains-wanderer",
-"Plumed Egret",
-"Plum-headed Finch",
-"Pomarine Jaeger",
-"Princess Parrot",
-"Providence Petrel",
-"Purple Heron",
-"Purple-backed Fairywren",
-"Purple-crowned Fairywren",
-"Purple-crowned Lorikeet",
-"Purple-gaped Honeyeater",
-"Radjah Shelduck",
-"Rainbow Lorikeet",
-"Rainbow Pitta",
-"Red Collared-Dove",
-"Red Goshawk",
-"Red Knot",
-"Red Wattlebird",
-"Red-backed Buttonquail",
-"Red-backed Fairywren",
-"Red-billed Tropicbird",
-"Red-browed Firetail",
-"Red-browed Treecreeper",
-"Red-capped Flowerpecker",
-"Red-capped Parrot",
-"Red-capped Plover",
-"Red-cheeked Parrot",
-"Red-chested Buttonquail",
-"Red-collared Lorikeet",
-"Red-crowned Parakeet",
-"Red-eared Firetail",
-"Red-footed Booby",
-"Red-headed Honeyeater",
-"Red-kneed Dotterel",
-"Red-necked Avocet",
-"Red-necked Crake",
-"Red-necked Phalarope",
-"Red-necked Stint",
-"Red-rumped Parrot",
-"Red-tailed Black-Cockatoo",
-"Red-tailed Tropicbird",
-"Red-throated Pipit",
-"Red-winged Fairywren",
-"Red-winged Parrot",
-"Regent Bowerbird",
-"Regent Honeyeater",
-"Regent Parrot",
-"Ring-necked Pheasant",
-"Rock Parrot",
-"Rock Pigeon",
-"Rose-crowned Fruit-Dove",
-"Royal Spoonbill",
-"Ruddy Turnstone",
-"Ruff",
-"Rufous Bristlebird",
-"Rufous Grasswren",
-"Rufous Night Heron",
-"Rufous Scrub-bird",
-"Rufous Treecreeper",
-"Rufous-banded Honeyeater",
-"Rufous-crowned Emuwren",
-"Rufous-throated Honeyeater",
-"Sahul Brush Cuckoo",
-"Sahul Sunbird",
-"Salvin's Albatross",
-"Sanderling",
-"Sarus Crane",
-"Satin Bowerbird",
-"Savanna Nightjar",
-"Scaly-breasted Lorikeet",
-"Scaly-breasted Munia",
-"Scarlet Honeyeater",
-"Scarlet Myzomela",
-"Scarlet-chested Parrot",
-"Schrenck's Bittern",
-"Sharp-tailed Sandpiper",
-"Shining Bronze-Cuckoo",
-"Short-tailed Grasswren",
-"Shy Albatross",
-"Siberian Sand Plover",
-"Silver Gull",
-"Silver-crowned Friarbird",
-"Singing Honeyeater",
-"Slender-billed Prion",
-"Soft-plumaged Petrel",
-"Sooty Oystercatcher",
-"Southern Cassowary",
-"Southern Emuwren",
-"Southern Giant Petrel",
-"Southern Royal Albatross",
-"Spinifex Pigeon",
-"Spiny-cheeked Honeyeater",
-"Splendid Fairywren",
-"Spotless Crake",
-"Spotted Bowerbird",
-"Spotted Catbird",
-"Spotted Dove",
-"Spotted Harrier",
-"Spotted Nightjar",
-"Spotted Shag",
-"Spotted Whistling-Duck",
-"Square-tailed Kite",
-"Squatter Pigeon",
-"Star Finch",
-"Stephan's Dove",
-"Straw-necked Ibis",
-"Striated Grasswren",
-"Striated Heron",
-"Striped Honeyeater",
-"Strong-billed Honeyeater",
-"Stubble Quail",
-"Sulphur-crested Cockatoo",
-"Superb Fairywren",
-"Superb Fruit-Dove",
-"Superb Lyrebird",
-"Superb Parrot",
-"Swamp Harrier",
-"Swift Parrot",
-"Swinhoe's Snipe",
-"Tasmanian Nativehen",
-"Tawny Frogmouth",
-"Tawny-breasted Honeyeater",
-"Tawny-crowned Honeyeater",
-"Terek Sandpiper",
-"Thick-billed Grasswren",
-"Tooth-billed Bowerbird",
-"Topknot Pigeon",
-"Torresian Imperial-Pigeon",
-"Tree Pipit",
-"Tufted Duck",
-"Turquoise Parrot",
-"Uniform Swiftlet",
-"Varied Honeyeater",
-"Varied Lorikeet",
-"Variegated Fairywren",
-"Wandering Albatross",
-"Wandering Tattler",
-"Wandering Whistling-Duck",
-"Wedge-tailed Eagle",
-"Weka",
-"Western Bowerbird",
-"Western Bristlebird",
-"Western Corella",
-"Western Grasswren",
-"Western Reef-Heron",
-"Western Rosella",
-"Western Spinebill",
-"Western Wattlebird",
-"Westland Petrel",
-"Whimbrel",
-"Whistling Kite",
-"White Wagtail",
-"White-bellied Sea Eagle",
-"White-browed Crake",
-"White-browed Treecreeper",
-"White-capped Albatross",
-"White-cheeked Honeyeater",
-"White-chinned Petrel",
-"White-eared Honeyeater",
-"White-faced Heron",
-"White-fronted Chat",
-"White-fronted Honeyeater",
-"White-gaped Honeyeater",
-"White-headed Petrel",
-"White-headed Pigeon",
-"White-lined Honeyeater",
-"White-naped Honeyeater",
-"White-necked Heron",
-"White-nest Swiftlet",
-"White-plumed Honeyeater",
-"White-quilled Rock-Pigeon",
-"White-streaked Honeyeater",
-"White-tailed Tropicbird",
-"White-throated Grasswren",
-"White-throated Honeyeater",
-"White-throated Needletail",
-"White-throated Nightjar",
-"White-throated Treecreeper",
-"White-winged Fairywren",
-"Wompoo Fruit-Dove",
-"Wonga Pigeon",
-"Wood Sandpiper",
-"Yellow Bittern",
-"Yellow Chat",
-"Yellow Honeyeater",
-"Yellow Rosella",
-"Yellow Wattlebird",
-"Yellow-billed Spoonbill",
-"Yellow-faced Honeyeater",
-"Yellow-plumed Honeyeater",
-"Yellow-rumped Munia",
-"Yellow-spotted Honeyeater",
-"Yellow-tailed Black-Cockatoo",
-"Yellow-throated Honeyeater",
-"Yellow-throated Miner",
-"Yellow-tinted Honeyeater",
-"Yellow-tufted Honeyeater",
-"Zebra Finch",
-"Zoe's Imperial-Pigeon"
+    {
+      "name": "Abbott's Booby",
+      "rarity": "rare"
+    },
+    {
+      "name": "Albert's Lyrebird",
+      "rarity": "rare"
+    },
+    {
+      "name": "Antarctic Prion",
+      "rarity": "rare"
+    },
+    {
+      "name": "Asian Dowitcher",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Asian Emerald Dove",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Asian Koel",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Australasian Bittern",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Australasian Darter",
+      "rarity": "common"
+    },
+    {
+      "name": "Australasian Gannet",
+      "rarity": "common"
+    },
+    {
+      "name": "Australasian Grebe",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australasian Shoveler",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Australasian Swamphen",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Brushturkey",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Bustard",
+      "rarity": "rare"
+    },
+    {
+      "name": "Australian Crake",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Australian Darter",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Golden Whistler",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Golden-faced Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Grasswren",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Australian Hobby",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Ibis",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Kestrel",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australian King Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Koel",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Magpie",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australian Magpie-Lark",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australian Masked Owl",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Owlet-nightjar",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Painted Snipe",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Australian Pelican",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australian Pipit",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Pratincole",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Raven",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australian Reed-Warbler",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Ringneck",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Shelduck",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Spotted Crake",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Australian Spotted Owlet-nightjar",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Swiftlet",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian White Ibis",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Wood Duck",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Australian Wood Owl",
+      "rarity": "common"
+    },
+    {
+      "name": "Australian Woodswallow",
+      "rarity": "common"
+    },
+    {
+      "name": "Azure Kingfisher",
+      "rarity": "common"
+    },
+    {
+      "name": "Baillon's Crake",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Banded Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Banded Lapwing",
+      "rarity": "common"
+    },
+    {
+      "name": "Banded Stilt",
+      "rarity": "common"
+    },
+    {
+      "name": "Bar-breasted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Bar-shouldered Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Bar-tailed Godwit",
+      "rarity": "common"
+    },
+    {
+      "name": "Bassian Thrush",
+      "rarity": "common"
+    },
+    {
+      "name": "Baudin's Black-Cockatoo",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Beach Stone-curlew",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Beautiful Firetail",
+      "rarity": "common"
+    },
+    {
+      "name": "Bell Miner",
+      "rarity": "common"
+    },
+    {
+      "name": "Black Bittern",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Black Falcon",
+      "rarity": "rare"
+    },
+    {
+      "name": "Black Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Black Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Black Kite",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Black Swan",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Black-backed Bittern",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Black-banded Fruit-Dove",
+      "rarity": "rare"
+    },
+    {
+      "name": "Black-bellied Plover",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-breasted Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-breasted Buzzard",
+      "rarity": "rare"
+    },
+    {
+      "name": "Black-breasted Kite",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Black-browed Albatross",
+      "rarity": "rare"
+    },
+    {
+      "name": "Black-chinned Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Black-crowned Night-Heron",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-eared Catbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-eared Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-eared Miner",
+      "rarity": "rare"
+    },
+    {
+      "name": "Black-faced Cormorant",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-faced Cuckoo-shrike",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-faced Monarch",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-fronted Dotterel",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-headed Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Black-necked Stork",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-shouldered Kite",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-tailed Godwit",
+      "rarity": "rare"
+    },
+    {
+      "name": "Black-tailed Nativehen",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-tailed Treecreeper",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-throated Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Black-winged Stilt",
+      "rarity": "common"
+    },
+    {
+      "name": "Blue Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Blue-billed Duck",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Blue-breasted Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Blue-breasted Quail",
+      "rarity": "common"
+    },
+    {
+      "name": "Blue-faced Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Blue-faced Parrotfinch",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Blue-winged Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Blue-winged Pitta",
+      "rarity": "rare"
+    },
+    {
+      "name": "Bourke's Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Brahminy Kite",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Bridled Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Broad-billed Sandpiper",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Brolga",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Booby",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Cuckoo-Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Falcon",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Brown Goshawk",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Quail",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Skua",
+      "rarity": "rare"
+    },
+    {
+      "name": "Brown Songlark",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown Treecreeper",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown-backed Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Brown-headed Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Brush Bronzewing",
+      "rarity": "common"
+    },
+    {
+      "name": "Budgerigar",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Buff-banded Rail",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Buff-breasted Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Buller's Albatross",
+      "rarity": "rare"
+    },
+    {
+      "name": "Bush Stone-curlew",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Bush Thick-knee",
+      "rarity": "common"
+    },
+    {
+      "name": "California Quail",
+      "rarity": "common"
+    },
+    {
+      "name": "Canada Goose",
+      "rarity": "common"
+    },
+    {
+      "name": "Cape Barren Goose",
+      "rarity": "common"
+    },
+    {
+      "name": "Cape Gannet",
+      "rarity": "rare"
+    },
+    {
+      "name": "Cape Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Carnaby's Black-Cockatoo",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Carpentarian Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Caspian Tern",
+      "rarity": "common"
+    },
+    {
+      "name": "Cattle Egret",
+      "rarity": "common"
+    },
+    {
+      "name": "Channel-billed Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut Munia",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut Rail",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Chestnut Teal",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut-backed Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut-breasted Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut-breasted Mannikin",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut-quilled Rock-Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut-rumped Heathwren",
+      "rarity": "common"
+    },
+    {
+      "name": "Chestnut-winged Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Christmas Island Frigatebird",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Christmas Island Imperial-Pigeon",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Christmas Island Swiftlet",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Cinnamon Bittern",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Citrine Wagtail",
+      "rarity": "rare"
+    },
+    {
+      "name": "Clamorous Reed Warbler",
+      "rarity": "common"
+    },
+    {
+      "name": "Cockatiel",
+      "rarity": "common"
+    },
+    {
+      "name": "Coconut Lorikeet",
+      "rarity": "rare"
+    },
+    {
+      "name": "Collared Sparrowhawk",
+      "rarity": "common"
+    },
+    {
+      "name": "Comb-crested Jacana",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Common Bronzewing",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Chaffinch",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Diving Petrel",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Greenshank",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Myna",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Common Noddy",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Ostrich",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Redshank",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Sandpiper",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Starling",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Common Swift",
+      "rarity": "common"
+    },
+    {
+      "name": "Common Swiftlet",
+      "rarity": "common"
+    },
+    {
+      "name": "Cook's Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Cotton Pygmy-Goose",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Crescent Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Crested Bellbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Crested Pigeon",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Crimson Chat",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Crimson Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Crimson Rosella",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Cryptic Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Curlew Sandpiper",
+      "rarity": "rare"
+    },
+    {
+      "name": "Diamond Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Diamond Firetail",
+      "rarity": "common"
+    },
+    {
+      "name": "Diving Petrel",
+      "rarity": "common"
+    },
+    {
+      "name": "Double-banded Plover",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Double-barred Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Double-eyed Fig-Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Dusky Grasswren",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Dusky Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Dusky Moorhen",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Eastern Barn Owl",
+      "rarity": "common"
+    },
+    {
+      "name": "Eastern Bristlebird",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Eastern Cattle Egret",
+      "rarity": "common"
+    },
+    {
+      "name": "Eastern Curlew",
+      "rarity": "rare"
+    },
+    {
+      "name": "Eastern Grass Owl",
+      "rarity": "common"
+    },
+    {
+      "name": "Eastern Osprey",
+      "rarity": "common"
+    },
+    {
+      "name": "Eastern Rosella",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Eastern Spinebill",
+      "rarity": "common"
+    },
+    {
+      "name": "Eastern Yellow Wagtail",
+      "rarity": "rare"
+    },
+    {
+      "name": "Eclectus Parrot",
+      "rarity": "rare"
+    },
+    {
+      "name": "Elegant Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Emu",
+      "rarity": "common"
+    },
+    {
+      "name": "Eungella Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Eurasian Marsh Harrier",
+      "rarity": "rare"
+    },
+    {
+      "name": "Eurasian Tree Sparrow",
+      "rarity": "rare"
+    },
+    {
+      "name": "Eurasian Wigeon",
+      "rarity": "rare"
+    },
+    {
+      "name": "European Goldfinch",
+      "rarity": "common"
+    },
+    {
+      "name": "European Greenfinch",
+      "rarity": "common"
+    },
+    {
+      "name": "Eyrean Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Fairy Martin",
+      "rarity": "common"
+    },
+    {
+      "name": "Fairy Pitta",
+      "rarity": "rare"
+    },
+    {
+      "name": "Fairy Prion",
+      "rarity": "rare"
+    },
+    {
+      "name": "Fan-tailed Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Far Eastern Curlew",
+      "rarity": "rare"
+    },
+    {
+      "name": "Fawn-breasted Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Flock Bronzewing",
+      "rarity": "common"
+    },
+    {
+      "name": "Forest Raven",
+      "rarity": "common"
+    },
+    {
+      "name": "Fork-tailed Swift",
+      "rarity": "common"
+    },
+    {
+      "name": "Freckled Duck",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Fuscous Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Galah",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Gang-gang Cockatoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Garganey",
+      "rarity": "rare"
+    },
+    {
+      "name": "Gibberbird",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Gilbert's Honeyeater",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Glossy Black-Cockatoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Glossy Ibis",
+      "rarity": "common"
+    },
+    {
+      "name": "Glossy Swiftlet",
+      "rarity": "common"
+    },
+    {
+      "name": "Golden Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Golden Whistler",
+      "rarity": "common"
+    },
+    {
+      "name": "Golden-headed Cisticola",
+      "rarity": "common"
+    },
+    {
+      "name": "Golden-shouldered Parrot",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Gouldian Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Graceful Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Gray Wagtail",
+      "rarity": "rare"
+    },
+    {
+      "name": "Great Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Great Cormorant",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Great Egret",
+      "rarity": "common"
+    },
+    {
+      "name": "Great Frigatebird",
+      "rarity": "rare"
+    },
+    {
+      "name": "Great Grebe",
+      "rarity": "common"
+    },
+    {
+      "name": "Great Knot",
+      "rarity": "rare"
+    },
+    {
+      "name": "Great-billed Heron",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Greater Bluebonnet",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Greater Sand Plover",
+      "rarity": "rare"
+    },
+    {
+      "name": "Great-winged Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Green Catbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Green Junglefowl",
+      "rarity": "rare"
+    },
+    {
+      "name": "Green Pygmy-Goose",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Green Rosella",
+      "rarity": "common"
+    },
+    {
+      "name": "Green-backed Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Green-winged Teal",
+      "rarity": "rare"
+    },
+    {
+      "name": "Grey Butcherbird",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Grey Currawong",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Grey Fantail",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Grey Goshawk",
+      "rarity": "common"
+    },
+    {
+      "name": "Grey Grasswren",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Grey Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Grey Nightjar",
+      "rarity": "common"
+    },
+    {
+      "name": "Grey Shrikethrush",
+      "rarity": "common"
+    },
+    {
+      "name": "Grey Teal",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Grey-crowned Babbler",
+      "rarity": "common"
+    },
+    {
+      "name": "Grey-fronted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Grey-headed Albatross",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Grey-headed Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Grey-tailed Tattler",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Ground Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Gurney's Eagle",
+      "rarity": "rare"
+    },
+    {
+      "name": "Hardhead",
+      "rarity": "common"
+    },
+    {
+      "name": "Heard Island Shag",
+      "rarity": "rare"
+    },
+    {
+      "name": "Helmeted Friarbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Helmeted Guineafowl",
+      "rarity": "common"
+    },
+    {
+      "name": "Hoary-headed Grebe",
+      "rarity": "common"
+    },
+    {
+      "name": "Hooded Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Hooded Pitta",
+      "rarity": "rare"
+    },
+    {
+      "name": "Hooded Plover",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Horsfield's Bronze-Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "House Sparrow",
+      "rarity": "very_common"
+    },
+    {
+      "name": "House Swift",
+      "rarity": "common"
+    },
+    {
+      "name": "Indian Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Indian Peafowl",
+      "rarity": "common"
+    },
+    {
+      "name": "Inland Dotterel",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Island Imperial-Pigeon",
+      "rarity": "rare"
+    },
+    {
+      "name": "Jacky Winter",
+      "rarity": "common"
+    },
+    {
+      "name": "Japanese Sparrowhawk",
+      "rarity": "rare"
+    },
+    {
+      "name": "Java Sparrow",
+      "rarity": "common"
+    },
+    {
+      "name": "Kalkadoon Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Kelp Gull",
+      "rarity": "common"
+    },
+    {
+      "name": "Kerguelen Shag",
+      "rarity": "rare"
+    },
+    {
+      "name": "Kimberley Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "King Quail",
+      "rarity": "common"
+    },
+    {
+      "name": "Large-tailed Nightjar",
+      "rarity": "common"
+    },
+    {
+      "name": "Latham's Snipe",
+      "rarity": "common"
+    },
+    {
+      "name": "Laughing Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Laughing Kookaburra",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Lesser Coucal",
+      "rarity": "common"
+    },
+    {
+      "name": "Lesser Frigatebird",
+      "rarity": "rare"
+    },
+    {
+      "name": "Lesser Sand Plover",
+      "rarity": "rare"
+    },
+    {
+      "name": "Letter-winged Kite",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Lewin's Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Lewin's Rail",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Little Black Cormorant",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Little Bronze-Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Corella",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Little Curlew",
+      "rarity": "rare"
+    },
+    {
+      "name": "Little Eagle",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Egret",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Friarbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Grassbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Grebe",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Lorikeet",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Penguin",
+      "rarity": "common"
+    },
+    {
+      "name": "Little Pied Cormorant",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Little Ringed Plover",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Little Wattlebird",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Long-billed Corella",
+      "rarity": "common"
+    },
+    {
+      "name": "Long-tailed Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Long-tailed Honey-buzzard",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Long-tailed Koel",
+      "rarity": "common"
+    },
+    {
+      "name": "Long-toed Stint",
+      "rarity": "rare"
+    },
+    {
+      "name": "Lord Howe Woodhen",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Lovely Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Macleay's Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Macquarie Shag",
+      "rarity": "rare"
+    },
+    {
+      "name": "Magpie Goose",
+      "rarity": "common"
+    },
+    {
+      "name": "Malayan Night-Heron",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Mallard",
+      "rarity": "common"
+    },
+    {
+      "name": "Mallee Emuwren",
+      "rarity": "common"
+    },
+    {
+      "name": "Malleefowl",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Maned Duck",
+      "rarity": "common"
+    },
+    {
+      "name": "Mangrove Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Marbled Frogmouth",
+      "rarity": "common"
+    },
+    {
+      "name": "Marsh Sandpiper",
+      "rarity": "common"
+    },
+    {
+      "name": "Masked Booby",
+      "rarity": "common"
+    },
+    {
+      "name": "Masked Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Masked Lapwing",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Mistletoebird",
+      "rarity": "common"
+    },
+    {
+      "name": "Mossy-nest Swiftlet",
+      "rarity": "common"
+    },
+    {
+      "name": "Mulga Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Musk Duck",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Musk Lorikeet",
+      "rarity": "common"
+    },
+    {
+      "name": "Mute Swan",
+      "rarity": "common"
+    },
+    {
+      "name": "Nankeen Night Heron",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Naretha Bluebonnet",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Nazca Booby",
+      "rarity": "rare"
+    },
+    {
+      "name": "New Holland Honeyeater",
+      "rarity": "very_common"
+    },
+    {
+      "name": "New Zealand Pigeon",
+      "rarity": "rare"
+    },
+    {
+      "name": "New Zealand Pipit",
+      "rarity": "common"
+    },
+    {
+      "name": "Night Parrot",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Noisy Friarbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Noisy Miner",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Noisy Pitta",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Noisy Scrub-bird",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Norfolk Island Parakeet",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Northern Giant Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Northern Pintail",
+      "rarity": "rare"
+    },
+    {
+      "name": "Northern Rosella",
+      "rarity": "common"
+    },
+    {
+      "name": "Northern Shoveler",
+      "rarity": "common"
+    },
+    {
+      "name": "Opalton Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Orange Chat",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Orange-bellied Fruit-Dove",
+      "rarity": "rare"
+    },
+    {
+      "name": "Orange-bellied Parrot",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Orange-footed Megapode",
+      "rarity": "common"
+    },
+    {
+      "name": "Oriental Cuckoo",
+      "rarity": "rare"
+    },
+    {
+      "name": "Oriental Darter",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Oriental Honey-buzzard",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Oriental Plover",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Oriental Pratincole",
+      "rarity": "rare"
+    },
+    {
+      "name": "Oriental Turtle-Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Ornate Sunbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Osprey",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Pacific Baza",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Pacific Black Duck",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Pacific Emerald Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Pacific Golden-Plover",
+      "rarity": "common"
+    },
+    {
+      "name": "Pacific Gull",
+      "rarity": "common"
+    },
+    {
+      "name": "Pacific Heron",
+      "rarity": "common"
+    },
+    {
+      "name": "Pacific Imperial-Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Pacific Koel",
+      "rarity": "common"
+    },
+    {
+      "name": "Pacific Reef-Heron",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Pacific Swift",
+      "rarity": "common"
+    },
+    {
+      "name": "Painted Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Painted Firetail",
+      "rarity": "common"
+    },
+    {
+      "name": "Painted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Pale-headed Munia",
+      "rarity": "common"
+    },
+    {
+      "name": "Pale-headed Rosella",
+      "rarity": "common"
+    },
+    {
+      "name": "Pale-vented Bush-hen",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Pallid Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Palm Cockatoo",
+      "rarity": "rare"
+    },
+    {
+      "name": "Papuan Frogmouth",
+      "rarity": "rare"
+    },
+    {
+      "name": "Papuan Pit",
+      "rarity": "common"
+    },
+    {
+      "name": "Papuan Spine-tailed Swift",
+      "rarity": "rare"
+    },
+    {
+      "name": "Paradise Shelduck",
+      "rarity": "common"
+    },
+    {
+      "name": "Parasitic Jaeger",
+      "rarity": "rare"
+    },
+    {
+      "name": "Partridge Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Peaceful Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Pechora Pipit",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Pectoral Sandpiper",
+      "rarity": "rare"
+    },
+    {
+      "name": "Pheasant Coucal",
+      "rarity": "common"
+    },
+    {
+      "name": "Pictorella Munia",
+      "rarity": "common"
+    },
+    {
+      "name": "Pied Cormorant",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Pied Heron",
+      "rarity": "common"
+    },
+    {
+      "name": "Pied Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Pied Oystercatcher",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Pied Stilt",
+      "rarity": "common"
+    },
+    {
+      "name": "Pink Cockatoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Pink-eared Duck",
+      "rarity": "common"
+    },
+    {
+      "name": "Pin-tailed Snipe",
+      "rarity": "rare"
+    },
+    {
+      "name": "Plains-wanderer",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Plumed Egret",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Plum-headed Finch",
+      "rarity": "common"
+    },
+    {
+      "name": "Pomarine Jaeger",
+      "rarity": "rare"
+    },
+    {
+      "name": "Princess Parrot",
+      "rarity": "rare"
+    },
+    {
+      "name": "Providence Petrel",
+      "rarity": "common"
+    },
+    {
+      "name": "Purple Heron",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Purple-backed Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Purple-crowned Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Purple-crowned Lorikeet",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Purple-gaped Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Radjah Shelduck",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Rainbow Lorikeet",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Rainbow Pitta",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Red Collared-Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Red Goshawk",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Red Knot",
+      "rarity": "rare"
+    },
+    {
+      "name": "Red Wattlebird",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Red-backed Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-backed Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-billed Tropicbird",
+      "rarity": "rare"
+    },
+    {
+      "name": "Red-browed Firetail",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-browed Treecreeper",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-capped Flowerpecker",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-capped Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Red-capped Plover",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-cheeked Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Red-chested Buttonquail",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-collared Lorikeet",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Red-crowned Parakeet",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-eared Firetail",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-footed Booby",
+      "rarity": "rare"
+    },
+    {
+      "name": "Red-headed Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-kneed Dotterel",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Red-necked Avocet",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-necked Crake",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Red-necked Phalarope",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Red-necked Stint",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-rumped Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-tailed Black-Cockatoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-tailed Tropicbird",
+      "rarity": "rare"
+    },
+    {
+      "name": "Red-throated Pipit",
+      "rarity": "rare"
+    },
+    {
+      "name": "Red-winged Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Red-winged Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Regent Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Regent Honeyeater",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Regent Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Ring-necked Pheasant",
+      "rarity": "common"
+    },
+    {
+      "name": "Rock Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Rock Pigeon",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Rose-crowned Fruit-Dove",
+      "rarity": "rare"
+    },
+    {
+      "name": "Royal Spoonbill",
+      "rarity": "common"
+    },
+    {
+      "name": "Ruddy Turnstone",
+      "rarity": "common"
+    },
+    {
+      "name": "Ruff",
+      "rarity": "rare"
+    },
+    {
+      "name": "Rufous Bristlebird",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Rufous Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Rufous Night Heron",
+      "rarity": "common"
+    },
+    {
+      "name": "Rufous Scrub-bird",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Rufous Treecreeper",
+      "rarity": "common"
+    },
+    {
+      "name": "Rufous-banded Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Rufous-crowned Emuwren",
+      "rarity": "common"
+    },
+    {
+      "name": "Rufous-throated Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Sahul Brush Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Sahul Sunbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Salvin's Albatross",
+      "rarity": "rare"
+    },
+    {
+      "name": "Sanderling",
+      "rarity": "common"
+    },
+    {
+      "name": "Sarus Crane",
+      "rarity": "rare"
+    },
+    {
+      "name": "Satin Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Savanna Nightjar",
+      "rarity": "common"
+    },
+    {
+      "name": "Scaly-breasted Lorikeet",
+      "rarity": "common"
+    },
+    {
+      "name": "Scaly-breasted Munia",
+      "rarity": "common"
+    },
+    {
+      "name": "Scarlet Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Scarlet Myzomela",
+      "rarity": "common"
+    },
+    {
+      "name": "Scarlet-chested Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Schrenck's Bittern",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Sharp-tailed Sandpiper",
+      "rarity": "common"
+    },
+    {
+      "name": "Shining Bronze-Cuckoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Short-tailed Grasswren",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Shy Albatross",
+      "rarity": "rare"
+    },
+    {
+      "name": "Siberian Sand Plover",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Silver Gull",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Silver-crowned Friarbird",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Singing Honeyeater",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Slender-billed Prion",
+      "rarity": "rare"
+    },
+    {
+      "name": "Soft-plumaged Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Sooty Oystercatcher",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Southern Cassowary",
+      "rarity": "common"
+    },
+    {
+      "name": "Southern Emuwren",
+      "rarity": "common"
+    },
+    {
+      "name": "Southern Giant Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Southern Royal Albatross",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Spinifex Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Spiny-cheeked Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Splendid Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Spotless Crake",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Spotted Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Spotted Catbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Spotted Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Spotted Harrier",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Spotted Nightjar",
+      "rarity": "common"
+    },
+    {
+      "name": "Spotted Shag",
+      "rarity": "rare"
+    },
+    {
+      "name": "Spotted Whistling-Duck",
+      "rarity": "common"
+    },
+    {
+      "name": "Square-tailed Kite",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Squatter Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Star Finch",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Stephan's Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Straw-necked Ibis",
+      "rarity": "common"
+    },
+    {
+      "name": "Striated Grasswren",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Striated Heron",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Striped Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Strong-billed Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Stubble Quail",
+      "rarity": "common"
+    },
+    {
+      "name": "Sulphur-crested Cockatoo",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Superb Fairywren",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Superb Fruit-Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Superb Lyrebird",
+      "rarity": "common"
+    },
+    {
+      "name": "Superb Parrot",
+      "rarity": "common"
+    },
+    {
+      "name": "Swamp Harrier",
+      "rarity": "common"
+    },
+    {
+      "name": "Swift Parrot",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Swinhoe's Snipe",
+      "rarity": "rare"
+    },
+    {
+      "name": "Tasmanian Nativehen",
+      "rarity": "common"
+    },
+    {
+      "name": "Tawny Frogmouth",
+      "rarity": "common"
+    },
+    {
+      "name": "Tawny-breasted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Tawny-crowned Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Terek Sandpiper",
+      "rarity": "rare"
+    },
+    {
+      "name": "Thick-billed Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Tooth-billed Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Topknot Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Torresian Imperial-Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Tree Pipit",
+      "rarity": "rare"
+    },
+    {
+      "name": "Tufted Duck",
+      "rarity": "rare"
+    },
+    {
+      "name": "Turquoise Parrot",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Uniform Swiftlet",
+      "rarity": "common"
+    },
+    {
+      "name": "Varied Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Varied Lorikeet",
+      "rarity": "common"
+    },
+    {
+      "name": "Variegated Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Wandering Albatross",
+      "rarity": "rare"
+    },
+    {
+      "name": "Wandering Tattler",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Wandering Whistling-Duck",
+      "rarity": "common"
+    },
+    {
+      "name": "Wedge-tailed Eagle",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Weka",
+      "rarity": "common"
+    },
+    {
+      "name": "Western Bowerbird",
+      "rarity": "common"
+    },
+    {
+      "name": "Western Bristlebird",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "Western Corella",
+      "rarity": "common"
+    },
+    {
+      "name": "Western Grasswren",
+      "rarity": "common"
+    },
+    {
+      "name": "Western Reef-Heron",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Western Rosella",
+      "rarity": "common"
+    },
+    {
+      "name": "Western Spinebill",
+      "rarity": "common"
+    },
+    {
+      "name": "Western Wattlebird",
+      "rarity": "common"
+    },
+    {
+      "name": "Westland Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "Whimbrel",
+      "rarity": "common"
+    },
+    {
+      "name": "Whistling Kite",
+      "rarity": "very_common"
+    },
+    {
+      "name": "White Wagtail",
+      "rarity": "rare"
+    },
+    {
+      "name": "White-bellied Sea Eagle",
+      "rarity": "common"
+    },
+    {
+      "name": "White-browed Crake",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "White-browed Treecreeper",
+      "rarity": "common"
+    },
+    {
+      "name": "White-capped Albatross",
+      "rarity": "rare"
+    },
+    {
+      "name": "White-cheeked Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "White-chinned Petrel",
+      "rarity": "common"
+    },
+    {
+      "name": "White-eared Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "White-faced Heron",
+      "rarity": "very_common"
+    },
+    {
+      "name": "White-fronted Chat",
+      "rarity": "common"
+    },
+    {
+      "name": "White-fronted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "White-gaped Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "White-headed Petrel",
+      "rarity": "rare"
+    },
+    {
+      "name": "White-headed Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "White-lined Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "White-naped Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "White-necked Heron",
+      "rarity": "common"
+    },
+    {
+      "name": "White-nest Swiftlet",
+      "rarity": "common"
+    },
+    {
+      "name": "White-plumed Honeyeater",
+      "rarity": "very_common"
+    },
+    {
+      "name": "White-quilled Rock-Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "White-streaked Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "White-tailed Tropicbird",
+      "rarity": "rare"
+    },
+    {
+      "name": "White-throated Grasswren",
+      "rarity": "super_rare"
+    },
+    {
+      "name": "White-throated Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "White-throated Needletail",
+      "rarity": "rare"
+    },
+    {
+      "name": "White-throated Nightjar",
+      "rarity": "rare"
+    },
+    {
+      "name": "White-throated Treecreeper",
+      "rarity": "common"
+    },
+    {
+      "name": "White-winged Fairywren",
+      "rarity": "common"
+    },
+    {
+      "name": "Wompoo Fruit-Dove",
+      "rarity": "common"
+    },
+    {
+      "name": "Wonga Pigeon",
+      "rarity": "common"
+    },
+    {
+      "name": "Wood Sandpiper",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow Bittern",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Yellow Chat",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Yellow Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow Rosella",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow Wattlebird",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-billed Spoonbill",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-faced Honeyeater",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Yellow-plumed Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-rumped Munia",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-spotted Honeyeater",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-tailed Black-Cockatoo",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-throated Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Yellow-throated Miner",
+      "rarity": "common"
+    },
+    {
+      "name": "Yellow-tinted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Yellow-tufted Honeyeater",
+      "rarity": "uncommon"
+    },
+    {
+      "name": "Zebra Finch",
+      "rarity": "very_common"
+    },
+    {
+      "name": "Zoe's Imperial-Pigeon",
+      "rarity": "rare"
+    }
   ]
 }
