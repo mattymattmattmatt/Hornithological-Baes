@@ -52,6 +52,28 @@
             margin-bottom: 24px;
         }
 
+        .title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 52px;
+            width: auto;
+            border-radius: 12px;
+            object-fit: contain;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 4px 8px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
         .title-block h1 {
             margin: 0;
             font-size: 1.9rem;
@@ -84,42 +106,22 @@
         }
 
         .title-block p {
-            margin: 6px 0 0;
+            margin: 0;
             font-size: 0.9rem;
             color: var(--text-muted);
         }
 
-        .header-badge {
-            padding: 10px 14px;
-            border-radius: 999px;
-            background: rgba(15,23,42,0.8);
-            border: 1px solid rgba(148,163,184,0.25);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
-        .header-badge span {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            border-radius: 999px;
-            background: var(--accent-soft);
-            color: #c7d2fe;
-            font-size: 0.8rem;
-        }
-
         .layout {
             display: grid;
-            grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
             gap: 20px;
         }
 
         @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
             .layout {
                 grid-template-columns: minmax(0, 1fr);
             }
@@ -491,6 +493,11 @@
             color: #e5e7eb;
         }
 
+        .photo-uploaded-by {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
         .photo-location {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -546,6 +553,30 @@
             border: 1px solid rgba(148,163,184,0.4);
         }
 
+        .card-footer-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .delete-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            background: rgba(239,68,68,0.12);
+            color: #fecaca;
+            border: 1px solid rgba(248,113,113,0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239,68,68,0.22);
+        }
+
         footer {
             margin-top: 18px;
             font-size: 0.78rem;
@@ -559,17 +590,20 @@
 <div class="app-shell">
     <header>
         <div class="title-block">
-            <div class="title-pill">
-                <span class="title-pill-dot"></span>
-                Live bird photo log
+            <div class="title-row">
+                <!-- Logo in root as Logo.png -->
+                <img src="Logo.png" alt="Hornithological Baes logo" class="logo">
+                <div>
+                    <div class="title-pill">
+                        <span class="title-pill-dot"></span>
+                        Live bird photo log
+                    </div>
+                    <h1>Hornithological Baes</h1>
+                </div>
             </div>
-            <h1>Hornithological Baes</h1>
             <p>Drop your bird pics, tag where and what they are, and let the flock rate your shots out of 10.</p>
         </div>
-        <div class="header-badge">
-            <span>★</span>
-            10/10 bird bae energy
-        </div>
+        <!-- header-badge removed as requested -->
     </header>
 
     <div class="layout">
@@ -613,6 +647,10 @@
                         <label for="location">Where spotted</label>
                         <input id="location" type="text" placeholder="e.g. Adelaide Botanic Gardens, SA" autocomplete="off" />
                     </div>
+                    <div class="field">
+                        <label for="uploadedBy">Uploaded by</label>
+                        <input id="uploadedBy" type="text" placeholder="Your name or nickname" autocomplete="off" />
+                    </div>
                 </div>
 
                 <div class="actions-row">
@@ -639,7 +677,7 @@
                 </div>
                 <div class="filter-badges">
                     <span class="filter-badge">Newest first</span>
-                    <span class="filter-badge">Tap stars to rate /10</span>
+                    <span class="filter-badge">Tap to rate /10</span>
                 </div>
             </div>
 
@@ -658,355 +696,409 @@
 
 <!-- Firebase SDKs (v9 modular) -->
 <script type="module">
-    // Your Firebase config (from the Firebase console)
-    const firebaseConfig = {
-      apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
-      authDomain: "hornithological-baes.firebaseapp.com",
-      projectId: "hornithological-baes",
-      storageBucket: "hornithological-baes.firebasestorage.app",
-      messagingSenderId: "909306883752",
-      appId: "1:909306883752:web:daf920bede5aa6fadf1c9d",
-      measurementId: "G-T9VSSKQS0Q"
-    };
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
+    authDomain: "hornithological-baes.firebaseapp.com",
+    projectId: "hornithological-baes",
+    storageBucket: "hornithological-baes.firebasestorage.app",
+    messagingSenderId: "909306883752",
+    appId: "1:909306883752:web:daf920bede5aa6fadf1c9d",
+    measurementId: "G-T9VSSKQS0Q"
+  };
 
-    // Import Firebase modules from the CDN (no build step needed)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import {
-        getFirestore,
-        collection,
-        addDoc,
-        onSnapshot,
-        orderBy,
-        query,
-        doc,
-        getDoc,
-        updateDoc,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-    import {
-        getStorage,
-        ref as storageRef,
-        uploadBytes,
-        getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot,
+    orderBy,
+    query,
+    doc,
+    getDoc,
+    updateDoc,
+    deleteDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
 
-    // If you actually want Analytics in future, you could also do:
-    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    // const analytics = getAnalytics(app); // only if you imported analytics
+  const photosCol = collection(db, "birdPhotos");
 
-    const photosCol = collection(db, "birdPhotos");
+  // DOM
+  const dropzone = document.getElementById("dropzone");
+  const fileInput = document.getElementById("fileInput");
+  const preview = document.getElementById("preview");
+  const previewImg = document.getElementById("previewImg");
+  const previewName = document.getElementById("previewName");
+  const birdNameInput = document.getElementById("birdName");
+  const locationInput = document.getElementById("location");
+  const uploadedByInput = document.getElementById("uploadedBy");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const statusText = document.getElementById("statusText");
+  const errorMsg = document.getElementById("errorMsg");
+  const successMsg = document.getElementById("successMsg");
+  const galleryGrid = document.getElementById("galleryGrid");
+  const galleryEmpty = document.getElementById("galleryEmpty");
+  const galleryCountLabel = document.getElementById("galleryCountLabel");
 
-    const dropzone = document.getElementById("dropzone");
-    const fileInput = document.getElementById("fileInput");
-    const preview = document.getElementById("preview");
-    const previewImg = document.getElementById("previewImg");
-    const previewName = document.getElementById("previewName");
-    const birdNameInput = document.getElementById("birdName");
-    const locationInput = document.getElementById("location");
-    const uploadBtn = document.getElementById("uploadBtn");
-    const statusText = document.getElementById("statusText");
-    const errorMsg = document.getElementById("errorMsg");
-    const successMsg = document.getElementById("successMsg");
-    const galleryGrid = document.getElementById("galleryGrid");
-    const galleryEmpty = document.getElementById("galleryEmpty");
-    const galleryCountLabel = document.getElementById("galleryCountLabel");
+  let selectedFile = null;
 
-    let selectedFile = null;
+  // Drag & drop
+  function handleFiles(files) {
+    if (!files || !files.length) return;
+    const file = files[0];
 
-    function handleFiles(files) {
-        if (!files || !files.length) return;
-        const file = files[0];
-        if (!file.type.startsWith("image/")) {
-            showError("Please upload an image file.");
-            return;
-        }
-        selectedFile = file;
-        previewImg.src = URL.createObjectURL(file);
-        previewName.textContent = file.name;
-        preview.style.display = "flex";
-        hideError();
-        hideSuccess();
+    if (!file.type.startsWith("image/")) {
+      showError("Please upload an image file.");
+      return;
     }
 
-    dropzone.addEventListener("click", () => fileInput.click());
+    selectedFile = file;
+    previewImg.src = URL.createObjectURL(file);
+    previewName.textContent = file.name;
+    preview.style.display = "flex";
+    hideError();
+    hideSuccess();
+  }
 
-    dropzone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropzone.classList.add("dragover");
-    });
+  dropzone.addEventListener("click", () => fileInput.click());
+  dropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.add("dragover");
+  });
+  dropzone.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.remove("dragover");
+  });
+  dropzone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.remove("dragover");
+    handleFiles(e.dataTransfer.files);
+  });
+  fileInput.addEventListener("change", (e) => {
+    handleFiles(e.target.files);
+  });
 
-    dropzone.addEventListener("dragleave", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropzone.classList.remove("dragover");
-    });
+  // Upload: Storage + Firestore
+  uploadBtn.addEventListener("click", async () => {
+    hideError();
+    hideSuccess();
 
-    dropzone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropzone.classList.remove("dragover");
-        handleFiles(e.dataTransfer.files);
-    });
+    const birdName = birdNameInput.value.trim();
+    const location = locationInput.value.trim();
+    const uploadedBy = uploadedByInput.value.trim();
 
-    fileInput.addEventListener("change", (e) => {
-        handleFiles(e.target.files);
-    });
-
-    uploadBtn.addEventListener("click", async () => {
-        hideError();
-        hideSuccess();
-
-        const birdName = birdNameInput.value.trim();
-        const location = locationInput.value.trim();
-
-        if (!selectedFile) {
-            showError("Select or drop a bird photo first.");
-            return;
-        }
-        if (!birdName) {
-            showError("Enter the bird species name.");
-            birdNameInput.focus();
-            return;
-        }
-        if (!location) {
-            showError("Enter where the photo was taken.");
-            locationInput.focus();
-            return;
-        }
-
-        uploadBtn.disabled = true;
-        uploadBtn.textContent = "Uploading…";
-        statusText.textContent = "Uploading image and saving to the database…";
-
-        try {
-            const fileId = `${Date.now()}_${selectedFile.name}`;
-            const imgRef = storageRef(storage, `birdPhotos/${fileId}`);
-            await uploadBytes(imgRef, selectedFile);
-            const url = await getDownloadURL(imgRef);
-
-            await addDoc(photosCol, {
-                birdName,
-                location,
-                imageUrl: url,
-                createdAt: serverTimestamp(),
-                ratingTotal: 0,
-                ratingCount: 0
-            });
-
-            showSuccess("Sighting saved. Check the gallery on the right.");
-            resetForm();
-        } catch (err) {
-            console.error(err);
-            showError("Upload failed. Check your Firebase config and rules.");
-        } finally {
-            uploadBtn.disabled = false;
-            uploadBtn.textContent = "Save sighting";
-            statusText.textContent = "All uploads are public. Please keep it friendly.";
-        }
-    });
-
-    function resetForm() {
-        selectedFile = null;
-        fileInput.value = "";
-        birdNameInput.value = "";
-        locationInput.value = "";
-        preview.style.display = "none";
+    if (!selectedFile) {
+      showError("Select or drop a bird photo first.");
+      return;
+    }
+    if (!birdName) {
+      showError("Enter the bird species name.");
+      birdNameInput.focus();
+      return;
+    }
+    if (!location) {
+      showError("Enter where the photo was taken.");
+      locationInput.focus();
+      return;
     }
 
-    function showError(msg) {
-        errorMsg.textContent = msg;
-        errorMsg.style.display = "block";
-    }
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Uploading…";
+    statusText.textContent = "Uploading image and saving to the database…";
 
-    function hideError() {
-        errorMsg.textContent = "";
-        errorMsg.style.display = "none";
-    }
-
-    function showSuccess(msg) {
-        successMsg.textContent = msg;
-        successMsg.style.display = "block";
-        setTimeout(() => {
-            successMsg.style.display = "none";
-        }, 3500);
-    }
-
-    function hideSuccess() {
-        successMsg.textContent = "";
-        successMsg.style.display = "none";
-    }
-
-    // Ratings: localStorage to avoid multiple ratings per browser
-    const ratingsKey = "hornithological_baes_ratings_v1";
-    let localRatings = {};
     try {
-        const stored = localStorage.getItem(ratingsKey);
-        if (stored) localRatings = JSON.parse(stored);
-    } catch (e) {
-        localRatings = {};
+      const fileId = `${Date.now()}_${selectedFile.name}`;
+      const storagePath = `birdPhotos/${fileId}`;
+      const imgRef = storageRef(storage, storagePath);
+      await uploadBytes(imgRef, selectedFile);
+      const url = await getDownloadURL(imgRef);
+
+      await addDoc(photosCol, {
+        birdName,
+        location,
+        uploadedBy: uploadedBy || null,
+        imageUrl: url,
+        storagePath,
+        createdAt: serverTimestamp(),
+        ratingTotal: 0,
+        ratingCount: 0
+      });
+
+      showSuccess("Sighting saved. Check the gallery on the right.");
+      resetForm();
+    } catch (err) {
+      console.error(err);
+      showError("Upload failed. Check Firebase config, rules, or bucket name.");
+    } finally {
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = "Save sighting";
+      statusText.textContent = "All uploads are public. Please keep it friendly.";
+    }
+  });
+
+  function resetForm() {
+    selectedFile = null;
+    fileInput.value = "";
+    birdNameInput.value = "";
+    locationInput.value = "";
+    uploadedByInput.value = "";
+    preview.style.display = "none";
+  }
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.style.display = "block";
+  }
+
+  function hideError() {
+    errorMsg.textContent = "";
+    errorMsg.style.display = "none";
+  }
+
+  function showSuccess(msg) {
+    successMsg.textContent = msg;
+    successMsg.style.display = "block";
+    setTimeout(() => {
+      successMsg.style.display = "none";
+    }, 3500);
+  }
+
+  function hideSuccess() {
+    successMsg.textContent = "";
+    successMsg.style.display = "none";
+  }
+
+  // Ratings: localStorage to avoid multiple ratings per browser
+  const ratingsKey = "hornithological_baes_ratings_v1";
+  let localRatings = {};
+  try {
+    const stored = localStorage.getItem(ratingsKey);
+    if (stored) localRatings = JSON.parse(stored);
+  } catch {
+    localRatings = {};
+  }
+
+  function saveLocalRatings() {
+    try {
+      localStorage.setItem(ratingsKey, JSON.stringify(localRatings));
+    } catch {
+      // ignore
+    }
+  }
+
+  // Live gallery
+  const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
+
+  onSnapshot(qPhotos, (snapshot) => {
+    galleryGrid.innerHTML = "";
+    if (snapshot.empty) {
+      galleryEmpty.style.display = "block";
+      galleryCountLabel.textContent = "No sightings yet.";
+      return;
     }
 
-    function saveLocalRatings() {
-        try {
-            localStorage.setItem(ratingsKey, JSON.stringify(localRatings));
-        } catch (e) {
-            // ignore
-        }
+    galleryEmpty.style.display = "none";
+    galleryCountLabel.textContent = `${snapshot.size} sighting${snapshot.size > 1 ? "s" : ""}`;
+
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const id = docSnap.id;
+      const imgUrl = data.imageUrl || "";
+      const birdName = data.birdName || "Unknown bird";
+      const location = data.location || "Unknown location";
+      const uploadedBy = data.uploadedBy || "Anonymous";
+      const ratingTotal = data.ratingTotal || 0;
+      const ratingCount = data.ratingCount || 0;
+      const averageRating = ratingCount > 0 ? ratingTotal / ratingCount : 0;
+      const rounded = ratingCount > 0 ? Math.round(averageRating * 10) / 10 : 0;
+      const filledStars = Math.round(averageRating || 0); // 0–10
+
+      const createdAt = data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : null;
+      const timeAgo = createdAt ? formatTimeAgo(createdAt) : "Just now";
+
+      const card = document.createElement("article");
+      card.className = "photo-card";
+      card.dataset.photoId = id;
+
+      card.innerHTML = `
+        <div class="photo-thumb">
+          <img src="${imgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" />
+          <div class="photo-chip">
+            <span class="dot"></span>
+            <span>${escapeHtml(birdName)}</span>
+          </div>
+        </div>
+        <div class="photo-body">
+          <div class="photo-title-row">
+            <div class="photo-title">${escapeHtml(birdName)}</div>
+          </div>
+          <div class="photo-uploaded-by">Uploaded by ${escapeHtml(uploadedBy)}</div>
+          <div class="photo-location">${escapeHtml(location)}</div>
+          <div class="photo-meta-row">
+            <div class="rating-wrapper">
+              <div class="stars" data-photo-id="${id}">
+                ${Array.from({ length: 10 }, (_, idx) => {
+                  const i = idx + 1;
+                  return `
+                    <span
+                      class="star ${i <= filledStars ? "filled" : ""}"
+                      data-star="${i}"
+                      title="${i} / 10"
+                    >★</span>
+                  `;
+                }).join("")}
+              </div>
+              <div class="rating-text">
+                ${ratingCount === 0
+                  ? "Not rated yet – be first."
+                  : `${rounded.toFixed(1)} / 10 · ${ratingCount} rating${ratingCount > 1 ? "s" : ""}`}
+              </div>
+            </div>
+            <span class="time-tag">${timeAgo}</span>
+          </div>
+          <div class="card-footer-row">
+            <button class="delete-btn" data-photo-id="${id}">
+              🗑 Delete
+            </button>
+          </div>
+        </div>
+      `;
+      galleryGrid.appendChild(card);
+    });
+  });
+
+  // Star + delete click handler
+  galleryGrid.addEventListener("click", async (e) => {
+    // Delete
+    const deleteBtn = e.target.closest(".delete-btn");
+    if (deleteBtn) {
+      const photoId = deleteBtn.dataset.photoId;
+      if (!photoId) return;
+
+      const confirmDelete = window.confirm("Delete this sighting? This cannot be undone.");
+      if (!confirmDelete) return;
+
+      try {
+        await deletePhoto(photoId);
+      } catch (err) {
+        console.error(err);
+        showError("Could not delete sighting. Check Firebase rules.");
+      }
+      return;
     }
 
-    // Render gallery
-    const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
+    // Rating
+    const star = e.target.closest(".star");
+    if (!star) return;
 
-    onSnapshot(qPhotos, (snapshot) => {
-        galleryGrid.innerHTML = "";
-        if (snapshot.empty) {
-            galleryEmpty.style.display = "block";
-            galleryCountLabel.textContent = "No sightings yet.";
-            return;
-        }
+    const starsContainer = star.closest(".stars");
+    const photoId = starsContainer?.dataset?.photoId;
+    const value = parseInt(star.dataset.star, 10);
+    if (!photoId || !value) return;
 
-        galleryEmpty.style.display = "none";
-        galleryCountLabel.textContent = `${snapshot.size} sighting${snapshot.size > 1 ? "s" : ""}`;
+    try {
+      await ratePhoto(photoId, value);
+    } catch (err) {
+      console.error(err);
+      showError("Could not save rating. Check Firebase rules.");
+    }
+  });
 
-        snapshot.forEach(docSnap => {
-            const data = docSnap.data();
-            const id = docSnap.id;
-            const imgUrl = data.imageUrl;
-            const birdName = data.birdName || "Unknown bird";
-            const location = data.location || "Unknown location";
-            const ratingTotal = data.ratingTotal || 0;
-            const ratingCount = data.ratingCount || 0;
-            const averageRating = ratingCount > 0 ? ratingTotal / ratingCount : 0;
-            const rounded = ratingCount > 0 ? Math.round(averageRating * 10) / 10 : 0;
-            const filledStars = Math.round(averageRating || 0); // up to 10
+  async function ratePhoto(photoId, ratingValue) {
+    const docRef = doc(db, "birdPhotos", photoId);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return;
 
-            const userRating = localRatings[id] || 0;
+    const data = snap.data();
+    let ratingTotal = data.ratingTotal || 0;
+    let ratingCount = data.ratingCount || 0;
 
-            const createdAt = data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : null;
-            const timeAgo = createdAt ? formatTimeAgo(createdAt) : "Just now";
+    const prevRating = localRatings[photoId];
 
-            const card = document.createElement("article");
-            card.className = "photo-card";
-            card.dataset.photoId = id;
+    if (!prevRating) {
+      ratingTotal += ratingValue;
+      ratingCount += 1;
+    } else {
+      ratingTotal = ratingTotal - prevRating + ratingValue;
+    }
 
-            card.innerHTML = `
-                <div class="photo-thumb">
-                    <img src="${imgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" />
-                    <div class="photo-chip">
-                        <span class="dot"></span>
-                        <span>${escapeHtml(birdName)}</span>
-                    </div>
-                </div>
-                <div class="photo-body">
-                    <div class="photo-title-row">
-                        <div class="photo-title">${escapeHtml(birdName)}</div>
-                    </div>
-                    <div class="photo-location">${escapeHtml(location)}</div>
-                    <div class="photo-meta-row">
-                        <div class="rating-wrapper">
-                            <div class="stars" data-photo-id="${id}">
-                                ${Array.from({ length: 10 }, (_, idx) => {
-                                    const i = idx + 1;
-                                    return `
-                                        <span
-                                          class="star ${i <= filledStars ? "filled" : ""}"
-                                          data-star="${i}"
-                                          title="${i} / 10"
-                                        >★</span>
-                                    `;
-                                }).join("")}
-                            </div>
-                            <div class="rating-text">
-                                ${ratingCount === 0
-                                    ? "Not rated yet – be first."
-                                    : `${rounded.toFixed(1)} / 10 · ${ratingCount} rating${ratingCount > 1 ? "s" : ""}`}
-                            </div>
-                        </div>
-                        <span class="time-tag">${timeAgo}</span>
-                    </div>
-                </div>
-            `;
-            galleryGrid.appendChild(card);
-        });
+    await updateDoc(docRef, {
+      ratingTotal,
+      ratingCount
     });
 
-    // Handle star clicks
-    galleryGrid.addEventListener("click", async (e) => {
-        const star = e.target.closest(".star");
-        if (!star) return;
+    localRatings[photoId] = ratingValue;
+    saveLocalRatings();
+  }
 
-        const starsContainer = star.closest(".stars");
-        const photoId = starsContainer?.dataset?.photoId;
-        const value = parseInt(star.dataset.star, 10);
-        if (!photoId || !value) return;
+  async function deletePhoto(photoId) {
+    const docRef = doc(db, "birdPhotos", photoId);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return;
 
-        try {
-            await ratePhoto(photoId, value);
-        } catch (err) {
-            console.error(err);
-            showError("Could not save rating. Check Firebase rules.");
-        }
+    const data = snap.data();
+    const storagePath = data.storagePath;
+
+    // Delete file from Storage if we know the path
+    if (storagePath) {
+      try {
+        const fileRef = storageRef(storage, storagePath);
+        await deleteObject(fileRef);
+      } catch (e) {
+        console.error("Error deleting file from storage:", e);
+      }
+    }
+
+    // Remove rating cache for this photo
+    delete localRatings[photoId];
+    saveLocalRatings();
+
+    // Delete Firestore document
+    await deleteDoc(docRef);
+  }
+
+  // Helpers
+  function escapeHtml(str) {
+    if (typeof str !== "string") return "";
+    return str.replace(/[&<>"']/g, (c) => {
+      switch (c) {
+        case "&": return "&amp;";
+        case "<": return "&lt;";
+        case ">": return "&gt;";
+        case '"': return "&quot;";
+        case "'": return "&#039;";
+        default: return c;
+      }
     });
+  }
 
-    async function ratePhoto(photoId, ratingValue) {
-        const docRef = doc(db, "birdPhotos", photoId);
-        const snap = await getDoc(docRef);
-        if (!snap.exists()) return;
-
-        const data = snap.data();
-        let ratingTotal = data.ratingTotal || 0;
-        let ratingCount = data.ratingCount || 0;
-
-        const prevRating = localRatings[photoId];
-
-        if (!prevRating) {
-            ratingTotal += ratingValue;
-            ratingCount += 1;
-        } else {
-            ratingTotal = ratingTotal - prevRating + ratingValue;
-        }
-
-        await updateDoc(docRef, {
-            ratingTotal,
-            ratingCount
-        });
-
-        localRatings[photoId] = ratingValue;
-        saveLocalRatings();
-    }
-
-    function escapeHtml(str) {
-        if (typeof str !== "string") return "";
-        return str.replace(/[&<>"']/g, (c) => {
-            switch (c) {
-                case "&": return "&amp;";
-                case "<": return "&lt;";
-                case ">": return "&gt;";
-                case '"': return "&quot;";
-                case "'": return "&#039;";
-                default: return c;
-            }
-        });
-    }
-
-    function formatTimeAgo(date) {
-        const now = new Date();
-        const diff = (now.getTime() - date.getTime()) / 1000;
-        if (diff < 60) return "Just now";
-        const mins = Math.floor(diff / 60);
-        if (mins < 60) return `${mins} min${mins === 1 ? "" : "s"} ago`;
-        const hours = Math.floor(mins / 60);
-        if (hours < 24) return `${hours} hr${hours === 1 ? "" : "s"} ago`;
-        const days = Math.floor(hours / 24);
-        if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
-        return date.toLocaleDateString();
-    }
+  function formatTimeAgo(date) {
+    const now = new Date();
+    const diff = (now.getTime() - date.getTime()) / 1000;
+    if (diff < 60) return "Just now";
+    const mins = Math.floor(diff / 60);
+    if (mins < 60) return `${mins} min${mins === 1 ? "" : "s"} ago`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours} hr${hours === 1 ? "" : "s"} ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+    return date.toLocaleDateString();
+  }
 </script>
 </body>
 </html>
