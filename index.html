@@ -1,3 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Hornithological Baes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Optional: Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050816;
+            --bg-elevated: #0d1022;
+            --accent: #4f46e5;
+            --accent-soft: rgba(79,70,229,0.15);
+            --accent-strong: rgba(129,140,248,0.35);
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-subtle: rgba(148, 163, 184, 0.25);
+            --danger: #ef4444;
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --shadow-soft: 0 18px 45px rgba(15,23,42,0.65);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at top left, #1d2446 0, transparent 55%),
+                radial-gradient(circle at bottom right, #164e63 0, transparent 55%),
+                var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .app-shell {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            height: 122px;
+            width: auto;
+            border-radius: 12px;
+            object-fit: contain;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 4px 8px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .title-block h1 {
+            margin: 0;
+            font-size: 1.9rem;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .title-pill {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.17em;
+            color: var(--accent-soft);
+            background: rgba(15,23,42,0.72);
+            border-radius: 999px;
+            padding: 4px 10px;
+            border: 1px solid rgba(148,163,184,0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .title-pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34,197,94,0.25);
+        }
+
+        .title-block p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .card {
+            background: radial-gradient(circle at top, rgba(148,163,184,0.12) 0, transparent 55%), var(--bg-elevated);
+            border-radius: var(--radius-lg);
+            padding: 18px 18px 16px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(148,163,184,0.18);
+            backdrop-filter: blur(18px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #e5e7eb;
+        }
+
+        .card-header small {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .badge-soft {
+            font-size: 0.74rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: #c7d2fe;
+            border: 1px solid var(--accent-strong);
+        }
+
+        .upload-card-body {
+            margin-top: 6px;
+        }
+
+        .dropzone {
+            position: relative;
+            border-radius: var(--radius-md);
+            border: 1px dashed rgba(148,163,184,0.55);
+            padding: 18px;
+            background: radial-gradient(circle at top left, rgba(79,70,229,0.16) 0, transparent 55%), rgba(15,23,42,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: border 0.15s ease, background 0.15s ease, transform 0.08s ease;
+            cursor: pointer;
+        }
+
+        .dropzone.dragover {
+            border-color: #a5b4fc;
+            background:
+                radial-gradient(circle at top left, rgba(79,70,229,0.45) 0, transparent 65%),
+                rgba(15,23,42,0.96);
+            transform: translateY(-1px);
+        }
+
+        .dropzone-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(129,140,248,0.3), rgba(56,189,248,0.25));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            box-shadow: 0 14px 35px rgba(37,99,235,0.5);
+        }
+
+        .dropzone-icon svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .dropzone strong {
+            font-size: 0.92rem;
+        }
+
+        .dropzone p {
+            margin: 3px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.4);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .chip-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #38bdf8;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        .preview {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .preview img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.4);
+        }
+
+        .preview-text {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .preview-text strong {
+            color: #e5e7eb;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .field label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+        }
+
+        .field input {
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(15,23,42,0.9);
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+
+        .field input:focus {
+            border-color: #a5b4fc;
+            box-shadow: 0 0 0 1px rgba(129,140,248,0.55);
+            background: rgba(15,23,42,0.98);
+        }
+
+        .species-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .species-input-row input {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .checklist-btn {
+            border-radius: 999px;
+            border: 1px solid rgba(129,140,248,0.7);
+            background: rgba(79,70,229,0.16);
+            color: #c7d2fe;
+            font-size: 0.78rem;
+            padding: 6px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .checklist-btn:hover {
+            background: rgba(79,70,229,0.26);
+        }
+
+        .actions-row {
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .text-muted {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .btn-primary {
+            appearance: none;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 12px 28px rgba(37,99,235,0.55);
+            transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+        }
+
+        .btn-primary span {
+            font-size: 1rem;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: default;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-primary:not(:disabled):hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
+            box-shadow: 0 16px 36px rgba(37,99,235,0.75);
+        }
+
+        .error-message {
+            margin-top: 6px;
+            font-size: 0.78rem;
+            color: #fecaca;
+        }
+
+        .success-message {
+            margin-top: 6px;
+            font-size: 0.78rem;
+            color: #bbf7d0;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .gallery-header h2 {
+            margin: 0;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.11em;
+        }
+
+        .gallery-header small {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .filter-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .filter-badge {
+            font-size: 0.76rem;
+            padding: 3px 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-muted);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .gallery-empty {
+            padding: 16px 12px 12px;
+            border-radius: var(--radius-md);
+            background: rgba(15,23,42,0.85);
+            border: 1px dashed rgba(148,163,184,0.45);
+            text-align: center;
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 14px;
+        }
+
+        .photo-card {
+            background: radial-gradient(circle at top, rgba(79,70,229,0.18) 0, transparent 55%), rgba(15,23,42,0.96);
+            border-radius: 16px;
+            border: 1px solid rgba(148,163,184,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 230px;
+        }
+
+        .photo-thumb {
+            position: relative;
+            padding-top: 66%;
+            overflow: hidden;
+        }
+
+        .photo-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform-origin: center;
+            transition: transform 0.2s ease-out;
+        }
+
+        .photo-card:hover .photo-thumb img {
+            transform: scale(1.03);
+        }
+
+        .photo-chip {
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            background: rgba(15,23,42,0.82);
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(148,163,184,0.6);
+        }
+
+        .photo-chip span.dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #facc15;
+        }
+
+        .photo-body {
+            padding: 10px 11px 9px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-grow: 1;
+        }
+
+        .photo-title-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            align-items: baseline;
+        }
+
+        .photo-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+
+        .photo-uploaded-by {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .photo-location-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .photo-location {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .repeat-species-tag {
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            background: rgba(79,70,229,0.16);
+            border-radius: 999px;
+            padding: 2px 8px;
+            border: 1px solid rgba(129,140,248,0.5);
+            white-space: nowrap;
+        }
+
+        .photo-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+            gap: 6px;
+        }
+
+        .rating-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .parrots {
+            display: inline-flex;
+            gap: 1px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .parrot {
+            opacity: 0.2;
+            transition: opacity 0.15s ease;
+        }
+
+        .parrot.filled {
+            opacity: 1;
+        }
+
+        .rating-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .time-tag {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.4);
+        }
+
+        .card-footer-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .rate-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            background: rgba(79,70,229,0.18);
+            color: #c7d2fe;
+            border: 1px solid rgba(129,140,248,0.6);
+        }
+
+        .rate-btn:hover {
+            background: rgba(79,70,229,0.28);
+        }
+
+        .delete-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            background: rgba(239,68,68,0.12);
+            color: #fecaca;
+            border: 1px solid rgba(248,113,113,0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239,68,68,0.22);
+        }
+
+        footer {
+            margin-top: 18px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        /* Rating modal */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            background: rgba(15,23,42,0.96);
+            border-radius: 18px;
+            padding: 16px 16px 14px;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.5);
+        }
+
+        .modal-header {
+            margin-bottom: 8px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .modal-header p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .rating-options {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 6px;
+        }
+
+        .rating-option {
+            border-radius: 999px;
+            border: 1px solid rgba(129,140,248,0.7);
+            background: rgba(79,70,229,0.2);
+            padding: 4px 6px;
+            font-size: 0.78rem;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .rating-option span.emoji {
+            font-size: 1rem;
+        }
+
+        .rating-option:hover {
+            background: rgba(79,70,229,0.35);
+        }
+
+        .modal-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-cancel {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: rgba(15,23,42,0.9);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            cursor: pointer;
+        }
+
+        .modal-cancel:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        /* Species checklist overlay */
+
+        .species-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 60;
+        }
+
+        .species-overlay.show {
+            display: flex;
+        }
+
+        .species-panel {
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            background: rgba(15,23,42,0.98);
+            border-radius: 20px;
+            border: 1px solid rgba(148,163,184,0.5);
+            box-shadow: 0 24px 60px rgba(15,23,42,0.95);
+            padding: 16px 16px 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .species-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .species-panel-header h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .species-panel-header p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .species-close-btn {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            background: rgba(15,23,42,0.9);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .species-close-btn:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        .species-search-row {
+            margin-top: 10px;
+        }
+
+        .species-search-row input {
+            width: 100%;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(15,23,42,0.9);
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .species-search-row input:focus {
+            border-color: #a5b4fc;
+            box-shadow: 0 0 0 1px rgba(129,140,248,0.55);
+            background: rgba(15,23,42,0.98);
+        }
+
+        .species-list {
+            margin-top: 10px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .species-empty {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding: 8px 2px;
+        }
+
+        .species-item {
+            width: 100%;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.4);
+            background: rgba(15,23,42,0.9);
+            color: #e5e7eb;
+            font-size: 0.86rem;
+            padding: 6px 10px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .species-item:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        .species-item.seen {
+            border-color: rgba(129,140,248,0.8);
+            background: rgba(79,70,229,0.18);
+        }
+
+        .species-name {
+            text-align: left;
+        }
+
+        .species-status {
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(129,140,248,0.7);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+    <header>
+        <div class="title-block">
+            <div class="title-row">
+                <img src="Logo.png" alt="Hornithological Baes logo" class="logo">
+                <div>
+                    <div class="title-pill">
+                        <span class="title-pill-dot"></span>
+                        Live birb photo log
+                    </div>
+                    <h1>Hornithological Baes</h1>
+                </div>
+            </div>
+            <p>Drop your birb pics, tag where and what they are, and let the flock rate your shots out of 10.</p>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Upload / form column -->
+        <section class="card">
+            <div class="card-header">
+                <h2>Add a sighting</h2>
+                <span class="badge-soft">Drag &amp; drop supported</span>
+            </div>
+            <div class="upload-card-body">
+                <div id="dropzone" class="dropzone">
+                    <div class="dropzone-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 3L7 9h3v4h4V9h3l-5-6z" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 19h14" stroke="#e5e7eb" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <strong>Drop a birb photo</strong>
+                    <p>or click to browse – JPG, PNG, HEIC etc.</p>
+                    <div class="chip">
+                        <span class="chip-dot"></span>
+                        Tip: close-up, well-lit shots rate best
+                    </div>
+                    <input id="fileInput" class="hidden-input" type="file" accept="image/*" />
+                </div>
+
+                <div id="preview" class="preview" style="display:none;">
+                    <img id="previewImg" alt="Preview" />
+                    <div class="preview-text">
+                        <div><strong id="previewName"></strong></div>
+                        <div style="margin-top:2px;">Ready to upload</div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="birdName">Birb species</label>
+                        <div class="species-input-row">
+                            <input id="birdName" type="text" placeholder="Choose from checklist" autocomplete="off" readonly />
+                            <button type="button" id="openChecklistBtn" class="checklist-btn">Checklist</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="location">Where spotted</label>
+                        <input id="location" type="text" placeholder="e.g. Adelaide Botanic Gardens, SA" autocomplete="off" />
+                    </div>
+                    <div class="field">
+                        <label for="uploadedBy">Uploaded by</label>
+                        <input id="uploadedBy" type="text" placeholder="Your name or nickname" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="actions-row">
+                    <div class="text-muted" id="statusText">
+                        All uploads are public. Please keep it friendly.
+                    </div>
+                    <button id="uploadBtn" class="btn-primary">
+                        <span>↑</span>
+                        Save sighting
+                    </button>
+                </div>
+
+                <div id="errorMsg" class="error-message" style="display:none;"></div>
+                <div id="successMsg" class="success-message" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- Gallery column -->
+        <section class="card">
+            <div class="gallery-header">
+                <div>
+                    <h2>Latest birbs</h2>
+                    <small id="galleryCountLabel">Loading sightings…</small>
+                </div>
+                <div class="filter-badges">
+                    <span class="filter-badge">Newest first</span>
+                    <span class="filter-badge">Ratings use 🦜 out of 10</span>
+                </div>
+            </div>
+
+            <div id="galleryEmpty" class="gallery-empty" style="display:none;">
+                No birb photos yet. Upload the very first sighting and start the flock.
+            </div>
+
+            <div id="galleryGrid" class="gallery-grid"></div>
+        </section>
+    </div>
+
+    <footer>
+        Hornithological Baes · Firebase · GitHub Pages
+    </footer>
+</div>
+
+<!-- Species checklist "page" overlay -->
+<div id="speciesOverlay" class="species-overlay">
+    <div class="species-panel">
+        <div class="species-panel-header">
+            <div>
+                <h3>Select birb species</h3>
+                <p>Search and tap a species to fill the form. Species you've already logged are marked as seen.</p>
+            </div>
+            <button type="button" id="closeSpeciesOverlayBtn" class="species-close-btn">Close</button>
+        </div>
+        <div class="species-search-row">
+            <input id="speciesSearch" type="text" placeholder="Search Australian birb species…" />
+        </div>
+        <div id="speciesList" class="species-list"></div>
+    </div>
+</div>
+
+<!-- Rating modal -->
+<div id="ratingModalBackdrop" class="modal-backdrop">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Rate this birb</h3>
+            <p>Pick a score out of 10.</p>
+        </div>
+        <div class="rating-options">
+            <!-- 10 options, 1–10 -->
+            <button class="rating-option" data-value="1"><span class="emoji">🦜</span><span>1</span></button>
+            <button class="rating-option" data-value="2"><span class="emoji">🦜</span><span>2</span></button>
+            <button class="rating-option" data-value="3"><span class="emoji">🦜</span><span>3</span></button>
+            <button class="rating-option" data-value="4"><span class="emoji">🦜</span><span>4</span></button>
+            <button class="rating-option" data-value="5"><span class="emoji">🦜</span><span>5</span></button>
+            <button class="rating-option" data-value="6"><span class="emoji">🦜</span><span>6</span></button>
+            <button class="rating-option" data-value="7"><span class="emoji">🦜</span><span>7</span></button>
+            <button class="rating-option" data-value="8"><span class="emoji">🦜</span><span>8</span></button>
+            <button class="rating-option" data-value="9"><span class="emoji">🦜</span><span>9</span></button>
+            <button class="rating-option" data-value="10"><span class="emoji">🦜</span><span>10</span></button>
+        </div>
+        <div class="modal-footer">
+            <button id="ratingModalCancel" class="modal-cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase + app logic -->
 <script type="module">
   const firebaseConfig = {
     apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
@@ -35,7 +1050,7 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // Species list will be loaded from species-au.json
+  // Species list will be loaded from species-au.json (you create this file)
   let SPECIES = [];
 
   const photosCol = collection(db, "birdPhotos");
@@ -73,7 +1088,7 @@
   let speciesLoaded = false;
   let speciesLoadError = false;
 
-  // Load species from JSON
+  // Load species from JSON you provide (species-au.json)
   async function loadSpeciesJson() {
     try {
       const res = await fetch("species-au.json", { cache: "no-cache" });
@@ -97,7 +1112,7 @@
     }
   }
 
-  // Start loading JSON immediately
+  // Kick off JSON load
   loadSpeciesJson();
 
   // Drag & drop handling
@@ -149,11 +1164,11 @@
     const uploadedBy = uploadedByInput.value.trim();
 
     if (!selectedFile) {
-      showError("Select or drop a burb photo first.");
+      showError("Select or drop a birb photo first.");
       return;
     }
     if (!birdName) {
-      showError("Choose a burb species from the checklist.");
+      showError("Choose a birb species from the checklist.");
       birdNameInput.focus();
       return;
     }
@@ -267,7 +1282,7 @@
 
     const speciesCounts = {};
     docs.forEach(({ data }) => {
-      const name = (data.birdName || "Unknown burb").trim();
+      const name = (data.birdName || "Unknown birb").trim();
       if (!name) return;
       speciesCounts[name] = (speciesCounts[name] || 0) + 1;
     });
@@ -278,7 +1293,7 @@
 
     docs.forEach(({ id, data }) => {
       const imgUrl = data.imageUrl || "";
-      const birdName = data.birdName || "Unknown burb";
+      const birdName = data.birdName || "Unknown birb";
       const location = data.location || "Unknown location";
       const uploadedBy = data.uploadedBy || "Anonymous";
       const ratingTotal = data.ratingTotal || 0;
@@ -388,6 +1403,7 @@
     });
   });
 
+  // Gallery click: delete + rate buttons
   galleryGrid.addEventListener("click", async (e) => {
     const deleteBtn = e.target.closest(".delete-btn");
     if (deleteBtn) {
@@ -574,3 +1590,5 @@
     return date.toLocaleDateString();
   }
 </script>
+</body>
+</html>
