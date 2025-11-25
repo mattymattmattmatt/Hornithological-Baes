@@ -30,13 +30,13 @@
       width:auto;border-radius:12px;object-fit:contain;background:rgba(15,23,42,.7);
       padding:4px 8px;border:1px solid rgba(148,163,184,.4);
     }
-    .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em;display:flex;align-items:center;gap:.45rem}
     .title-pill{
       font-size:.78rem;text-transform:uppercase;letter-spacing:.17em;color:var(--accent-soft);
       background:rgba(15,23,42,.72);border-radius:999px;padding:4px 10px;border:1px solid rgba(148,163,184,.4);
       display:inline-flex;align-items:center;gap:6px;
     }
     .title-pill-dot{width:8px;height:8px;border-radius:999px;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.25)}
+    .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em}
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
     .layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px}
     @media (max-width:900px){header{flex-direction:column;align-items:flex-start}.layout{grid-template-columns:minmax(0,1fr)}}
@@ -49,7 +49,7 @@
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:#e5e7eb}
     .badge-soft{font-size:.74rem;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:#c7d2fe;border:1px solid var(--accent-strong)}
     .dropzone{
-      position:relative;border-radius:var(--radius-md);border:1px dashed rgba(148,163,184,.55);padding:18px;
+      border-radius:var(--radius-md);border:1px dashed rgba(148,163,184,.55);padding:18px;
       background:radial-gradient(circle at top left,rgba(79,70,229,.16) 0,transparent 55%),rgba(15,23,42,.85);
       display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
       transition:border .15s ease,background .15s ease,transform .08s ease;cursor:pointer;
@@ -115,24 +115,25 @@
     .photo-thumb{position:relative;padding-top:66%;overflow:hidden}
     .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out}
     .photo-card:hover .photo-thumb img{transform:scale(1.03)}
-    .photo-chip{
-      position:absolute;left:8px;bottom:8px;background:rgba(15,23,42,.82);padding:4px 8px;border-radius:999px;font-size:.72rem;color:var(--text-muted);
-      display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(148,163,184,.6);
-    }
-    .photo-chip span.dot{width:6px;height:6px;border-radius:999px;background:#facc15}
 
-    /* Status badges (rarity + abundance) */
-    .status-badge{
-      position:absolute;top:8px;right:8px;border-radius:999px;padding:3px 9px;font-size:.72rem;
-      display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(248,250,252,.8);
-      backdrop-filter:blur(8px);box-shadow:0 10px 25px rgba(15,23,42,.7);color:#f9fafb;
+    /* Bottom-left badge where species chip used to be */
+    .rarity-chip{
+      position:absolute;left:8px;bottom:8px;
+      background:rgba(15,23,42,.82);padding:4px 9px;border-radius:999px;font-size:.72rem;color:#e5e7eb;
+      display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(148,163,184,.6);
+      backdrop-filter:blur(8px);
     }
-    .status-badge .icon{font-size:.92rem;line-height:1}
-    .status-super-rare{background:linear-gradient(135deg,#f97316,#ec4899)}
-    .status-rare{background:linear-gradient(135deg,#22c55e,#06b6d4)}
-    .status-uncommon{background:linear-gradient(135deg,#a855f7,#3b82f6)}
-    .status-common{background:linear-gradient(135deg,#10b981,#22c55e)}
-    .status-very-common{background:linear-gradient(135deg,#f59e0b,#f97316)}
+    .rarity-chip .dot{width:7px;height:7px;border-radius:999px}
+    .rarity-chip.super_rare{border-color:rgba(251,146,60,.8)}
+    .rarity-chip.super_rare .dot{background:#fb923c}
+    .rarity-chip.rare{border-color:rgba(34,197,94,.7)}
+    .rarity-chip.rare .dot{background:#22c55e}
+    .rarity-chip.uncommon{border-color:rgba(168,85,247,.75)}
+    .rarity-chip.uncommon .dot{background:#a855f7}
+    .rarity-chip.common{border-color:rgba(16,185,129,.7)}
+    .rarity-chip.common .dot{background:#10b981}
+    .rarity-chip.very_common{border-color:rgba(245,158,11,.8)}
+    .rarity-chip.very_common .dot{background:#f59e0b}
 
     .photo-body{padding:10px 11px 9px;display:flex;flex-direction:column;gap:5px;flex-grow:1}
     .photo-title{font-size:.95rem;font-weight:600;color:#e5e7eb}
@@ -358,10 +359,15 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // ---- species list is loaded from ./species-au.json that you provide ----
-  let SPECIES = [];
+  // species JSON (you maintain)
+  // Format supported:
+  // 1) { "species": [ { "name": "...", "rarity": "rare" }, ... ] }
+  // 2) [ { "name": "...", "rarity": "rare" }, ... ]
+  let SPECIES = [];        // array of {name, rarity}
+  let SPECIES_INDEX = new Map(); // normalizedName -> {name, rarity}
+  let speciesLoaded = false;
+  let speciesLoadError = false;
 
-  // --- Normalize names so curly quotes / dashes won't break matching ---
   const normalizeName = (s) => (s || "")
     .trim()
     .toLowerCase()
@@ -369,83 +375,74 @@
     .replace(/[–—]/g, "-")
     .replace(/\s+/g, " ");
 
-  // --- SUPER RARE + RARE ---
-  const SUPER_RARE_SPECIES = new Set([
-    "Citrine Wagtail","Fairy Pitta","Forest Wagtail","Japanese Sparrowhawk","Northern Pintail",
-    "Oriental Honey-buzzard","Pechora Pipit","Red-backed Buttonquail"
-  ].map(normalizeName));
-
-  const RARE_SPECIES = new Set([
-    "Asian Dowitcher","Broad-billed Sandpiper","Common Cuckoo","Eurasian Wigeon","Far Eastern Curlew","Garganey",
-    "Great Knot","Little Ringed Plover","Oriental Cuckoo","Oriental Plover","Oriental Pratincole","Pectoral Sandpiper",
-    "Pin-tailed Snipe","Swinhoe's Snipe","Tree Pipit","Turquoise Parrot","Wandering Tattler","Yellow Wagtail"
-  ].map(normalizeName));
-
-  // --- UNCOMMON / COMMON / VERY COMMON ---
-  // Precedence of badge display: super rare > rare > uncommon > common > very common
-  const UNCOMMON_SPECIES = new Set([
-    "Australian Spotted Crake","Azure Kingfisher","Banded Lapwing","Banded Stilt","Bar-tailed Godwit",
-    "Black Falcon","Black-breasted Buzzard","Black-eared Cuckoo","Black-faced Monarch","Black-tailed Nativehen",
-    "Blue-winged Parrot","Blue-winged Pitta","Brown Skua","Caspian Tern","Channel-billed Cuckoo","Chestnut Rail",
-    "Chestnut-backed Buttonquail","Chestnut-breasted Cuckoo","Chestnut-rumped Heathwren","Clamorous Reed Warbler",
-    "Cockatiel","Comb-crested Jacana","Common Sandpiper","Common Noddy","Crimson Chat","Curlew Sandpiper",
-    "Diamond Firetail","Double-eyed Fig-Parrot","Dusky Moorhen","Eastern Bristlebird","Eastern Grass Owl",
-    "Eastern Yellow Wagtail","Eclectus Parrot","Elegant Parrot","Freckled Duck","Fuscous Honeyeater",
-    "Gilbert's Honeyeater","Glossy Ibis","Golden-headed Cisticola","Great-billed Heron","Green Pygmy-Goose",
-    "Grey Goshawk","Grey Nightjar","Grey Shrikethrush","Hoary-headed Grebe","Hooded Plover","Inland Dotterel",
-    "King Quail","Large-tailed Nightjar","Latham's Snipe","Lewin's Rail","Little Curlew","Little Eagle",
-    "Little Wattlebird","Long-tailed Finch","Lovely Fairywren","Macleay's Honeyeater","Mangrove Honeyeater",
-    "Masked Booby","Mistletoebird","Mulga Parrot","Musk Duck","Nankeen Night-Heron","New Holland Honeyeater",
-    "Noisy Scrub-bird","Orange Chat","Orange-footed Megapode","Pacific Swift","Painted Buttonquail",
-    "Pale-headed Rosella","Pallid Cuckoo","Parasitic Jaeger","Pied Heron","Princess Parrot",
-    "Purple-backed Fairywren","Purple-crowned Fairywren","Red Goshawk","Red-kneed Dotterel","Red-necked Crake",
-    "Red-necked Phalarope","Red-necked Pharalope","Regent Bowerbird","Regent Honeyeater","Rock Parrot",
-    "Rufous Scrub-bird","Satin Bowerbird","Southern Cassowary","Southern Emuwren","Spotted Harrier",
-    "Spotted Nightjar","Star Finch","Stubble Quail","Swift Parrot","Tawny Grassbird","Tawny-crowned Honeyeater",
-    "Thick-billed Grasswren","Varied Lorikeet","Wandering Whistling-Duck","Western Rosella","Wonga Pigeon",
-    "Yellow Chat","Yellow-rumped Munia","Yellow-tailed Black-Cockatoo"
-  ].map(normalizeName));
-
-  const COMMON_SPECIES = new Set([
-    "Australian Bustard","Australian Hobby","Australian Kestrel","Australian Pelican","Australian Reed-Warbler",
-    "Australian Shelduck","Australian Wood Duck","Australian Magpie","Australian Raven","Australian Ringneck",
-    "Bar-shouldered Dove","Black Kite","Black Swan","Black-winged Stilt","Blue-faced Honeyeater","Brahminy Kite",
-    "Brown Falcon","Brown Goshawk","Brown Quail","Budgerigar","Cattle Egret","Cockatiel","Common Bronzewing",
-    "Common Myna","Common Starling","Crested Pigeon","Crimson Rosella","Diamond Dove","Dusky Honeyeater",
-    "Eastern Curlew","Eastern Osprey","Eastern Rosella","Eastern Spinebill","Fairy Martin","Galah",
-    "Gang-gang Cockatoo","Golden Whistler","Grey Butcherbird","Grey Currawong","Grey Fantail","Grey Teal",
-    "Hardhead","House Sparrow","Laughing Kookaburra","Little Black Cormorant","Little Bronze-Cuckoo","Little Corella",
-    "Little Egret","Little Friarbird","Little Grebe","Little Lorikeet","Little Pied Cormorant","Little Penguin",
-    "Magpie Goose","Maned Duck","Masked Lapwing","Mistletoebird","Musk Lorikeet","New Holland Honeyeater",
-    "Noisy Friarbird","Noisy Miner","Noisy Pitta","Osprey","Pacific Black Duck","Peaceful Dove","Pied Cormorant",
-    "Pied Oystercatcher","Pheasant Coucal","Pink-eared Duck","Rainbow Lorikeet","Red-browed Firetail",
-    "Red-capped Plover","Red-rumped Parrot","Red-tailed Black-Cockatoo","Rock Dove","Royal Spoonbill","Silver Gull",
-    "Singing Honeyeater","Spiny-cheeked Honeyeater","Splendid Fairywren","Superb Fairywren","Sulphur-crested Cockatoo",
-    "Tawny Frogmouth","Torresian Imperial-Pigeon","Variegated Fairywren","Wedge-tailed Eagle","White-faced Heron",
-    "White-plumed Honeyeater","White-throated Needletail","White-winged Fairywren","Willie Wagtail",
-    "Yellow Wattlebird","Yellow-faced Honeyeater","Yellow-throated Miner"
-  ].map(normalizeName));
-
-  const VERY_COMMON_SPECIES = new Set([
-    "Australian Ibis","Australian White Ibis","Australasian Darter","Australasian Grebe","Black-faced Cuckoo-shrike",
-    "Black-fronted Dotterel","Black-shouldered Kite","Crested Pigeon","Eastern Great Egret","Great Cormorant",
-    "Great Egret","Laughing Kookaburra","Little Raven","Magpie-lark","Masked Lapwing","Pacific Gull","Pied Stilt",
-    "Purple Swamphen","Red Wattlebird","Silvereye","Straw-necked Ibis","Welcome Swallow","Whistling Kite",
-    "White-bellied Sea-Eagle","White-browed Scrubwren","Wood Sandpiper","Zebra Finch"
-  ].map(normalizeName));
-
-  function getStatusBadge(birdNameRaw) {
-    const n = normalizeName(birdNameRaw);
-
-    if (SUPER_RARE_SPECIES.has(n)) return { cls: "status-super-rare", icon: "💎", text: "Super rare find" };
-    if (RARE_SPECIES.has(n))       return { cls: "status-rare",       icon: "⭐", text: "Rare birb" };
-
-    if (UNCOMMON_SPECIES.has(n))   return { cls: "status-uncommon",   icon: "🪶", text: "Uncommon" };
-    if (COMMON_SPECIES.has(n))     return { cls: "status-common",     icon: "🌿", text: "Common" };
-    if (VERY_COMMON_SPECIES.has(n))return { cls: "status-very-common",icon: "🏡", text: "Very common" };
-
-    return null;
+  function normalizeRarity(r) {
+    const v = (r || "").toString().trim().toLowerCase();
+    const map = {
+      "super rare": "super_rare",
+      "super-rare": "super_rare",
+      "super_rare": "super_rare",
+      "rare": "rare",
+      "uncommon": "uncommon",
+      "common": "common",
+      "very common": "very_common",
+      "very-common": "very_common",
+      "very_common": "very_common",
+      "unknown": "unknown"
+    };
+    return map[v] || "unknown";
   }
+
+  function rarityLabel(token) {
+    switch (token) {
+      case "super_rare": return "Super rare";
+      case "rare": return "Rare";
+      case "uncommon": return "Uncommon";
+      case "common": return "Common";
+      case "very_common": return "Very common";
+      default: return "";
+    }
+  }
+
+  function getRarityForSpecies(speciesName) {
+    const entry = SPECIES_INDEX.get(normalizeName(speciesName));
+    if (!entry) return null;
+    const rarity = normalizeRarity(entry.rarity);
+    if (!rarity || rarity === "unknown") return null;
+    return rarity;
+  }
+
+  async function loadSpeciesJson() {
+    try {
+      const res = await fetch("species-au.json", { cache: "no-cache" });
+      if (!res.ok) throw new Error("Failed to fetch species JSON");
+      const data = await res.json();
+
+      let list = [];
+      if (Array.isArray(data)) list = data;
+      else if (Array.isArray(data.species)) list = data.species;
+
+      // accept list as strings OR objects; convert to objects
+      SPECIES = list.map((x) => {
+        if (typeof x === "string") return { name: x, rarity: "unknown" };
+        return { name: x?.name || "", rarity: normalizeRarity(x?.rarity) };
+      }).filter(x => x.name && x.name.trim().length > 0);
+
+      SPECIES_INDEX = new Map();
+      for (const item of SPECIES) {
+        SPECIES_INDEX.set(normalizeName(item.name), { name: item.name.trim(), rarity: normalizeRarity(item.rarity) });
+      }
+
+      speciesLoaded = true;
+      speciesLoadError = false;
+      renderSpeciesList(speciesSearch.value);
+    } catch (err) {
+      console.error("Error loading species-au.json", err);
+      speciesLoaded = true;
+      speciesLoadError = true;
+      renderSpeciesList(speciesSearch.value);
+    }
+  }
+  loadSpeciesJson();
 
   const photosCol = collection(db, "birdPhotos");
 
@@ -479,28 +476,6 @@
   let selectedFile = null;
   let ratingTargetPhotoId = null;
   let currentSeenSpecies = new Set();
-  let speciesLoaded = false;
-  let speciesLoadError = false;
-
-  async function loadSpeciesJson() {
-    try {
-      const res = await fetch("species-au.json", { cache: "no-cache" });
-      if (!res.ok) throw new Error("Failed to fetch species JSON");
-      const data = await res.json();
-      if (Array.isArray(data)) SPECIES = data;
-      else if (Array.isArray(data.species)) SPECIES = data.species;
-      else SPECIES = [];
-      speciesLoaded = true;
-      speciesLoadError = false;
-      renderSpeciesList(speciesSearch.value);
-    } catch (err) {
-      console.error("Error loading species-au.json", err);
-      speciesLoaded = true;
-      speciesLoadError = true;
-      renderSpeciesList(speciesSearch.value);
-    }
-  }
-  loadSpeciesJson();
 
   // Drag/drop
   function handleFiles(files) {
@@ -634,9 +609,12 @@
         return `<span class="parrot ${i <= filledParrots ? "filled" : ""}">🦜</span>`;
       }).join("");
 
-      const badge = getStatusBadge(birdName);
-      const badgeHtml = badge
-        ? `<div class="status-badge ${badge.cls}"><span class="icon">${badge.icon}</span><span>${badge.text}</span></div>`
+      // rarity badge from species-au.json (surprise on post only)
+      const rarity = getRarityForSpecies(birdName);
+      const rarityHtml = rarity
+        ? `<div class="rarity-chip ${rarity}">
+             <span class="dot"></span><span>${rarityLabel(rarity)}</span>
+           </div>`
         : "";
 
       const card = document.createElement("article");
@@ -646,8 +624,7 @@
       card.innerHTML = `
         <div class="photo-thumb">
           <img src="${imgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" />
-          <div class="photo-chip"><span class="dot"></span><span>${escapeHtml(birdName)}</span></div>
-          ${badgeHtml}
+          ${rarityHtml}
         </div>
         <div class="photo-body">
           <div class="photo-title">${escapeHtml(birdName)}</div>
@@ -751,7 +728,7 @@
     await deleteDoc(docRef);
   }
 
-  // Species overlay
+  // Species overlay: only "Seen" label, no rarity hints
   function openSpeciesOverlay(){
     speciesOverlay.classList.add("show");
     speciesSearch.value = "";
@@ -786,7 +763,10 @@
       return;
     }
 
-    const filtered = SPECIES.filter(name => (name || "").toLowerCase().includes(term));
+    const filtered = SPECIES
+      .map(x => x.name)
+      .filter(name => (name || "").toLowerCase().includes(term));
+
     if (!filtered.length) {
       const empty = document.createElement("div");
       empty.className = "species-empty";
@@ -797,16 +777,11 @@
 
     filtered.forEach(name => {
       const isSeen = currentSeenSpecies.has(name);
-      const badge = getStatusBadge(name);
-      const statusText = badge ? badge.text : "";
-      const statusIcon = badge ? badge.icon : "";
-      const statusMini = badge ? `<span class="species-status">${statusIcon} ${statusText}</span>` : (isSeen ? '<span class="species-status">Seen</span>' : "");
-
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "species-item" + (isSeen ? " seen" : "");
       btn.dataset.name = name;
-      btn.innerHTML = `<span class="species-name">${escapeHtml(name)}</span>${statusMini}`;
+      btn.innerHTML = `<span class="species-name">${escapeHtml(name)}</span>${isSeen ? '<span class="species-status">Seen</span>' : ""}`;
       speciesListEl.appendChild(btn);
     });
   }
@@ -818,7 +793,6 @@
     closeSpeciesOverlay();
   });
 
-  // Helpers
   function escapeHtml(str) {
     if (typeof str !== "string") return "";
     return str.replace(/[&<>"']/g, (c) => (
