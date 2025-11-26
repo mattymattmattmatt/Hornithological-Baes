@@ -193,6 +193,31 @@
       font-size:.9rem;color:var(--text-main);outline:none;
     }
     .species-search-row input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
+
+    /* Merlin Bird ID smart-open button (inside checklist overlay) */
+    .merlin-help{
+      appearance:none;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at top left, rgba(34,197,94,0.18) 0, transparent 55%), rgba(15,23,42,0.9);
+      color:#e5e7eb;
+      font-size:0.86rem;
+      cursor:pointer;
+      text-align:left;
+    }
+    .merlin-help strong{ color:#bbf7d0; font-weight:700; }
+    .merlin-help:hover{
+      border-color: rgba(187,247,208,0.75);
+      background: radial-gradient(circle at top left, rgba(34,197,94,0.28) 0, transparent 60%), rgba(15,23,42,1);
+    }
+
     .species-list{margin-top:10px;overflow-y:auto;padding-right:4px}
     .species-empty{font-size:.82rem;color:var(--text-muted);padding:8px 2px}
     .species-item{
@@ -311,6 +336,9 @@
     <div class="species-search-row">
       <input id="speciesSearch" type="text" placeholder="Search Australian birb species…" />
     </div>
+    <button type="button" class="merlin-help" id="merlinSmartBtn">
+      Not sure what species? <strong>Identify it in Merlin Bird ID</strong> →
+    </button>
     <div id="speciesList" class="species-list"></div>
   </div>
 </div>
@@ -477,6 +505,40 @@
   const speciesSearch = document.getElementById("speciesSearch");
   const openChecklistBtn = document.getElementById("openChecklistBtn");
   const closeSpeciesOverlayBtn = document.getElementById("closeSpeciesOverlayBtn");
+
+  const merlinSmartBtn = document.getElementById("merlinSmartBtn");
+
+  // Open Merlin Bird ID if possible; otherwise send to the correct app store.
+  // Android package id: com.labs.merlinbirdid.app
+  function openMerlinSmart() {
+    const merlinWeb = "https://merlin.allaboutbirds.org/";
+    const iosStore = "https://apps.apple.com/au/app/merlin-bird-id-by-cornell-lab/id773457673";
+    const playStore = "https://play.google.com/store/apps/details?id=com.labs.merlinbirdid.app&hl=en_AU";
+
+    const ua = navigator.userAgent || "";
+    const isAndroid = /Android/i.test(ua);
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    // Android: Chrome intent with Play Store fallback.
+    const androidIntent =
+      "intent://merlin.allaboutbirds.org/#Intent;scheme=https;package=com.labs.merlinbirdid.app;" +
+      "S.browser_fallback_url=" + encodeURIComponent(playStore) + ";end";
+
+    const fallback = isIOS ? iosStore : isAndroid ? playStore : "https://merlin.allaboutbirds.org/download/";
+    const start = Date.now();
+
+    // Must be triggered by a user click (this button), or mobile browsers may block it.
+    window.location.href = isAndroid ? androidIntent : merlinWeb;
+
+    // If the app didn't open, redirect to the store after a moment.
+    setTimeout(() => {
+      if (document.visibilityState === "visible" && (Date.now() - start) > 700) {
+        window.location.href = fallback;
+      }
+    }, 1100);
+  }
+
+  if (merlinSmartBtn) merlinSmartBtn.addEventListener("click", openMerlinSmart);
 
   let selectedFile = null;
   let ratingTargetPhotoId = null;
@@ -649,7 +711,7 @@
             <span class="time-tag">${timeAgo}</span>
           </div>
           <div class="card-footer-row">
-            <button class="rate-btn" data-photo-id="${id}">Tap here to rate /10</button>
+            <button class="rate-btn" data-photo-id="${id}">Tap to rate /10</button>
             <button class="delete-btn" data-photo-id="${id}">🗑 Delete</button>
           </div>
         </div>
