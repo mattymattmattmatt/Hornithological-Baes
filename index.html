@@ -116,7 +116,6 @@
     .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out}
     .photo-card:hover .photo-thumb img{transform:scale(1.03)}
 
-    /* Bottom-left rarity badge image */
     .rarity-badge-wrap{
       position:absolute;
       left:8px;
@@ -164,7 +163,7 @@
     .delete-btn:hover{background:rgba(239,68,68,.22)}
     footer{margin-top:18px;font-size:.78rem;color:var(--text-muted);text-align:right;opacity:.8}
 
-    /* Rating modal + Comments modal */
+    /* Modals */
     .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50}
     .modal-backdrop.show{display:flex}
     .modal{
@@ -187,7 +186,7 @@
     }
     .modal-cancel:hover{background:rgba(15,23,42,1)}
 
-    /* Comments UI */
+    /* Comments */
     .comments-list{
       margin-top:10px;
       max-height:40vh;
@@ -204,10 +203,32 @@
       border-radius:14px;
       padding:8px 10px;
     }
-    .comment-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:2px}
-    .comment-meta .anon{font-size:.78rem;color:#c7d2fe}
-    .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
-    .comment-text{font-size:.88rem;color:#e5e7eb;line-height:1.35;white-space:pre-wrap;word-break:break-word}
+    .comment-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+      margin-bottom:4px;
+    }
+    .comment-meta .time{
+      font-size:.75rem;
+      color:var(--text-muted)
+    }
+    .comment-del{
+      width:26px;height:26px;border-radius:999px;
+      border:1px solid rgba(248,113,113,.55);
+      background:rgba(239,68,68,.10);
+      color:#fecaca;
+      font-size:18px;line-height:1;
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      padding:0;
+    }
+    .comment-del:hover{background:rgba(239,68,68,.20)}
+    .comment-text{
+      font-size:.88rem;color:#e5e7eb;line-height:1.35;
+      white-space:pre-wrap;word-break:break-word
+    }
     .comment-compose{
       margin-top:10px;
       display:flex;
@@ -270,7 +291,7 @@
     .species-name{text-align:left}
     .species-status{font-size:.75rem;color:#a5b4fc;padding:2px 8px;border-radius:999px;border:1px solid rgba(129,140,248,.7);white-space:nowrap}
 
-    /* Merlin Bird ID smart-open button (inside checklist overlay) */
+    /* Merlin */
     .merlin-help{
       appearance:none;
       width:100%;
@@ -433,18 +454,18 @@
   </div>
 </div>
 
-<!-- Comments modal (hidden unless opened) -->
+<!-- Comments modal -->
 <div id="commentsModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
       <h3 id="commentsTitle">Comments</h3>
-      <p id="commentsSubtitle">Anonymous comments for this sighting.</p>
+      <p id="commentsSubtitle">Comments for this sighting (only visible when opened).</p>
     </div>
 
     <div id="commentsList" class="comments-list"></div>
 
     <div class="comment-compose">
-      <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add an anonymous comment…"></textarea>
+      <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add a comment…"></textarea>
       <div class="modal-footer" style="justify-content:space-between;">
         <button id="commentsClose" class="modal-cancel">Close</button>
         <button id="commentSend" class="comment-send">Post comment</button>
@@ -477,10 +498,20 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // species JSON (you maintain)
-  // Format supported:
-  // 1) { "species": [ { "name": "...", "rarity": "rare" }, ... ] }
-  // 2) [ { "name": "...", "rarity": "rare" }, ... ]
+  // -------------------------
+  // Device ID (for comment delete "if we want to")
+  // Only the same device/browser that posted the comment will see the × and be able to delete it.
+  // -------------------------
+  const deviceKey = "hb_device_id_v1";
+  let deviceId = localStorage.getItem(deviceKey);
+  if (!deviceId) {
+    deviceId = (crypto.randomUUID ? crypto.randomUUID() : (String(Date.now()) + "_" + Math.random().toString(16).slice(2)));
+    localStorage.setItem(deviceKey, deviceId);
+  }
+
+  // -------------------------
+  // Species JSON (you maintain)
+  // -------------------------
   let SPECIES = [];               // array of {name, rarity}
   let SPECIES_INDEX = new Map();  // normalizedName -> {name, rarity}
   let speciesLoaded = false;
@@ -629,7 +660,6 @@
 
   let selectedFile = null;
   let ratingTargetPhotoId = null;
-
   let currentSeenSpecies = new Set();
 
   // Comments state
@@ -719,7 +749,7 @@
   try { const stored = localStorage.getItem(ratingsKey); if (stored) localRatings = JSON.parse(stored); } catch { localRatings = {}; }
   function saveLocalRatings(){ try { localStorage.setItem(ratingsKey, JSON.stringify(localRatings)); } catch {} }
 
-  // Live gallery
+  // Gallery
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
 
   onSnapshot(qPhotos, (snapshot) => {
@@ -768,7 +798,6 @@
         return `<span class="parrot ${i <= filledParrots ? "filled" : ""}">🦜</span>`;
       }).join("");
 
-      // rarity badge from species-au.json (surprise on post only)
       const rarity = getRarityForSpecies(birdName);
       const rarityText = rarity ? rarityLabel(rarity) : "";
       const rarityHtml = rarity
@@ -780,7 +809,6 @@
       const card = document.createElement("article");
       card.className = "photo-card";
       card.dataset.photoId = id;
-      card.dataset.birdName = birdName;
 
       card.innerHTML = `
         <div class="photo-thumb">
@@ -835,12 +863,32 @@
     });
   });
 
+  async function ratePhoto(photoId, ratingValue) {
+    const docRef = doc(db, "birdPhotos", photoId);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return;
+
+    const data = snap.data();
+    let ratingTotal = data.ratingTotal || 0;
+    let ratingCount = data.ratingCount || 0;
+
+    const prevRating = localRatings[photoId];
+    if (!prevRating) { ratingTotal += ratingValue; ratingCount += 1; }
+    else { ratingTotal = ratingTotal - prevRating + ratingValue; }
+
+    await updateDoc(docRef, { ratingTotal, ratingCount });
+
+    localRatings[photoId] = ratingValue;
+    saveLocalRatings();
+  }
+
   // Comments modal
   function openCommentsModal(photoId, birdName) {
-    closeCommentsModal(); // ensure previous unsub cleared
+    closeCommentsModal();
     commentsTargetPhotoId = photoId;
+
     commentsTitle.textContent = `Comments · ${birdName || "Birb"}`;
-    commentsSubtitle.textContent = "Anonymous comments for this sighting (only visible when opened).";
+    commentsSubtitle.textContent = "Comments for this sighting (only visible when opened).";
     commentInput.value = "";
     commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
     commentsModalBackdrop.classList.add("show");
@@ -848,37 +896,41 @@
     const commentsCol = collection(db, "birdPhotos", photoId, "comments");
     const q = query(commentsCol, orderBy("createdAt", "asc"));
 
-    commentsUnsub = onSnapshot(q, (snap) => {
-      const items = [];
-      snap.forEach((d) => items.push({ id: d.id, data: d.data() }));
+    commentsUnsub = onSnapshot(
+      q,
+      (snap) => {
+        const items = [];
+        snap.forEach((d) => items.push({ id: d.id, data: d.data() }));
 
-      commentsList.innerHTML = "";
-      if (!items.length) {
-        commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
-        return;
+        commentsList.innerHTML = "";
+        if (!items.length) {
+          commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
+          return;
+        }
+
+        for (const item of items) {
+          const text = (item.data.text || "").toString();
+          const dt = item.data.createdAt && item.data.createdAt.toDate ? item.data.createdAt.toDate() : null;
+          const stamp = dt ? toDDMMYY(dt) : "--/--/--";
+          const canDelete = item.data.deviceId && item.data.deviceId === deviceId;
+
+          const el = document.createElement("div");
+          el.className = "comment-item";
+          el.innerHTML = `
+            <div class="comment-meta">
+              <div class="time">${escapeHtml(stamp)}</div>
+              ${canDelete ? `<button class="comment-del" title="Delete comment" aria-label="Delete comment" data-comment-id="${item.id}">×</button>` : ``}
+            </div>
+            <div class="comment-text">${escapeHtml(text)}</div>
+          `;
+          commentsList.appendChild(el);
+        }
+      },
+      (err) => {
+        console.error("Comments listener error:", err);
+        commentsList.innerHTML = `<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>`;
       }
-
-      for (const item of items) {
-        const text = (item.data.text || "").toString();
-        const dt = item.data.createdAt && item.data.createdAt.toDate ? item.data.createdAt.toDate() : null;
-        const time = dt ? formatTimeAgo(dt) : "Just now";
-
-        const el = document.createElement("div");
-        el.className = "comment-item";
-        el.innerHTML = `
-          <div class="comment-meta">
-            <div class="anon">Anonymous</div>
-            <div class="time">${escapeHtml(time)}</div>
-          </div>
-          <div class="comment-text">${escapeHtml(text)}</div>
-        `;
-        commentsList.appendChild(el);
-      }
-
-      // scroll to bottom on updates (only if user is near bottom)
-      const nearBottom = (commentsList.scrollHeight - commentsList.scrollTop - commentsList.clientHeight) < 80;
-      if (nearBottom) commentsList.scrollTop = commentsList.scrollHeight;
-    });
+    );
   }
 
   function closeCommentsModal() {
@@ -904,7 +956,7 @@
     commentSend.textContent = "Posting…";
     try {
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
-      await addDoc(commentsCol, { text, createdAt: serverTimestamp() });
+      await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
       commentInput.value = "";
       commentInput.focus();
     } catch (err) {
@@ -913,6 +965,24 @@
     } finally {
       commentSend.disabled = false;
       commentSend.textContent = "Post comment";
+    }
+  });
+
+  commentsList.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".comment-del");
+    if (!btn) return;
+    if (!commentsTargetPhotoId) return;
+
+    const commentId = btn.dataset.commentId;
+    if (!commentId) return;
+
+    if (!confirm("Delete this comment?")) return;
+
+    try {
+      await deleteDoc(doc(db, "birdPhotos", commentsTargetPhotoId, "comments", commentId));
+    } catch (err) {
+      console.error(err);
+      showError("Could not delete comment. Check Firebase rules.");
     }
   });
 
@@ -946,25 +1016,6 @@
     }
   });
 
-  async function ratePhoto(photoId, ratingValue) {
-    const docRef = doc(db, "birdPhotos", photoId);
-    const snap = await getDoc(docRef);
-    if (!snap.exists()) return;
-
-    const data = snap.data();
-    let ratingTotal = data.ratingTotal || 0;
-    let ratingCount = data.ratingCount || 0;
-
-    const prevRating = localRatings[photoId];
-    if (!prevRating) { ratingTotal += ratingValue; ratingCount += 1; }
-    else { ratingTotal = ratingTotal - prevRating + ratingValue; }
-
-    await updateDoc(docRef, { ratingTotal, ratingCount });
-
-    localRatings[photoId] = ratingValue;
-    saveLocalRatings();
-  }
-
   async function deleteCommentsForPhoto(photoId) {
     try {
       const commentsCol = collection(db, "birdPhotos", photoId, "comments");
@@ -973,7 +1024,7 @@
       snap.forEach((d) => deletions.push(deleteDoc(d.ref)));
       await Promise.all(deletions);
     } catch (e) {
-      // Comments are best-effort cleanup; Firestore doesn't cascade-delete subcollections.
+      // Best-effort cleanup; Firestore does not cascade delete subcollections.
       console.error("Error deleting comments:", e);
     }
   }
@@ -991,7 +1042,6 @@
       catch (e) { console.error("Error deleting file from storage:", e); }
     }
 
-    // best-effort delete comments
     await deleteCommentsForPhoto(photoId);
 
     delete localRatings[photoId];
@@ -999,7 +1049,7 @@
     await deleteDoc(docRef);
   }
 
-  // Species overlay: only "Seen" label, no rarity hints
+  // Species overlay
   function openSpeciesOverlay(){
     speciesOverlay.classList.add("show");
     speciesSearch.value = "";
@@ -1086,6 +1136,11 @@
     const days = Math.floor(hours / 24);
     if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
     return date.toLocaleDateString();
+  }
+
+  function toDDMMYY(d) {
+    // dd/mm/yy
+    return d.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
   }
 </script>
 </body>
