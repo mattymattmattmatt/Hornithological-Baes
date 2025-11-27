@@ -154,17 +154,23 @@
     .rating-text{font-size:.75rem;color:var(--text-muted)}
     .time-tag{font-size:.76rem;color:var(--text-muted);padding:4px 9px;border-radius:999px;background:rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.4)}
     .card-footer-row{display:flex;justify-content:space-between;margin-top:6px;gap:8px;align-items:center}
-    .rate-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:rgba(79,70,229,.18);color:#c7d2fe;border:1px solid rgba(129,140,248,.6)}
-    .rate-btn:hover{background:rgba(79,70,229,.28)}
+    .footer-actions-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .rate-btn,.comments-btn{
+      border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;
+      background:rgba(79,70,229,.18);color:#c7d2fe;border:1px solid rgba(129,140,248,.6)
+    }
+    .rate-btn:hover,.comments-btn:hover{background:rgba(79,70,229,.28)}
     .delete-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:rgba(239,68,68,.12);color:#fecaca;border:1px solid rgba(248,113,113,.5);display:inline-flex;align-items:center;gap:6px}
     .delete-btn:hover{background:rgba(239,68,68,.22)}
     footer{margin-top:18px;font-size:.78rem;color:var(--text-muted);text-align:right;opacity:.8}
 
-    /* Rating modal */
+    /* Rating modal + Comments modal */
     .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50}
     .modal-backdrop.show{display:flex}
-    .modal{background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:320px;width:100%;
-      box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.5)}
+    .modal{
+      background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:360px;width:100%;
+      box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.5)
+    }
     .modal-header{margin-bottom:8px}
     .modal-header h3{margin:0;font-size:1rem}
     .modal-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
@@ -173,9 +179,69 @@
       display:flex;align-items:center;justify-content:center;gap:4px}
     .rating-option span.emoji{font-size:1rem}
     .rating-option:hover{background:rgba(79,70,229,.35)}
-    .modal-footer{margin-top:10px;display:flex;justify-content:flex-end}
-    .modal-cancel{border-radius:999px;border:1px solid rgba(148,163,184,.6);background:rgba(15,23,42,.9);color:var(--text-muted);font-size:.78rem;padding:4px 10px;cursor:pointer}
+    .modal-footer{margin-top:10px;display:flex;justify-content:flex-end;gap:8px}
+    .modal-cancel{
+      border-radius:999px;border:1px solid rgba(148,163,184,.6);
+      background:rgba(15,23,42,.9);color:var(--text-muted);
+      font-size:.78rem;padding:6px 12px;cursor:pointer
+    }
     .modal-cancel:hover{background:rgba(15,23,42,1)}
+
+    /* Comments UI */
+    .comments-list{
+      margin-top:10px;
+      max-height:40vh;
+      overflow:auto;
+      padding-right:4px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .comment-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
+    .comment-item{
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(15,23,42,.9);
+      border-radius:14px;
+      padding:8px 10px;
+    }
+    .comment-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:2px}
+    .comment-meta .anon{font-size:.78rem;color:#c7d2fe}
+    .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
+    .comment-text{font-size:.88rem;color:#e5e7eb;line-height:1.35;white-space:pre-wrap;word-break:break-word}
+    .comment-compose{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    textarea.comment-input{
+      width:100%;
+      min-height:72px;
+      resize:none;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(15,23,42,.92);
+      padding:10px 10px;
+      color:#e5e7eb;
+      font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      font-size:.9rem;
+      outline:none;
+    }
+    textarea.comment-input:focus{
+      border-color:#a5b4fc;
+      box-shadow:0 0 0 1px rgba(129,140,248,.55);
+      background:rgba(15,23,42,.98);
+    }
+    .comment-send{
+      align-self:flex-end;
+      appearance:none;border:none;border-radius:999px;padding:8px 14px;
+      font-size:.85rem;font-weight:700;
+      background:linear-gradient(135deg,#4f46e5,#06b6d4);
+      color:#fff;cursor:pointer;
+      box-shadow:0 12px 28px rgba(37,99,235,.45);
+    }
+    .comment-send:disabled{opacity:.6;cursor:default;box-shadow:none}
+    .comment-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
 
     /* Species overlay */
     .species-overlay{position:fixed;inset:0;background:rgba(15,23,42,.92);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
@@ -193,6 +259,16 @@
       font-size:.9rem;color:var(--text-main);outline:none;
     }
     .species-search-row input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
+    .species-list{margin-top:10px;overflow-y:auto;padding-right:4px}
+    .species-empty{font-size:.82rem;color:var(--text-muted);padding:8px 2px}
+    .species-item{
+      width:100%;border-radius:999px;border:1px solid rgba(148,163,184,.4);background:rgba(15,23,42,.9);color:#e5e7eb;font-size:.86rem;
+      padding:6px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;
+    }
+    .species-item:hover{background:rgba(15,23,42,1)}
+    .species-item.seen{border-color:rgba(129,140,248,.8);background:rgba(79,70,229,.18)}
+    .species-name{text-align:left}
+    .species-status{font-size:.75rem;color:#a5b4fc;padding:2px 8px;border-radius:999px;border:1px solid rgba(129,140,248,.7);white-space:nowrap}
 
     /* Merlin Bird ID smart-open button (inside checklist overlay) */
     .merlin-help{
@@ -217,17 +293,6 @@
       border-color: rgba(187,247,208,0.75);
       background: radial-gradient(circle at top left, rgba(34,197,94,0.28) 0, transparent 60%), rgba(15,23,42,1);
     }
-
-    .species-list{margin-top:10px;overflow-y:auto;padding-right:4px}
-    .species-empty{font-size:.82rem;color:var(--text-muted);padding:8px 2px}
-    .species-item{
-      width:100%;border-radius:999px;border:1px solid rgba(148,163,184,.4);background:rgba(15,23,42,.9);color:#e5e7eb;font-size:.86rem;
-      padding:6px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;
-    }
-    .species-item:hover{background:rgba(15,23,42,1)}
-    .species-item.seen{border-color:rgba(129,140,248,.8);background:rgba(79,70,229,.18)}
-    .species-name{text-align:left}
-    .species-status{font-size:.75rem;color:#a5b4fc;padding:2px 8px;border-radius:999px;border:1px solid rgba(129,140,248,.7);white-space:nowrap}
   </style>
 </head>
 <body>
@@ -368,6 +433,26 @@
   </div>
 </div>
 
+<!-- Comments modal (hidden unless opened) -->
+<div id="commentsModalBackdrop" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="commentsTitle">Comments</h3>
+      <p id="commentsSubtitle">Anonymous comments for this sighting.</p>
+    </div>
+
+    <div id="commentsList" class="comments-list"></div>
+
+    <div class="comment-compose">
+      <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add an anonymous comment…"></textarea>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button id="commentsClose" class="modal-cancel">Close</button>
+        <button id="commentSend" class="comment-send">Post comment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="module">
   const firebaseConfig = {
     apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
@@ -381,7 +466,7 @@
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
   import {
-    getFirestore, collection, addDoc, onSnapshot, orderBy, query, doc, getDoc,
+    getFirestore, collection, addDoc, onSnapshot, orderBy, query, doc, getDoc, getDocs,
     updateDoc, deleteDoc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
   import {
@@ -454,7 +539,6 @@
       if (Array.isArray(data)) list = data;
       else if (Array.isArray(data.species)) list = data.species;
 
-      // accept list as strings OR objects; convert to objects
       SPECIES = list.map((x) => {
         if (typeof x === "string") return { name: x, rarity: "unknown" };
         return { name: x?.name || "", rarity: normalizeRarity(x?.rarity) };
@@ -500,6 +584,14 @@
   const ratingModalCancel = document.getElementById("ratingModalCancel");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
 
+  const commentsModalBackdrop = document.getElementById("commentsModalBackdrop");
+  const commentsTitle = document.getElementById("commentsTitle");
+  const commentsSubtitle = document.getElementById("commentsSubtitle");
+  const commentsList = document.getElementById("commentsList");
+  const commentInput = document.getElementById("commentInput");
+  const commentSend = document.getElementById("commentSend");
+  const commentsClose = document.getElementById("commentsClose");
+
   const speciesOverlay = document.getElementById("speciesOverlay");
   const speciesListEl = document.getElementById("speciesList");
   const speciesSearch = document.getElementById("speciesSearch");
@@ -509,7 +601,6 @@
   const merlinSmartBtn = document.getElementById("merlinSmartBtn");
 
   // Open Merlin Bird ID if possible; otherwise send to the correct app store.
-  // Android package id: com.labs.merlinbirdid.app
   function openMerlinSmart() {
     const merlinWeb = "https://merlin.allaboutbirds.org/";
     const iosStore = "https://apps.apple.com/au/app/merlin-bird-id-by-cornell-lab/id773457673";
@@ -519,7 +610,6 @@
     const isAndroid = /Android/i.test(ua);
     const isIOS = /iPhone|iPad|iPod/i.test(ua);
 
-    // Android: Chrome intent with Play Store fallback.
     const androidIntent =
       "intent://merlin.allaboutbirds.org/#Intent;scheme=https;package=com.labs.merlinbirdid.app;" +
       "S.browser_fallback_url=" + encodeURIComponent(playStore) + ";end";
@@ -527,22 +617,24 @@
     const fallback = isIOS ? iosStore : isAndroid ? playStore : "https://merlin.allaboutbirds.org/download/";
     const start = Date.now();
 
-    // Must be triggered by a user click (this button), or mobile browsers may block it.
     window.location.href = isAndroid ? androidIntent : merlinWeb;
 
-    // If the app didn't open, redirect to the store after a moment.
     setTimeout(() => {
       if (document.visibilityState === "visible" && (Date.now() - start) > 700) {
         window.location.href = fallback;
       }
     }, 1100);
   }
-
   if (merlinSmartBtn) merlinSmartBtn.addEventListener("click", openMerlinSmart);
 
   let selectedFile = null;
   let ratingTargetPhotoId = null;
+
   let currentSeenSpecies = new Set();
+
+  // Comments state
+  let commentsTargetPhotoId = null;
+  let commentsUnsub = null;
 
   // Drag/drop
   function handleFiles(files) {
@@ -688,6 +780,7 @@
       const card = document.createElement("article");
       card.className = "photo-card";
       card.dataset.photoId = id;
+      card.dataset.birdName = birdName;
 
       card.innerHTML = `
         <div class="photo-thumb">
@@ -711,7 +804,10 @@
             <span class="time-tag">${timeAgo}</span>
           </div>
           <div class="card-footer-row">
-            <button class="rate-btn" data-photo-id="${id}">Tap to rate /10</button>
+            <div class="footer-actions-left">
+              <button class="rate-btn" data-photo-id="${id}">Tap here to rate /10</button>
+              <button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">Comments</button>
+            </div>
             <button class="delete-btn" data-photo-id="${id}">🗑 Delete</button>
           </div>
         </div>
@@ -739,6 +835,87 @@
     });
   });
 
+  // Comments modal
+  function openCommentsModal(photoId, birdName) {
+    closeCommentsModal(); // ensure previous unsub cleared
+    commentsTargetPhotoId = photoId;
+    commentsTitle.textContent = `Comments · ${birdName || "Birb"}`;
+    commentsSubtitle.textContent = "Anonymous comments for this sighting (only visible when opened).";
+    commentInput.value = "";
+    commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
+    commentsModalBackdrop.classList.add("show");
+
+    const commentsCol = collection(db, "birdPhotos", photoId, "comments");
+    const q = query(commentsCol, orderBy("createdAt", "asc"));
+
+    commentsUnsub = onSnapshot(q, (snap) => {
+      const items = [];
+      snap.forEach((d) => items.push({ id: d.id, data: d.data() }));
+
+      commentsList.innerHTML = "";
+      if (!items.length) {
+        commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
+        return;
+      }
+
+      for (const item of items) {
+        const text = (item.data.text || "").toString();
+        const dt = item.data.createdAt && item.data.createdAt.toDate ? item.data.createdAt.toDate() : null;
+        const time = dt ? formatTimeAgo(dt) : "Just now";
+
+        const el = document.createElement("div");
+        el.className = "comment-item";
+        el.innerHTML = `
+          <div class="comment-meta">
+            <div class="anon">Anonymous</div>
+            <div class="time">${escapeHtml(time)}</div>
+          </div>
+          <div class="comment-text">${escapeHtml(text)}</div>
+        `;
+        commentsList.appendChild(el);
+      }
+
+      // scroll to bottom on updates (only if user is near bottom)
+      const nearBottom = (commentsList.scrollHeight - commentsList.scrollTop - commentsList.clientHeight) < 80;
+      if (nearBottom) commentsList.scrollTop = commentsList.scrollHeight;
+    });
+  }
+
+  function closeCommentsModal() {
+    if (commentsUnsub) { try { commentsUnsub(); } catch {} }
+    commentsUnsub = null;
+    commentsTargetPhotoId = null;
+    commentsModalBackdrop.classList.remove("show");
+  }
+
+  commentsClose.addEventListener("click", closeCommentsModal);
+  commentsModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === commentsModalBackdrop) closeCommentsModal();
+  });
+
+  commentSend.addEventListener("click", async () => {
+    hideError(); hideSuccess();
+    if (!commentsTargetPhotoId) return;
+
+    const text = (commentInput.value || "").trim();
+    if (!text) return;
+
+    commentSend.disabled = true;
+    commentSend.textContent = "Posting…";
+    try {
+      const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
+      await addDoc(commentsCol, { text, createdAt: serverTimestamp() });
+      commentInput.value = "";
+      commentInput.focus();
+    } catch (err) {
+      console.error(err);
+      showError("Could not post comment. Check Firebase rules.");
+    } finally {
+      commentSend.disabled = false;
+      commentSend.textContent = "Post comment";
+    }
+  });
+
   // Gallery buttons
   galleryGrid.addEventListener("click", async (e) => {
     const deleteBtn = e.target.closest(".delete-btn");
@@ -756,6 +933,16 @@
       const photoId = rateBtn.dataset.photoId;
       if (!photoId) return;
       openRatingModal(photoId);
+      return;
+    }
+
+    const commentsBtn = e.target.closest(".comments-btn");
+    if (commentsBtn) {
+      const photoId = commentsBtn.dataset.photoId;
+      const birdName = commentsBtn.getAttribute("data-bird-name") || "Birb";
+      if (!photoId) return;
+      openCommentsModal(photoId, birdName);
+      return;
     }
   });
 
@@ -778,6 +965,19 @@
     saveLocalRatings();
   }
 
+  async function deleteCommentsForPhoto(photoId) {
+    try {
+      const commentsCol = collection(db, "birdPhotos", photoId, "comments");
+      const snap = await getDocs(commentsCol);
+      const deletions = [];
+      snap.forEach((d) => deletions.push(deleteDoc(d.ref)));
+      await Promise.all(deletions);
+    } catch (e) {
+      // Comments are best-effort cleanup; Firestore doesn't cascade-delete subcollections.
+      console.error("Error deleting comments:", e);
+    }
+  }
+
   async function deletePhoto(photoId) {
     const docRef = doc(db, "birdPhotos", photoId);
     const snap = await getDoc(docRef);
@@ -790,6 +990,9 @@
       try { await deleteObject(storageRef(storage, storagePath)); }
       catch (e) { console.error("Error deleting file from storage:", e); }
     }
+
+    // best-effort delete comments
+    await deleteCommentsForPhoto(photoId);
 
     delete localRatings[photoId];
     saveLocalRatings();
