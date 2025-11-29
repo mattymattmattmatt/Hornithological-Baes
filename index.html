@@ -30,32 +30,25 @@
       width:auto;border-radius:12px;object-fit:contain;background:rgba(15,23,42,.7);
       padding:4px 8px;border:1px solid rgba(148,163,184,.4);
     }
+    /* Higher contrast pill */
     .title-pill{
-  font-size:.78rem;
-  text-transform:uppercase;
-  letter-spacing:.17em;
-
-  /* brighter text */
-  color:#e5e7eb;
-
-  /* slightly brighter pill background */
-  background:rgba(255,255,255,.08);
-
-  border-radius:999px;
-  padding:4px 10px;
-
-  /* clearer border */
-  border:1px solid rgba(255,255,255,.18);
-
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-}
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.17em;
+      color:#e5e7eb;
+      background:rgba(255,255,255,.08);
+      border-radius:999px;
+      padding:4px 10px;
+      border:1px solid rgba(255,255,255,.18);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
     .title-pill-dot{
-  width:8px;height:8px;border-radius:999px;
-  background:#34d399;
-  box-shadow:0 0 0 4px rgba(52,211,153,.35);
-}
+      width:8px;height:8px;border-radius:999px;
+      background:#34d399;
+      box-shadow:0 0 0 4px rgba(52,211,153,.35);
+    }
     .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em}
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
     .layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px}
@@ -67,7 +60,7 @@
     }
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:#e5e7eb}
-    .badge-soft{font-size:.74rem;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:#c7d2fe;border:1px solid var(--accent-strong)}
+
     .dropzone{
       border-radius:var(--radius-md);border:1px dashed rgba(148,163,184,.55);padding:18px;
       background:radial-gradient(circle at top left,rgba(79,70,229,.16) 0,transparent 55%),rgba(15,23,42,.85);
@@ -137,27 +130,12 @@
     .photo-card:hover .photo-thumb img{transform:scale(1.03)}
 
     .rarity-badge-wrap{
-      position:absolute;
-      left:8px;
-      bottom:8px;
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      background:rgba(15,23,42,.55);
-      border:1px solid rgba(148,163,184,.55);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      backdrop-filter:blur(8px);
-      box-shadow:0 10px 25px rgba(15,23,42,.7);
-      pointer-events:none;
+      position:absolute;left:8px;bottom:8px;width:42px;height:42px;border-radius:14px;
+      background:rgba(15,23,42,.55);border:1px solid rgba(148,163,184,.55);
+      display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);
+      box-shadow:0 10px 25px rgba(15,23,42,.7);pointer-events:none;
     }
-    .rarity-badge{
-      width:32px;
-      height:32px;
-      object-fit:contain;
-      display:block;
-    }
+    .rarity-badge{width:32px;height:32px;object-fit:contain;display:block;}
 
     .photo-body{padding:10px 11px 9px;display:flex;flex-direction:column;gap:5px;flex-grow:1}
     .photo-title{font-size:.95rem;font-weight:600;color:#e5e7eb}
@@ -187,17 +165,12 @@
     .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50}
     .modal-backdrop.show{display:flex}
     .modal{
-      background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:360px;width:100%;
+      background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:380px;width:100%;
       box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.5)
     }
     .modal-header{margin-bottom:8px}
     .modal-header h3{margin:0;font-size:1rem}
     .modal-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
-    .rating-options{margin-top:10px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-    .rating-option{border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.2);padding:4px 6px;font-size:.78rem;color:#e5e7eb;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:4px}
-    .rating-option span.emoji{font-size:1rem}
-    .rating-option:hover{background:rgba(79,70,229,.35)}
     .modal-footer{margin-top:10px;display:flex;justify-content:flex-end;gap:8px}
     .modal-cancel{
       border-radius:999px;border:1px solid rgba(148,163,184,.6);
@@ -205,16 +178,22 @@
       font-size:.78rem;padding:6px 12px;cursor:pointer
     }
     .modal-cancel:hover{background:rgba(15,23,42,1)}
+    .modal-accent{
+      border-radius:999px;border:1px solid rgba(129,140,248,.7);
+      background:rgba(79,70,229,.16);color:#c7d2fe;
+      font-size:.78rem;padding:6px 12px;cursor:pointer
+    }
+    .modal-accent:hover{background:rgba(79,70,229,.26)}
+    .rating-options{margin-top:10px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+    .rating-option{border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.2);padding:4px 6px;font-size:.78rem;color:#e5e7eb;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:4px}
+    .rating-option span.emoji{font-size:1rem}
+    .rating-option:hover{background:rgba(79,70,229,.35)}
 
     /* Comments */
     .comments-list{
-      margin-top:10px;
-      max-height:40vh;
-      overflow:auto;
-      padding-right:4px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
+      margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;
+      display:flex;flex-direction:column;gap:8px;
     }
     .comment-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
     .comment-item{
@@ -224,16 +203,9 @@
       padding:8px 10px;
     }
     .comment-meta{
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
-      align-items:center;
-      margin-bottom:4px;
+      display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px;
     }
-    .comment-meta .time{
-      font-size:.75rem;
-      color:var(--text-muted)
-    }
+    .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
     .comment-del{
       width:26px;height:26px;border-radius:999px;
       border:1px solid rgba(248,113,113,.55);
@@ -249,37 +221,20 @@
       font-size:.88rem;color:#e5e7eb;line-height:1.35;
       white-space:pre-wrap;word-break:break-word
     }
-    .comment-compose{
-      margin-top:10px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
+    .comment-compose{margin-top:10px;display:flex;flex-direction:column;gap:8px;}
     textarea.comment-input{
-      width:100%;
-      min-height:72px;
-      resize:none;
-      border-radius:14px;
-      border:1px solid rgba(148,163,184,.35);
-      background:rgba(15,23,42,.92);
-      padding:10px 10px;
-      color:#e5e7eb;
-      font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-      font-size:.9rem;
-      outline:none;
+      width:100%;min-height:72px;resize:none;border-radius:14px;
+      border:1px solid rgba(148,163,184,.35);background:rgba(15,23,42,.92);
+      padding:10px 10px;color:#e5e7eb;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      font-size:.9rem;outline:none;
     }
     textarea.comment-input:focus{
-      border-color:#a5b4fc;
-      box-shadow:0 0 0 1px rgba(129,140,248,.55);
-      background:rgba(15,23,42,.98);
+      border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98);
     }
     .comment-send{
-      align-self:flex-end;
-      appearance:none;border:none;border-radius:999px;padding:8px 14px;
-      font-size:.85rem;font-weight:700;
-      background:linear-gradient(135deg,#4f46e5,#06b6d4);
-      color:#fff;cursor:pointer;
-      box-shadow:0 12px 28px rgba(37,99,235,.45);
+      align-self:flex-end;appearance:none;border:none;border-radius:999px;padding:8px 14px;
+      font-size:.85rem;font-weight:700;background:linear-gradient(135deg,#4f46e5,#06b6d4);
+      color:#fff;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.45);
     }
     .comment-send:disabled{opacity:.6;cursor:default;box-shadow:none}
     .comment-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
@@ -313,27 +268,74 @@
 
     /* Merlin */
     .merlin-help{
-      appearance:none;
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,0.45);
+      appearance:none;width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-top:10px;padding:10px 12px;border-radius:999px;border:1px solid rgba(148,163,184,0.45);
       background: radial-gradient(circle at top left, rgba(34,197,94,0.18) 0, transparent 55%), rgba(15,23,42,0.9);
-      color:#e5e7eb;
-      font-size:0.86rem;
-      cursor:pointer;
-      text-align:left;
+      color:#e5e7eb;font-size:0.86rem;cursor:pointer;text-align:left;
     }
     .merlin-help strong{ color:#bbf7d0; font-weight:700; }
     .merlin-help:hover{
       border-color: rgba(187,247,208,0.75);
       background: radial-gradient(circle at top left, rgba(34,197,94,0.28) 0, transparent 60%), rgba(15,23,42,1);
     }
+
+    /* Rankings */
+    .rankings-btn{
+      font-size:.78rem;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,.7);
+      background:rgba(79,70,229,.18);
+      color:#c7d2fe;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .rankings-btn:hover{background:rgba(79,70,229,.28)}
+    .rankings-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto;padding-right:3px}
+    .rankings-row{
+      display:grid;
+      grid-template-columns:40px 1fr 80px 90px;
+      gap:10px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(15,23,42,.9);
+      font-size:.88rem;
+    }
+    .rankings-head{
+      background:rgba(79,70,229,.14);
+      border-color:rgba(129,140,248,.35);
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--text-muted);
+    }
+    .rankings-row .right{text-align:right}
+    .rankings-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
+
+    .rules-box{
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(15,23,42,.9);
+      padding:10px 12px;
+      color:#e5e7eb;
+      font-size:.86rem;
+      line-height:1.35;
+    }
+    .rules-box code{
+      display:inline-block;
+      margin-top:6px;
+      padding:4px 8px;
+      border-radius:10px;
+      background:rgba(79,70,229,.14);
+      border:1px solid rgba(129,140,248,.35);
+      color:#e5e7eb;
+      font-size:.82rem;
+    }
+    .rules-list{margin:8px 0 0;padding-left:18px;color:var(--text-muted)}
+    .rules-list li{margin:4px 0}
   </style>
 </head>
 <body>
@@ -355,7 +357,7 @@
     <section class="card">
       <div class="card-header">
         <h2>Add a sighting</h2>
-        <span class="badge-soft">Drag &amp; drop supported</span>
+        <button type="button" id="openRankingsBtn" class="rankings-btn">Rankings</button>
       </div>
 
       <div id="dropzone" class="dropzone">
@@ -494,6 +496,56 @@
   </div>
 </div>
 
+<!-- Rankings modal -->
+<div id="rankingsModalBackdrop" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Rankings</h3>
+      <p>Points by uploader (rating × rarity multiplier).</p>
+    </div>
+
+    <div class="modal-footer" style="justify-content:space-between;margin-top:6px;">
+      <button id="rankingsRulesBtn" class="modal-accent" type="button">Scoring rules</button>
+      <button id="rankingsClose" class="modal-cancel" type="button">Close</button>
+    </div>
+
+    <div id="rankingsList" class="rankings-list" style="margin-top:10px;">
+      <div class="rankings-row rankings-head">
+        <div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div>
+      </div>
+      <div class="rankings-empty">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<!-- Scoring rules modal -->
+<div id="scoringModalBackdrop" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Scoring rules</h3>
+      <p>How points are calculated.</p>
+    </div>
+
+    <div class="rules-box">
+      Each post earns:
+      <div><code>points = (average rating out of 10) × (rarity multiplier)</code></div>
+      <ul class="rules-list">
+        <li>Super rare multiplier: <strong>25</strong></li>
+        <li>Rare multiplier: <strong>15</strong></li>
+        <li>Uncommon multiplier: <strong>8</strong></li>
+        <li>Common multiplier: <strong>4</strong></li>
+        <li>Very common multiplier: <strong>1</strong></li>
+        <li>No ratings yet → that post contributes <strong>0</strong> points</li>
+        <li>Total points = sum of all your post points</li>
+      </ul>
+    </div>
+
+    <div class="modal-footer">
+      <button id="scoringClose" class="modal-cancel" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
   const firebaseConfig = {
     apiKey: "AIzaSyDkmpTvNw1IOCxS1NFr9_fqkZY73N0f1P8",
@@ -519,8 +571,7 @@
   const storage = getStorage(app);
 
   // -------------------------
-  // Device ID (for comment delete "if we want to")
-  // Only the same device/browser that posted the comment will see the × and be able to delete it.
+  // Device ID (for comment delete)
   // -------------------------
   const deviceKey = "hb_device_id_v1";
   let deviceId = localStorage.getItem(deviceKey);
@@ -530,7 +581,7 @@
   }
 
   // -------------------------
-  // Species JSON (you maintain)
+  // Species JSON (you maintain in species-au.json)
   // -------------------------
   let SPECIES = [];               // array of {name, rarity}
   let SPECIES_INDEX = new Map();  // normalizedName -> {name, rarity}
@@ -651,6 +702,16 @@
 
   const merlinSmartBtn = document.getElementById("merlinSmartBtn");
 
+  // Rankings DOM
+  const openRankingsBtn = document.getElementById("openRankingsBtn");
+  const rankingsModalBackdrop = document.getElementById("rankingsModalBackdrop");
+  const rankingsClose = document.getElementById("rankingsClose");
+  const rankingsList = document.getElementById("rankingsList");
+  const rankingsRulesBtn = document.getElementById("rankingsRulesBtn");
+
+  const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
+  const scoringClose = document.getElementById("scoringClose");
+
   // Open Merlin Bird ID if possible; otherwise send to the correct app store.
   function openMerlinSmart() {
     const merlinWeb = "https://merlin.allaboutbirds.org/";
@@ -685,6 +746,9 @@
   // Comments state
   let commentsTargetPhotoId = null;
   let commentsUnsub = null;
+
+  // Rankings state
+  let latestDocsForRankings = [];
 
   // Drag/drop
   function handleFiles(files) {
@@ -744,7 +808,7 @@
       showError("Upload failed. Check Firebase config, rules, or bucket name.");
     } finally {
       uploadBtn.disabled = false;
-      uploadBtn.textContent = "Save sighting";
+      uploadBtn.innerHTML = "<span>↑</span>Save sighting";
       statusText.textContent = "All uploads are public. Please keep it friendly.";
     }
   });
@@ -778,6 +842,9 @@
 
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
+
+    latestDocsForRankings = docs;
+    if (rankingsModalBackdrop.classList.contains("show")) renderRankings(buildRankings(latestDocsForRankings));
 
     if (!docs.length) {
       galleryEmpty.style.display = "block";
@@ -1044,7 +1111,6 @@
       snap.forEach((d) => deletions.push(deleteDoc(d.ref)));
       await Promise.all(deletions);
     } catch (e) {
-      // Best-effort cleanup; Firestore does not cascade delete subcollections.
       console.error("Error deleting comments:", e);
     }
   }
@@ -1134,6 +1200,100 @@
     closeSpeciesOverlay();
   });
 
+  // Rankings (rating × multiplier)
+  const POINTS_BY_RARITY = {
+    super_rare: 25,
+    rare: 15,
+    uncommon: 8,
+    common: 4,
+    very_common: 1
+  };
+
+  function multiplierForSpecies(speciesName){
+    const rarity = getRarityForSpecies(speciesName);
+    return POINTS_BY_RARITY[rarity] ?? 1;
+  }
+
+  function buildRankings(docs){
+    const map = new Map(); // uploader -> {uploads, points}
+
+    for (const { data } of docs){
+      const uploader = (data.uploadedBy || "").trim() || "Unknown";
+      const species = (data.birdName || "").trim();
+
+      const ratingTotal = Number(data.ratingTotal || 0);
+      const ratingCount = Number(data.ratingCount || 0);
+      const avgRating = ratingCount > 0 ? (ratingTotal / ratingCount) : 0;
+
+      const mult = multiplierForSpecies(species);
+      const postPoints = avgRating * mult;
+
+      const curr = map.get(uploader) || { uploads: 0, points: 0 };
+      curr.uploads += 1;
+      curr.points += postPoints;
+      map.set(uploader, curr);
+    }
+
+    const rows = Array.from(map.entries()).map(([name, v]) => ({ name, ...v }));
+    rows.sort((a,b) =>
+      (b.points - a.points) ||
+      (b.uploads - a.uploads) ||
+      a.name.localeCompare(b.name)
+    );
+
+    return rows;
+  }
+
+  function renderRankings(rows){
+    rankingsList.innerHTML = `
+      <div class="rankings-row rankings-head">
+        <div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div>
+      </div>
+    `;
+
+    if (!rows.length){
+      rankingsList.innerHTML += `<div class="rankings-empty">No uploads yet.</div>`;
+      return;
+    }
+
+    rows.forEach((r, i) => {
+      rankingsList.innerHTML += `
+        <div class="rankings-row">
+          <div>${i + 1}</div>
+          <div>${escapeHtml(r.name)}</div>
+          <div class="right">${r.uploads}</div>
+          <div class="right">${Number(r.points || 0).toFixed(1)}</div>
+        </div>
+      `;
+    });
+  }
+
+  function openRankings(){
+    rankingsModalBackdrop.classList.add("show");
+    renderRankings(buildRankings(latestDocsForRankings));
+  }
+  function closeRankings(){
+    rankingsModalBackdrop.classList.remove("show");
+  }
+
+  openRankingsBtn.addEventListener("click", openRankings);
+  rankingsClose.addEventListener("click", closeRankings);
+  rankingsModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === rankingsModalBackdrop) closeRankings();
+  });
+
+  function openScoringRules(){
+    scoringModalBackdrop.classList.add("show");
+  }
+  function closeScoringRules(){
+    scoringModalBackdrop.classList.remove("show");
+  }
+  rankingsRulesBtn.addEventListener("click", openScoringRules);
+  scoringClose.addEventListener("click", closeScoringRules);
+  scoringModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === scoringModalBackdrop) closeScoringRules();
+  });
+
   // Helpers
   function escapeHtml(str) {
     if (typeof str !== "string") return "";
@@ -1159,7 +1319,6 @@
   }
 
   function toDDMMYY(d) {
-    // dd/mm/yy
     return d.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
   }
 </script>
