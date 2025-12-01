@@ -112,11 +112,65 @@
     .btn-primary:not(:disabled):hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 16px 36px rgba(37,99,235,.75)}
     .error-message{margin-top:6px;font-size:.78rem;color:#fecaca}
     .success-message{margin-top:6px;font-size:.78rem;color:#bbf7d0}
-    .gallery-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .gallery-header{
+      display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;
+      position:relative;
+    }
     .gallery-header h2{margin:0;font-size:1rem;text-transform:uppercase;letter-spacing:.11em}
     .gallery-header small{font-size:.8rem;color:var(--text-muted)}
     .filter-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-    .filter-badge{font-size:.76rem;padding:3px 9px;border-radius:999px;border:1px solid rgba(148,163,184,.4);color:var(--text-muted);background:rgba(15,23,42,.9)}
+    .filter-badge{
+      font-size:.76rem;padding:3px 9px;border-radius:999px;border:1px solid rgba(148,163,184,.4);
+      color:var(--text-muted);background:rgba(15,23,42,.9);
+    }
+    .filter-badge.sort-btn{
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      color:#e5e7eb;
+      border-color:rgba(129,140,248,.55);
+      background:rgba(79,70,229,.16);
+    }
+    .filter-badge.sort-btn:hover{
+      background:rgba(79,70,229,.26);
+    }
+    .sort-menu{
+      position:absolute;
+      right:0;
+      top:100%;
+      margin-top:6px;
+      background:rgba(15,23,42,.98);
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.45);
+      box-shadow:0 18px 45px rgba(15,23,42,.9);
+      padding:6px;
+      z-index:15;
+      min-width:220px;
+      display:none;
+    }
+    .sort-menu.show{display:block;}
+    .sort-option{
+      width:100%;
+      appearance:none;
+      border:none;
+      background:transparent;
+      color:#e5e7eb;
+      text-align:left;
+      padding:6px 8px;
+      border-radius:10px;
+      font-size:.82rem;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+    }
+    .sort-option span.hint{color:var(--text-muted);font-size:.76rem;}
+    .sort-option:hover{
+      background:rgba(79,70,229,.2);
+    }
+
     .gallery-empty{padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);border:1px dashed rgba(148,163,184,.45);
       text-align:center;font-size:.86rem;color:var(--text-muted)}
     .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
@@ -415,8 +469,33 @@
           <small id="galleryCountLabel">Loading sightings…</small>
         </div>
         <div class="filter-badges">
-          <span class="filter-badge">Newest first</span>
+          <button id="sortModeBtn" class="filter-badge sort-btn" type="button">
+            <span id="sortModeLabel">Newest first</span> ▾
+          </button>
           <span class="filter-badge">Ratings use 🦜 out of 10</span>
+        </div>
+
+        <div id="sortMenu" class="sort-menu">
+          <button class="sort-option" data-mode="newest">
+            <span>Newest first</span>
+            <span class="hint">Latest uploads on top</span>
+          </button>
+          <button class="sort-option" data-mode="highestRated">
+            <span>Highest rated</span>
+            <span class="hint">Best average /10</span>
+          </button>
+          <button class="sort-option" data-mode="mostValuable">
+            <span>Most valuable</span>
+            <span class="hint">Rating × rarity multiplier</span>
+          </button>
+          <button class="sort-option" data-mode="rarity">
+            <span>Rarity</span>
+            <span class="hint">Super rare → very common</span>
+          </button>
+          <button class="sort-option" data-mode="oldest">
+            <span>Oldest first</span>
+            <span class="hint">Archive from the beginning</span>
+          </button>
         </div>
       </div>
 
@@ -570,9 +649,7 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // -------------------------
   // Device ID
-  // -------------------------
   const deviceKey = "hb_device_id_v1";
   let deviceId = localStorage.getItem(deviceKey);
   if (!deviceId) {
@@ -580,9 +657,7 @@
     localStorage.setItem(deviceKey, deviceId);
   }
 
-  // -------------------------
-  // Species JSON
-  // -------------------------
+  // Species JSON and rarity helpers
   let SPECIES = [];
   let SPECIES_INDEX = new Map();
   let speciesLoaded = false;
@@ -708,11 +783,15 @@
   const rankingsClose = document.getElementById("rankingsClose");
   const rankingsList = document.getElementById("rankingsList");
   const rankingsRulesBtn = document.getElementById("rankingsRulesBtn");
-
   const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
   const scoringClose = document.getElementById("scoringClose");
 
-  // Open Merlin Bird ID if possible; otherwise send to the correct app store.
+  // Sorting DOM
+  const sortModeBtn = document.getElementById("sortModeBtn");
+  const sortModeLabel = document.getElementById("sortModeLabel");
+  const sortMenu = document.getElementById("sortMenu");
+
+  // Open Merlin Bird ID in app / store / web
   function openMerlinSmart() {
     const merlinWeb = "https://merlin.allaboutbirds.org/";
     const iosStore = "https://apps.apple.com/au/app/merlin-bird-id-by-cornell-lab/id773457673";
@@ -749,6 +828,17 @@
 
   // Rankings state
   let latestDocsForRankings = [];
+
+  // Sorting state
+  let currentPhotos = [];
+  let sortMode = "newest";
+  const SORT_LABELS = {
+    newest: "Newest first",
+    highestRated: "Highest rated",
+    mostValuable: "Most valuable",
+    rarity: "Rarity",
+    oldest: "Oldest first"
+  };
 
   // Drag/drop
   function handleFiles(files) {
@@ -799,7 +889,7 @@
         createdAt: serverTimestamp(),
         ratingTotal: 0,
         ratingCount: 0,
-        ownerDeviceId: deviceId   // prevent owner from rating own post
+        ownerDeviceId: deviceId
       });
 
       showSuccess("Sighting saved. Check the gallery on the right.");
@@ -834,35 +924,124 @@
   try { const stored = localStorage.getItem(ratingsKey); if (stored) localRatings = JSON.parse(stored); } catch { localRatings = {}; }
   function saveLocalRatings(){ try { localStorage.setItem(ratingsKey, JSON.stringify(localRatings)); } catch {} }
 
-  // Gallery
+  // Firestore listener
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
 
   onSnapshot(qPhotos, (snapshot) => {
-    galleryGrid.innerHTML = "";
-    currentSeenSpecies = new Set();
-
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
 
     latestDocsForRankings = docs;
-    if (rankingsModalBackdrop.classList.contains("show")) renderRankings(buildRankings(latestDocsForRankings));
+    currentPhotos = docs;
 
-    if (!docs.length) {
+    if (rankingsModalBackdrop.classList.contains("show")) {
+      renderRankings(buildRankings(latestDocsForRankings));
+    }
+
+    renderGallery();
+  });
+
+  function getCreatedDate(data) {
+    if (data.createdAt && data.createdAt.toDate) return data.createdAt.toDate();
+    return null;
+  }
+
+  function renderGallery() {
+    galleryGrid.innerHTML = "";
+    galleryEmpty.style.display = "none";
+
+    if (!currentPhotos.length) {
       galleryEmpty.style.display = "block";
       galleryCountLabel.textContent = "No sightings yet.";
+      currentSeenSpecies = new Set();
       return;
     }
 
+    galleryCountLabel.textContent = `${currentPhotos.length} sighting${currentPhotos.length > 1 ? "s" : ""}`;
+
+    // Build speciesCounts across all docs for repeat-species tag
     const speciesCounts = {};
-    docs.forEach(({ data }) => {
+    currentPhotos.forEach(({ data }) => {
       const name = (data.birdName || "Unknown birb").trim();
       if (!name) return;
       speciesCounts[name] = (speciesCounts[name] || 0) + 1;
     });
     currentSeenSpecies = new Set(Object.keys(speciesCounts));
 
-    galleryEmpty.style.display = "none";
-    galleryCountLabel.textContent = `${docs.length} sighting${docs.length > 1 ? "s" : ""}`;
+    // Sort copy based on current sort mode
+    const docs = currentPhotos.slice();
+
+    const rarityOrder = {
+      super_rare: 0,
+      rare: 1,
+      uncommon: 2,
+      common: 3,
+      very_common: 4,
+      none: 5
+    };
+
+    function avgRatingOf(data) {
+      const total = Number(data.ratingTotal || 0);
+      const count = Number(data.ratingCount || 0);
+      return count > 0 ? total / count : 0;
+    }
+
+    function multiplierForSpecies(speciesName){
+      const rarity = getRarityForSpecies(speciesName);
+      return POINTS_BY_RARITY[rarity] ?? 1;
+    }
+
+    docs.sort((a, b) => {
+      const da = a.data;
+      const db = b.data;
+
+      const dateA = getCreatedDate(da);
+      const dateB = getCreatedDate(db);
+      const tsA = dateA ? dateA.getTime() : 0;
+      const tsB = dateB ? dateB.getTime() : 0;
+
+      const avgA = avgRatingOf(da);
+      const avgB = avgRatingOf(db);
+
+      const multA = multiplierForSpecies(da.birdName || "");
+      const multB = multiplierForSpecies(db.birdName || "");
+      const valA = avgA * multA;
+      const valB = avgB * multB;
+
+      const rA = getRarityForSpecies(da.birdName || "") || "none";
+      const rB = getRarityForSpecies(db.birdName || "") || "none";
+      const roA = rarityOrder[rA] ?? rarityOrder.none;
+      const roB = rarityOrder[rB] ?? rarityOrder.none;
+
+      if (sortMode === "newest") {
+        if (tsA !== tsB) return tsB - tsA;
+        return 0;
+      }
+      if (sortMode === "oldest") {
+        if (tsA !== tsB) return tsA - tsB;
+        return 0;
+      }
+      if (sortMode === "highestRated") {
+        if (avgB !== avgA) return avgB - avgA;
+        const cntA = Number(da.ratingCount || 0);
+        const cntB = Number(db.ratingCount || 0);
+        if (cntB !== cntA) return cntB - cntA;
+        return tsB - tsA;
+      }
+      if (sortMode === "mostValuable") {
+        if (valB !== valA) return valB - valA;
+        const cntA = Number(da.ratingCount || 0);
+        const cntB = Number(db.ratingCount || 0);
+        if (cntB !== cntA) return cntB - cntA;
+        return tsB - tsA;
+      }
+      if (sortMode === "rarity") {
+        if (roA !== roB) return roA - roB;
+        return tsB - tsA;
+      }
+      // Fallback: newest
+      return tsB - tsA;
+    });
 
     docs.forEach(({ id, data }) => {
       const imgUrl = data.imageUrl || "";
@@ -937,7 +1116,7 @@
     });
 
     if (speciesOverlay.classList.contains("show")) renderSpeciesList(speciesSearch.value);
-  });
+  }
 
   // Rating modal
   function openRatingModal(photoId){ ratingTargetPhotoId = photoId; ratingModalBackdrop.classList.add("show"); }
@@ -962,7 +1141,6 @@
     if (!snap.exists()) return;
 
     const data = snap.data();
-    // Hard block: owner can't rate their own post
     if (data.ownerDeviceId && data.ownerDeviceId === deviceId) {
       return;
     }
@@ -1102,7 +1280,7 @@
 
     const rateBtn = e.target.closest(".rate-btn");
     if (rateBtn) {
-      if (rateBtn.disabled) return; // don't open modal for owner post
+      if (rateBtn.disabled) return;
       const photoId = rateBtn.dataset.photoId;
       if (!photoId) return;
       openRatingModal(photoId);
@@ -1216,7 +1394,7 @@
     closeSpeciesOverlay();
   });
 
-  // Rankings (rating × multiplier)
+  // Rankings
   const POINTS_BY_RARITY = {
     super_rare: 25,
     rare: 15,
@@ -1265,7 +1443,7 @@
       <div class="rankings-row rankings-head">
         <div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div>
       </div>
-    `;
+   `;
 
     if (!rows.length){
       rankingsList.innerHTML += `<div class="rankings-empty">No uploads yet.</div>`;
@@ -1308,6 +1486,36 @@
   scoringClose.addEventListener("click", closeScoringRules);
   scoringModalBackdrop.addEventListener("click", (e) => {
     if (e.target === scoringModalBackdrop) closeScoringRules();
+  });
+
+  // Sorting UI logic
+  function setSortMode(mode) {
+    sortMode = mode;
+    sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
+    sortMenu.classList.remove("show");
+    renderGallery();
+  }
+
+  sortModeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    sortMenu.classList.toggle("show");
+  });
+
+  sortMenu.addEventListener("click", (e) => {
+    const btn = e.target.closest(".sort-option");
+    if (!btn) return;
+    const mode = btn.dataset.mode;
+    if (!mode) return;
+    setSortMode(mode);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!sortMenu.classList.contains("show")) return;
+    const insideBtn = e.target === sortModeBtn || sortModeBtn.contains(e.target);
+    const insideMenu = e.target === sortMenu || sortMenu.contains(e.target);
+    if (!insideBtn && !insideMenu) {
+      sortMenu.classList.remove("show");
+    }
   });
 
   // Helpers
