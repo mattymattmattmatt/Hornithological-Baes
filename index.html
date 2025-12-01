@@ -303,6 +303,18 @@
     .species-panel-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
     .species-close-btn{border-radius:999px;border:1px solid rgba(148,163,184,.6);background:rgba(15,23,42,.9);color:var(--text-muted);font-size:.78rem;padding:4px 10px;cursor:pointer;white-space:nowrap}
     .species-close-btn:hover{background:rgba(15,23,42,1)}
+    .species-tally{
+      margin-top:6px;
+      font-size:.8rem;
+      color:var(--text-muted);
+    }
+    .species-tally span.seen{
+      color:#bbf7d0;
+      font-weight:600;
+    }
+    .species-tally span.unseen{
+      color:#e5e7ebb0;
+    }
     .species-search-row{margin-top:10px}
     .species-search-row input{
       width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);padding:8px 12px;
@@ -520,6 +532,9 @@
       </div>
       <button type="button" id="closeSpeciesOverlayBtn" class="species-close-btn">Close</button>
     </div>
+    <div id="speciesTally" class="species-tally">
+      Species checklist loading…
+    </div>
     <div class="species-search-row">
       <input id="speciesSearch" type="text" placeholder="Search Australian birb species…" />
     </div>
@@ -728,11 +743,13 @@
 
       speciesLoaded = true;
       speciesLoadError = false;
+      updateSpeciesTally();
       renderSpeciesList(speciesSearch.value);
     } catch (err) {
       console.error("Error loading species-au.json", err);
       speciesLoaded = true;
       speciesLoadError = true;
+      updateSpeciesTally();
       renderSpeciesList(speciesSearch.value);
     }
   }
@@ -774,6 +791,7 @@
   const speciesSearch = document.getElementById("speciesSearch");
   const openChecklistBtn = document.getElementById("openChecklistBtn");
   const closeSpeciesOverlayBtn = document.getElementById("closeSpeciesOverlayBtn");
+  const speciesTallyEl = document.getElementById("speciesTally");
 
   const merlinSmartBtn = document.getElementById("merlinSmartBtn");
 
@@ -946,6 +964,32 @@
     return null;
   }
 
+  function updateSpeciesTally() {
+    if (!speciesTallyEl) return;
+
+    if (!speciesLoaded && !speciesLoadError) {
+      speciesTallyEl.textContent = "Species checklist loading…";
+      return;
+    }
+    if (speciesLoadError) {
+      speciesTallyEl.textContent = "Tally unavailable (species list not loaded).";
+      return;
+    }
+    if (!Array.isArray(SPECIES) || !SPECIES.length) {
+      speciesTallyEl.textContent = "No species configured.";
+      return;
+    }
+
+    let seen = 0;
+    for (const item of SPECIES) {
+      if (currentSeenSpecies.has(item.name)) seen++;
+    }
+    const unseen = SPECIES.length - seen;
+
+    speciesTallyEl.innerHTML =
+      `<span class="seen">Seen: ${seen}</span> · <span class="unseen">Unseen: ${unseen}</span>`;
+  }
+
   function renderGallery() {
     galleryGrid.innerHTML = "";
     galleryEmpty.style.display = "none";
@@ -954,6 +998,7 @@
       galleryEmpty.style.display = "block";
       galleryCountLabel.textContent = "No sightings yet.";
       currentSeenSpecies = new Set();
+      updateSpeciesTally();
       return;
     }
 
@@ -967,6 +1012,7 @@
       speciesCounts[name] = (speciesCounts[name] || 0) + 1;
     });
     currentSeenSpecies = new Set(Object.keys(speciesCounts));
+    updateSpeciesTally();
 
     // Sort copy based on current sort mode
     const docs = currentPhotos.slice();
@@ -986,7 +1032,7 @@
       return count > 0 ? total / count : 0;
     }
 
-    function multiplierForSpecies(speciesName){
+    function multiplierForSpeciesInternal(speciesName){
       const rarity = getRarityForSpecies(speciesName);
       return POINTS_BY_RARITY[rarity] ?? 1;
     }
@@ -1003,8 +1049,8 @@
       const avgA = avgRatingOf(da);
       const avgB = avgRatingOf(db);
 
-      const multA = multiplierForSpecies(da.birdName || "");
-      const multB = multiplierForSpecies(db.birdName || "");
+      const multA = multiplierForSpeciesInternal(da.birdName || "");
+      const multB = multiplierForSpeciesInternal(db.birdName || "");
       const valA = avgA * multA;
       const valB = avgB * multB;
 
@@ -1353,6 +1399,7 @@
       loading.className = "species-empty";
       loading.textContent = "Loading species list…";
       speciesListEl.appendChild(loading);
+      updateSpeciesTally();
       return;
     }
 
@@ -1361,6 +1408,7 @@
       err.className = "species-empty";
       err.textContent = "Could not load species-au.json. Check the file exists in the same folder.";
       speciesListEl.appendChild(err);
+      updateSpeciesTally();
       return;
     }
 
@@ -1373,6 +1421,7 @@
       empty.className = "species-empty";
       empty.textContent = "No matches. Try a different spelling.";
       speciesListEl.appendChild(empty);
+      updateSpeciesTally();
       return;
     }
 
@@ -1385,6 +1434,8 @@
       btn.innerHTML = `<span class="species-name">${escapeHtml(name)}</span>${isSeen ? '<span class="species-status">Seen</span>' : ""}`;
       speciesListEl.appendChild(btn);
     });
+
+    updateSpeciesTally();
   }
 
   speciesListEl.addEventListener("click", (e) => {
