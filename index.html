@@ -15,16 +15,12 @@
     }
     *{box-sizing:border-box}
     body{
-  margin:0;
-  font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  background:
-    radial-gradient(circle at top left,#1d2446 0,transparent 55%),
-    radial-gradient(circle at bottom right,#164e63 0,transparent 55%),
-    var(--bg);
-  color:var(--text-main);
-  min-height:100vh;
-  overflow-x:hidden; /* NEW: stop sideways scrolling on mobile */
-}
+      margin:0;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      background:radial-gradient(circle at top left,#1d2446 0,transparent 55%),
+                 radial-gradient(circle at bottom right,#164e63 0,transparent 55%),
+                 var(--bg);
+      color:var(--text-main);min-height:100vh;
+    }
     .app-shell{max-width:1120px;margin:0 auto;padding:28px 16px 40px}
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
     .title-block{display:flex;flex-direction:column;gap:8px}
@@ -55,20 +51,10 @@
     .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em}
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
     .layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px}
-    @media (max-width:600px){
-  .layout{
-    grid-template-columns:1fr;   /* one column: form then gallery */
-    gap:16px;
-  }
-
-  .gallery-grid{
-    grid-template-columns:1fr;   /* force a single card per row on phones */
-  }
-
-  .card{
-    padding:14px 12px;
-  }
-}
+    @media (max-width:900px){
+      header{flex-direction:column;align-items:flex-start}
+      .layout{grid-template-columns:minmax(0,1fr)}
+    }
     .card{
       background:radial-gradient(circle at top,rgba(148,163,184,.12) 0,transparent 55%),var(--bg-elevated);
       border-radius:var(--radius-lg);padding:18px 18px 16px;box-shadow:var(--shadow-soft);
@@ -191,7 +177,7 @@
 
     /* New birbs banner */
     .new-birbs-banner{
-      display:none; /* hidden until JS shows it */
+      display:none;
       margin-bottom:10px;
       padding:6px 10px;
       border-radius:999px;
@@ -209,6 +195,42 @@
       color:#dcfce7;
       white-space:nowrap;
     }
+
+    /* Pager */
+    .pager{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:10px 0 12px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(15,23,42,.85);
+      border:1px solid rgba(148,163,184,.35);
+    }
+    .pager-label{
+      font-size:.8rem;
+      color:var(--text-muted);
+      white-space:nowrap;
+    }
+    .pager-btn{
+      border:none;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:.78rem;
+      cursor:pointer;
+      background:rgba(79,70,229,.18);
+      color:#c7d2fe;
+      border:1px solid rgba(129,140,248,.6);
+    }
+    .pager-btn:disabled{
+      opacity:.45;
+      cursor:default;
+      background:rgba(15,23,42,.85);
+      border-style:dashed;
+      color:#9ca3af;
+    }
+    .pager-btn:hover:not(:disabled){ background:rgba(79,70,229,.28); }
 
     .gallery-empty{padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);border:1px dashed rgba(148,163,184,.45);
       text-align:center;font-size:.86rem;color:var(--text-muted)}
@@ -485,6 +507,12 @@
     }
     .rules-list{margin:8px 0 0;padding-left:18px;color:var(--text-muted)}
     .rules-list li{margin:4px 0}
+
+    /* Mobile compositing fix */
+    @media (max-width: 700px){
+      .card{ backdrop-filter:none; }
+      .rarity-badge-wrap{ backdrop-filter:none; }
+    }
   </style>
 </head>
 <body>
@@ -596,6 +624,13 @@
 
       <!-- New birbs banner -->
       <div id="newBirbsBanner" class="new-birbs-banner" style="display:none;"></div>
+
+      <!-- Pager -->
+      <div id="pager" class="pager" style="display:none;">
+        <button id="prevPageBtn" class="pager-btn" type="button">← Prev</button>
+        <div id="pagerLabel" class="pager-label">Page 1 of 1</div>
+        <button id="nextPageBtn" class="pager-btn" type="button">Next →</button>
+      </div>
 
       <div id="galleryEmpty" class="gallery-empty" style="display:none;">
         No birb photos yet. Upload the very first sighting and start the flock.
@@ -763,6 +798,10 @@
     localStorage.setItem(deviceKey, deviceId);
   }
 
+  // Pagination (9 per screen)
+  const PAGE_SIZE = 9;
+  let currentPage = 1;
+
   // "Last seen" timestamp for new birbs banner
   const lastSeenKey = "hb_last_seen_ts_v1";
   let lastSeenTs = 0;
@@ -773,6 +812,15 @@
   let newestTs = 0;
   let newSinceLastSeenCount = 0;
   let initialSnapshotHandled = false;
+
+  // Rankings: multipliers
+  const POINTS_BY_RARITY = {
+    super_rare: 25,
+    rare: 15,
+    uncommon: 8,
+    common: 4,
+    very_common: 1
+  };
 
   // Species JSON and rarity helpers
   let SPECIES = [];
@@ -877,6 +925,12 @@
   const galleryCountLabel = document.getElementById("galleryCountLabel");
   const newBirbsBanner = document.getElementById("newBirbsBanner");
 
+  // Pager DOM
+  const pager = document.getElementById("pager");
+  const prevPageBtn = document.getElementById("prevPageBtn");
+  const nextPageBtn = document.getElementById("nextPageBtn");
+  const pagerLabel = document.getElementById("pagerLabel");
+
   const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
   const ratingModalCancel = document.getElementById("ratingModalCancel");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
@@ -975,9 +1029,7 @@
     imageFsOverlay.classList.remove("show");
     imageFsImg.src = "";
   }
-  imageFsOverlay.addEventListener("click", () => {
-    closeImageFullscreen();
-  });
+  imageFsOverlay.addEventListener("click", () => closeImageFullscreen());
 
   // Drag/drop
   function handleFiles(files) {
@@ -997,6 +1049,68 @@
   dropzone.addEventListener("drop", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
   fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
 
+  // Downscale uploads to keep page fast + avoid huge images
+  async function prepareUploadFile(file) {
+    const MAX_DIM = 1920;   // max longest side
+    const QUALITY = 0.86;   // jpeg quality
+
+    // Only re-encode for these (HEIC/HEIF often needs special handling, so keep as-is)
+    if (!/^image\/(jpeg|jpg|png|webp)$/i.test(file.type)) return file;
+
+    const safeBase = (file.name || "upload").replace(/\.[^.]+$/, "");
+    const outName = `${safeBase}.jpg`;
+
+    // Try createImageBitmap first (fast on most browsers)
+    try {
+      const bmp = await createImageBitmap(file);
+      const scale = Math.min(1, MAX_DIM / Math.max(bmp.width, bmp.height));
+      if (scale === 1) { bmp.close?.(); return file; }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(bmp.width * scale);
+      canvas.height = Math.round(bmp.height * scale);
+
+      const ctx = canvas.getContext("2d", { alpha: false });
+      ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      bmp.close?.();
+
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", QUALITY));
+      if (!blob) return file;
+      return new File([blob], outName, { type: "image/jpeg" });
+    } catch {
+      // Fallback: Image element decode (works on Safari cases where createImageBitmap can be flaky)
+      try {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.decoding = "async";
+        img.src = url;
+
+        await new Promise((resolve, reject) => {
+          img.onload = () => resolve();
+          img.onerror = () => reject(new Error("Image decode failed"));
+        });
+
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        const scale = Math.min(1, MAX_DIM / Math.max(w, h));
+        if (scale === 1) { URL.revokeObjectURL(url); return file; }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(w * scale);
+        canvas.height = Math.round(h * scale);
+        const ctx = canvas.getContext("2d", { alpha: false });
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+
+        const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", QUALITY));
+        if (!blob) return file;
+        return new File([blob], outName, { type: "image/jpeg" });
+      } catch {
+        return file;
+      }
+    }
+  }
+
   // Upload
   uploadBtn.addEventListener("click", async () => {
     hideError(); hideSuccess();
@@ -1010,13 +1124,16 @@
 
     uploadBtn.disabled = true;
     uploadBtn.textContent = "Uploading…";
-    statusText.textContent = "Uploading image and saving to the database…";
+    statusText.textContent = "Optimising image, uploading, then saving to the database…";
 
     try {
-      const fileId = `${Date.now()}_${selectedFile.name}`;
-      const storagePath = `birdPhotos/${fileId}`;
+      const uploadFile = await prepareUploadFile(selectedFile);
+
+      const unique = (crypto.randomUUID ? crypto.randomUUID() : (String(Date.now()) + "_" + Math.random().toString(16).slice(2)));
+      const storagePath = `birdPhotos/${Date.now()}_${unique}.jpg`;
       const imgRef = storageRef(storage, storagePath);
-      await uploadBytes(imgRef, selectedFile);
+
+      await uploadBytes(imgRef, uploadFile);
       const url = await getDownloadURL(imgRef);
 
       await addDoc(photosCol, {
@@ -1028,11 +1145,13 @@
         createdAt: serverTimestamp(),
         ratingTotal: 0,
         ratingCount: 0,
-        ownerDeviceId: deviceId
+        ownerDeviceId: deviceId,
+        originalFileName: selectedFile.name || null
       });
 
       showSuccess("Sighting saved. Check the gallery on the right.");
       resetForm();
+      currentPage = 1; // show newest page after upload
     } catch (err) {
       console.error(err);
       showError("Upload failed. Check Firebase config, rules, or bucket name.");
@@ -1073,7 +1192,7 @@
     latestDocsForRankings = docs;
     currentPhotos = docs;
 
-    // New birbs banner logic: compute newest timestamp and how many are newer than lastSeenTs
+    // New birbs banner logic
     let maxTs = 0;
     let countNew = 0;
     docs.forEach(({ data }) => {
@@ -1086,8 +1205,6 @@
 
     if (!initialSnapshotHandled) {
       initialSnapshotHandled = true;
-      // First load: if we had no stored lastSeenTs, set it to the newest doc so we don't treat existing
-      // posts as "new" from some earlier time.
       if (!lastSeenTs && maxTs) {
         lastSeenTs = maxTs;
         try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
@@ -1163,16 +1280,62 @@
         try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
       }
       newSinceLastSeenCount = 0;
+      currentPage = 1;
       updateNewBirbsBanner();
+      renderGallery();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      updateNewBirbsBanner();
-    }
+    if (document.visibilityState === "visible") updateNewBirbsBanner();
   });
+
+  // Pager helpers
+  function scrollGalleryIntoView() {
+    const el = document.querySelector(".gallery-header");
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function updatePager(totalItems) {
+    if (!pager) return;
+    const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const show = totalItems > PAGE_SIZE;
+    pager.style.display = show ? "flex" : "none";
+
+    if (pagerLabel) pagerLabel.textContent = `Page ${currentPage} of ${totalPages}`;
+    if (prevPageBtn) prevPageBtn.disabled = currentPage <= 1;
+    if (nextPageBtn) nextPageBtn.disabled = currentPage >= totalPages;
+  }
+
+  if (prevPageBtn) {
+    prevPageBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage -= 1;
+        renderGallery();
+        scrollGalleryIntoView();
+      }
+    });
+  }
+
+  if (nextPageBtn) {
+    nextPageBtn.addEventListener("click", () => {
+      const totalPages = Math.max(1, Math.ceil((currentPhotos?.length || 0) / PAGE_SIZE));
+      if (currentPage < totalPages) {
+        currentPage += 1;
+        renderGallery();
+        scrollGalleryIntoView();
+      }
+    });
+  }
+
+  function multiplierForSpecies(speciesName){
+    const rarity = getRarityForSpecies(speciesName);
+    return POINTS_BY_RARITY[rarity] ?? 1;
+  }
 
   function renderGallery() {
     galleryGrid.innerHTML = "";
@@ -1183,6 +1346,7 @@
       galleryCountLabel.textContent = "No sightings yet.";
       currentSeenSpecies = new Set();
       updateSpeciesTally();
+      updatePager(0);
       return;
     }
 
@@ -1269,11 +1433,15 @@
         if (roA !== roB) return roA - roB;
         return tsB - tsA;
       }
-      // Fallback: newest
       return tsB - tsA;
     });
 
-    docs.forEach(({ id, data }) => {
+    // Pagination slice
+    updatePager(docs.length);
+    const startIdx = (currentPage - 1) * PAGE_SIZE;
+    const pageDocs = docs.slice(startIdx, startIdx + PAGE_SIZE);
+
+    pageDocs.forEach(({ id, data }) => {
       const imgUrl = data.imageUrl || "";
       const birdName = data.birdName || "Unknown birb";
       const location = data.location || "Unknown location";
@@ -1380,9 +1548,7 @@
     if (!snap.exists()) return;
 
     const data = snap.data();
-    if (data.ownerDeviceId && data.ownerDeviceId === deviceId) {
-      return;
-    }
+    if (data.ownerDeviceId && data.ownerDeviceId === deviceId) return;
 
     let ratingTotal = data.ratingTotal || 0;
     let ratingCount = data.ratingCount || 0;
@@ -1646,21 +1812,8 @@
   });
 
   // Rankings
-  const POINTS_BY_RARITY = {
-    super_rare: 25,
-    rare: 15,
-    uncommon: 8,
-    common: 4,
-    very_common: 1
-  };
-
-  function multiplierForSpecies(speciesName){
-    const rarity = getRarityForSpecies(speciesName);
-    return POINTS_BY_RARITY[rarity] ?? 1;
-  }
-
   function buildRankings(docs){
-    const map = new Map(); // uploader -> {uploads, points}
+    const map = new Map();
 
     for (const { data } of docs){
       const uploader = (data.uploadedBy || "").trim() || "Unknown";
@@ -1694,7 +1847,7 @@
       <div class="rankings-row rankings-head">
         <div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div>
       </div>
-   `;
+    `;
 
     if (!rows.length){
       rankingsList.innerHTML += `<div class="rankings-empty">No uploads yet.</div>`;
@@ -1742,6 +1895,7 @@
   // Sorting UI logic
   function setSortMode(mode) {
     sortMode = mode;
+    currentPage = 1;
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
     sortMenu.classList.remove("show");
     renderGallery();
@@ -1764,9 +1918,7 @@
     if (!sortMenu.classList.contains("show")) return;
     const insideBtn = e.target === sortModeBtn || sortModeBtn.contains(e.target);
     const insideMenu = e.target === sortMenu || sortMenu.contains(e.target);
-    if (!insideBtn && !insideMenu) {
-      sortMenu.classList.remove("show");
-    }
+    if (!insideBtn && !insideMenu) sortMenu.classList.remove("show");
   });
 
   // Helpers
