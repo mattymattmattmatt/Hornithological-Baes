@@ -112,9 +112,8 @@
     .btn-primary:not(:disabled):hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 16px 36px rgba(37,99,235,.75)}
     .error-message{margin-top:6px;font-size:.78rem;color:#fecaca}
     .success-message{margin-top:6px;font-size:.78rem;color:#bbf7d0}
-
     .gallery-header{
-      display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;
+      display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;
       position:relative;
     }
     .gallery-header h2{margin:0;font-size:1rem;text-transform:uppercase;letter-spacing:.11em}
@@ -172,27 +171,6 @@
       background:rgba(79,70,229,.2);
     }
 
-    /* New birbs banner */
-    .new-birbs-banner{
-      display:none; /* hidden until JS shows it */
-      margin-bottom:10px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(74,222,128,.6);
-      background:rgba(34,197,94,.16);
-      font-size:.8rem;
-      color:#bbf7d0;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      cursor:pointer;
-    }
-    .new-birbs-banner span.secondary{
-      font-size:.78rem;
-      color:#dcfce7;
-      white-space:nowrap;
-    }
-
     .gallery-empty{padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);border:1px dashed rgba(148,163,184,.45);
       text-align:center;font-size:.86rem;color:var(--text-muted)}
     .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
@@ -212,22 +190,22 @@
     }
     .rarity-badge{width:32px;height:32px;object-fit:contain;display:block;}
 
-    /* Fullscreen icon only */
+    /* Fullscreen icon only (no background circle) */
     .fullscreen-btn {
-      position: absolute;
-      right: 6px;
-      bottom: 6px;
-      border: none;
-      background: none;
-      color: #e5e7eb;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 0;
-      line-height: 1;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  border: none;
+  background: none;
+  color: #e5e7eb;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
     }
     .fullscreen-btn:hover {
-      transform: scale(1.05);
+  transform: scale(1.05);
     }
     .image-fullscreen-overlay {
       position: fixed;
@@ -577,9 +555,6 @@
         </div>
       </div>
 
-      <!-- New birbs banner -->
-      <div id="newBirbsBanner" class="new-birbs-banner" style="display:none;"></div>
-
       <div id="galleryEmpty" class="gallery-empty" style="display:none;">
         No birb photos yet. Upload the very first sighting and start the flock.
       </div>
@@ -746,17 +721,6 @@
     localStorage.setItem(deviceKey, deviceId);
   }
 
-  // "Last seen" timestamp for new birbs banner
-  const lastSeenKey = "hb_last_seen_ts_v1";
-  let lastSeenTs = 0;
-  try {
-    const raw = localStorage.getItem(lastSeenKey);
-    if (raw) lastSeenTs = parseInt(raw, 10) || 0;
-  } catch { lastSeenTs = 0; }
-  let newestTs = 0;
-  let newSinceLastSeenCount = 0;
-  let initialSnapshotHandled = false;
-
   // Species JSON and rarity helpers
   let SPECIES = [];
   let SPECIES_INDEX = new Map();
@@ -858,7 +822,6 @@
   const galleryGrid = document.getElementById("galleryGrid");
   const galleryEmpty = document.getElementById("galleryEmpty");
   const galleryCountLabel = document.getElementById("galleryCountLabel");
-  const newBirbsBanner = document.getElementById("newBirbsBanner");
 
   const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
   const ratingModalCancel = document.getElementById("ratingModalCancel");
@@ -1056,32 +1019,6 @@
     latestDocsForRankings = docs;
     currentPhotos = docs;
 
-    // New birbs banner logic: compute newest timestamp and how many are newer than lastSeenTs
-    let maxTs = 0;
-    let countNew = 0;
-    docs.forEach(({ data }) => {
-      const d = getCreatedDate(data);
-      if (!d) return;
-      const t = d.getTime();
-      if (t > maxTs) maxTs = t;
-      if (lastSeenTs && t > lastSeenTs) countNew++;
-    });
-
-    if (!initialSnapshotHandled) {
-      initialSnapshotHandled = true;
-      // First load: if we had no stored lastSeenTs, set it to the newest doc so we don't treat existing
-      // posts as "new" from some earlier time.
-      if (!lastSeenTs && maxTs) {
-        lastSeenTs = maxTs;
-        try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
-        countNew = 0;
-      }
-    }
-
-    newestTs = maxTs;
-    newSinceLastSeenCount = countNew;
-    updateNewBirbsBanner();
-
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
     }
@@ -1119,43 +1056,6 @@
     speciesTallyEl.innerHTML =
       `<span class="seen">Seen: ${seen}</span> · <span class="unseen">Unseen: ${unseen}</span>`;
   }
-
-  // "New birbs since you last visited" banner update
-  function updateNewBirbsBanner() {
-    if (!newBirbsBanner) return;
-
-    if (!newSinceLastSeenCount || newSinceLastSeenCount <= 0) {
-      newBirbsBanner.style.display = "none";
-      newBirbsBanner.textContent = "";
-      return;
-    }
-
-    const label = newSinceLastSeenCount === 1
-      ? "1 new birb sighting since you last visited"
-      : `${newSinceLastSeenCount} new birb sightings since you last visited`;
-
-    newBirbsBanner.innerHTML =
-      `<span>${escapeHtml(label)}</span><span class="secondary">Tap to jump to latest</span>`;
-    newBirbsBanner.style.display = "flex";
-  }
-
-  if (newBirbsBanner) {
-    newBirbsBanner.addEventListener("click", () => {
-      if (newestTs) {
-        lastSeenTs = newestTs;
-        try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
-      }
-      newSinceLastSeenCount = 0;
-      updateNewBirbsBanner();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      updateNewBirbsBanner();
-    }
-  });
 
   function renderGallery() {
     galleryGrid.innerHTML = "";
