@@ -174,7 +174,7 @@
 
     /* New birbs banner */
     .new-birbs-banner{
-      display:none;
+      display:none; /* hidden until JS shows it */
       margin-bottom:10px;
       padding:6px 10px;
       border-radius:999px;
@@ -182,7 +182,6 @@
       background:rgba(34,197,94,.16);
       font-size:.8rem;
       color:#bbf7d0;
-      display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
@@ -1154,7 +1153,6 @@
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
-      // When returning to the tab, just re-run the banner logic with the latest counts.
       updateNewBirbsBanner();
     }
   });
