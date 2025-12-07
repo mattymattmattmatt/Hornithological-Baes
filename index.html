@@ -531,7 +531,8 @@
         </div>
         <strong>Drop a birb photo</strong>
         <p>or click to browse – JPG, PNG, HEIC etc.</p>
-        <div class="chip"><span class="chip-dot"></span>Tip: images are auto-downscaled for speed</div>
+        <!-- UPDATED TIP LINE -->
+        <div class="chip"><span class="chip-dot"></span>Tip: centre the birb in-frame (close-up and sharp usually scores higher)</div>
         <input id="fileInput" class="hidden-input" type="file" accept="image/*" />
       </div>
 
@@ -771,7 +772,6 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // Device ID
   const deviceKey = "hb_device_id_v1";
   let deviceId = localStorage.getItem(deviceKey);
   if (!deviceId) {
@@ -779,11 +779,9 @@
     localStorage.setItem(deviceKey, deviceId);
   }
 
-  // Lock uploader name per device (prefill + prevent multiple names)
   const uploaderNameKey = "hb_uploader_name_v1";
   let lockedUploaderName = (localStorage.getItem(uploaderNameKey) || "").trim();
 
-  // "Last seen" timestamp for new birbs banner
   const lastSeenKey = "hb_last_seen_ts_v1";
   let lastSeenTs = 0;
   try {
@@ -794,11 +792,9 @@
   let newSinceLastSeenCount = 0;
   let initialSnapshotHandled = false;
 
-  // Pagination
   const PAGE_SIZE = 9;
   let currentPage = 1;
 
-  // Species JSON and rarity helpers
   let SPECIES = [];
   let SPECIES_INDEX = new Map();
   let speciesLoaded = false;
@@ -883,7 +879,6 @@
 
   const photosCol = collection(db, "birdPhotos");
 
-  // DOM
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("fileInput");
   const preview = document.getElementById("preview");
@@ -902,7 +897,6 @@
   const galleryCountLabel = document.getElementById("galleryCountLabel");
   const newBirbsBanner = document.getElementById("newBirbsBanner");
 
-  // If we already have a locked uploader name, prefill + lock the field now
   function applyUploaderLock(name) {
     const n = (name || "").trim();
     if (!n) return;
@@ -920,7 +914,6 @@
     uploadedByInput.title = "";
   }
 
-  // Pager DOM
   const pager = document.getElementById("pager");
   const prevPageBtn = document.getElementById("prevPageBtn");
   const nextPageBtn = document.getElementById("nextPageBtn");
@@ -949,7 +942,6 @@
 
   const merlinSmartBtn = document.getElementById("merlinSmartBtn");
 
-  // Rankings DOM
   const openRankingsBtn = document.getElementById("openRankingsBtn");
   const rankingsModalBackdrop = document.getElementById("rankingsModalBackdrop");
   const rankingsClose = document.getElementById("rankingsClose");
@@ -958,16 +950,13 @@
   const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
   const scoringClose = document.getElementById("scoringClose");
 
-  // Sorting DOM
   const sortModeBtn = document.getElementById("sortModeBtn");
   const sortModeLabel = document.getElementById("sortModeLabel");
   const sortMenu = document.getElementById("sortMenu");
 
-  // Fullscreen overlay DOM
   const imageFsOverlay = document.getElementById("imageFullscreenOverlay");
   const imageFsImg = document.getElementById("imageFullscreenImg");
 
-  // Open Merlin Bird ID
   function openMerlinSmart() {
     const merlinWeb = "https://merlin.allaboutbirds.org/";
     const iosStore = "https://apps.apple.com/au/app/merlin-bird-id-by-cornell-lab/id773457673";
@@ -998,15 +987,12 @@
   let ratingTargetPhotoId = null;
   let currentSeenSpecies = new Set();
 
-  // Comments state
   let commentsTargetPhotoId = null;
   let commentsUnsub = null;
   let commentsExistingCount = null;
 
-  // Rankings state
   let latestDocsForRankings = [];
 
-  // Sorting state
   let currentPhotos = [];
   let sortMode = "newest";
   const SORT_LABELS = {
@@ -1017,7 +1003,6 @@
     oldest: "Oldest first"
   };
 
-  // Fullscreen helpers
   function openImageFullscreen(url) {
     if (!url) return;
     imageFsImg.src = url;
@@ -1029,7 +1014,6 @@
   }
   imageFsOverlay.addEventListener("click", () => closeImageFullscreen());
 
-  // Drag/drop
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
@@ -1048,7 +1032,6 @@
   dropzone.addEventListener("drop", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
   fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
 
-  // Downscale
   async function downscaleImageFile(file, opts = {}) {
     const { maxDim = 1600, quality = 0.85, outputType = "image/jpeg" } = opts;
 
@@ -1095,7 +1078,6 @@
     }
   }
 
-  // Upload
   uploadBtn.addEventListener("click", async () => {
     hideError(); hideSuccess();
     const birdName = birdNameInput.value.trim();
@@ -1143,7 +1125,6 @@
         storedBytes: fileToUpload?.size || null
       });
 
-      // Lock name locally after first usable upload
       applyUploaderLock(effectiveUploaderName);
 
       showSuccess("Sighting saved. Check the gallery on the right.");
@@ -1165,7 +1146,6 @@
     birdNameInput.value = "";
     locationInput.value = "";
     preview.style.display = "none";
-    // uploadedBy stays locked/prefilled if we have a name
   }
 
   function showError(msg){ errorMsg.textContent = msg; errorMsg.style.display = "block"; }
@@ -1173,7 +1153,6 @@
   function showSuccess(msg){ successMsg.textContent = msg; successMsg.style.display = "block"; setTimeout(()=>successMsg.style.display="none",3500); }
   function hideSuccess(){ successMsg.textContent = ""; successMsg.style.display = "none"; }
 
-  // Ratings stored locally per browser
   const ratingsKey = "hornithological_baes_ratings_v1";
   let localRatings = {};
   try { const stored = localStorage.getItem(ratingsKey); if (stored) localRatings = JSON.parse(stored); } catch { localRatings = {}; }
@@ -1184,7 +1163,6 @@
     return Number.isFinite(n) && n >= 1 && n <= 10 ? n : null;
   }
 
-  // Firestore listener
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
 
   onSnapshot(qPhotos, (snapshot) => {
@@ -1194,7 +1172,6 @@
     latestDocsForRankings = docs;
     currentPhotos = docs;
 
-    // Prefill/lock uploader name if this device has previous uploads (server-side history)
     if (!lockedUploaderName) {
       for (const { data } of docs) {
         if (data?.ownerDeviceId === deviceId) {
@@ -1204,7 +1181,6 @@
       }
     }
 
-    // New birbs banner logic
     let maxTs = 0;
     let countNew = 0;
     docs.forEach(({ data }) => {
@@ -1294,7 +1270,7 @@
       updateNewBirbsBanner();
       currentPage = 1;
       renderGallery();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // keep existing scroll position here too (no forced scroll)
     });
   }
 
@@ -1346,17 +1322,18 @@
     nextPageBtn.disabled = clampedPage >= totalPages;
   }
 
+  // UPDATED: removed auto scrollTo top on pagination
   prevPageBtn.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage -= 1;
       renderGallery();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // no scroll adjustment
     }
   });
   nextPageBtn.addEventListener("click", () => {
     currentPage += 1;
     renderGallery();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // no scroll adjustment
   });
 
   function renderGallery() {
@@ -1552,7 +1529,6 @@
     if (speciesOverlay.classList.contains("show")) renderSpeciesList(speciesSearch.value);
   }
 
-  // Rating modal
   function openRatingModal(photoId){
     ratingTargetPhotoId = photoId;
     const prev = getLocalRating(photoId);
@@ -1606,7 +1582,6 @@
     localRatings[photoId] = ratingValue;
     saveLocalRatings();
 
-    // update UI immediately (label becomes "You rated x/10")
     renderGallery();
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
@@ -1621,7 +1596,6 @@
     btn.textContent = `Comments (${Number(count || 0)})`;
   }
 
-  // Comments modal
   async function openCommentsModal(photoId, birdName) {
     closeCommentsModal();
     commentsTargetPhotoId = photoId;
@@ -1752,7 +1726,6 @@
     }
   });
 
-  // Gallery buttons
   galleryGrid.addEventListener("click", async (e) => {
     const fsBtn = e.target.closest(".fullscreen-btn");
     if (fsBtn) {
@@ -1822,7 +1795,6 @@
     await deleteDoc(docRef);
   }
 
-  // Species overlay
   function openSpeciesOverlay(){
     speciesOverlay.classList.add("show");
     speciesSearch.value = "";
@@ -1892,7 +1864,6 @@
     closeSpeciesOverlay();
   });
 
-  // Rankings
   const POINTS_BY_RARITY = { super_rare:25, rare:15, uncommon:8, common:4, very_common:1 };
 
   function multiplierForSpecies(speciesName){
@@ -1979,7 +1950,6 @@
     if (e.target === scoringModalBackdrop) closeScoringRules();
   });
 
-  // Sorting UI
   function setSortMode(mode) {
     sortMode = mode;
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
@@ -2008,7 +1978,6 @@
     if (!insideBtn && !insideMenu) sortMenu.classList.remove("show");
   });
 
-  // Helpers
   function escapeHtml(str) {
     if (typeof str !== "string") return "";
     return str.replace(/[&<>"']/g, (c) => (
