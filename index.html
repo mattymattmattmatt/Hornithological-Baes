@@ -14,15 +14,13 @@
       --shadow-soft:0 18px 45px rgba(15,23,42,.65);
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
       background:radial-gradient(circle at top left,#1d2446 0,transparent 55%),
                  radial-gradient(circle at bottom right,#164e63 0,transparent 55%),
                  var(--bg);
-      color:var(--text-main);min-height:100vh;overflow-x:hidden;
+      color:var(--text-main);min-height:100vh;
     }
-    img{display:block;max-width:100%}
     .app-shell{max-width:1120px;margin:0 auto;padding:28px 16px 40px}
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
     .title-block{display:flex;flex-direction:column;gap:8px}
@@ -95,13 +93,6 @@
       font-size:.9rem;color:var(--text-main);outline:none;transition:border .15s ease,box-shadow .15s ease,background .15s ease;
     }
     .field input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
-    .field input:read-only{
-      opacity:.95;
-      border-style:solid;
-      border-color:rgba(129,140,248,.45);
-      background:rgba(79,70,229,.10);
-      cursor:not-allowed;
-    }
     .species-input-row{display:flex;gap:8px;align-items:center}
     .species-input-row input{flex:1;cursor:pointer}
     .checklist-btn{
@@ -128,7 +119,7 @@
     }
     .gallery-header h2{margin:0;font-size:1rem;text-transform:uppercase;letter-spacing:.11em}
     .gallery-header small{font-size:.8rem;color:var(--text-muted)}
-    .filter-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+    .filter-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
     .filter-badge{
       font-size:.76rem;padding:3px 9px;border-radius:999px;border:1px solid rgba(148,163,184,.4);
       color:var(--text-muted);background:rgba(15,23,42,.9);
@@ -142,7 +133,9 @@
       border-color:rgba(129,140,248,.55);
       background:rgba(79,70,229,.16);
     }
-    .filter-badge.sort-btn:hover{background:rgba(79,70,229,.26)}
+    .filter-badge.sort-btn:hover{
+      background:rgba(79,70,229,.26);
+    }
     .sort-menu{
       position:absolute;
       right:0;
@@ -175,8 +168,11 @@
       align-items:center;
     }
     .sort-option span.hint{color:var(--text-muted);font-size:.76rem;}
-    .sort-option:hover{background:rgba(79,70,229,.2);}
+    .sort-option:hover{
+      background:rgba(79,70,229,.2);
+    }
 
+    /* New birbs banner */
     .new-birbs-banner{
       display:none;
       margin-bottom:10px;
@@ -203,11 +199,9 @@
     .photo-card{
       background:radial-gradient(circle at top,rgba(79,70,229,.18) 0,transparent 55%),rgba(15,23,42,.96);
       border-radius:16px;border:1px solid rgba(148,163,184,.3);overflow:hidden;display:flex;flex-direction:column;min-height:230px;
-      content-visibility:auto;
-      contain-intrinsic-size: 300px;
     }
     .photo-thumb{position:relative;padding-top:66%;overflow:hidden}
-    .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out;decoding:async}
+    .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out}
     .photo-card:hover .photo-thumb img{transform:scale(1.03)}
 
     .rarity-badge-wrap{
@@ -218,6 +212,7 @@
     }
     .rarity-badge{width:32px;height:32px;object-fit:contain;display:block;}
 
+    /* Fullscreen icon only */
     .fullscreen-btn {
       position: absolute;
       right: 6px;
@@ -276,43 +271,43 @@
       border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;
       background:rgba(79,70,229,.18);color:#c7d2fe;border:1px solid rgba(129,140,248,.6)
     }
-    .rate-btn.rated{
-      background:rgba(34,197,94,.14);
-      border-color:rgba(74,222,128,.55);
-      color:#bbf7d0;
-    }
     .rate-btn[disabled]{opacity:.55;cursor:default;background:rgba(15,23,42,.85);border-style:dashed;color:#9ca3af}
     .rate-btn:hover:not(:disabled),.comments-btn:hover{background:rgba(79,70,229,.28)}
-    .rate-btn.rated:hover:not(:disabled){background:rgba(34,197,94,.22)}
     .delete-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:rgba(239,68,68,.12);color:#fecaca;border:1px solid rgba(248,113,113,.5);display:inline-flex;align-items:center;gap:6px}
     .delete-btn:hover{background:rgba(239,68,68,.22)}
     footer{margin-top:18px;font-size:.78rem;color:var(--text-muted);text-align:right;opacity:.8}
 
+    /* Pager */
     .pager{
       margin-top:12px;
       display:flex;
       justify-content:space-between;
       align-items:center;
       gap:10px;
-      padding:10px 10px;
-      border-radius:14px;
-      border:1px solid rgba(148,163,184,.25);
-      background:rgba(15,23,42,.85);
+      padding-top:10px;
+      border-top:1px solid rgba(148,163,184,.18);
     }
-    .pager-left{font-size:.78rem;color:var(--text-muted);}
-    .pager-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+    .pager-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .pager-info{font-size:.8rem;color:var(--text-muted)}
     .pager-btn{
-      border:none;border-radius:999px;padding:6px 12px;font-size:.78rem;cursor:pointer;
-      background:rgba(79,70,229,.18);color:#c7d2fe;border:1px solid rgba(129,140,248,.6)
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,.65);
+      background:rgba(79,70,229,.16);
+      color:#c7d2fe;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
     }
     .pager-btn:disabled{
-      opacity:.55;cursor:default;background:rgba(15,23,42,.85);border-style:dashed;color:#9ca3af
+      opacity:.55;
+      cursor:default;
+      border-style:dashed;
+      background:rgba(15,23,42,.85);
+      color:#9ca3af;
     }
-    .pager-indicator{
-      font-size:.78rem;color:#e5e7eb;opacity:.9;
-      padding:4px 10px;border-radius:999px;background:rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.35)
-    }
+    .pager-btn:hover:not(:disabled){background:rgba(79,70,229,.26)}
 
+    /* Modals */
     .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50}
     .modal-backdrop.show{display:flex}
     .modal{
@@ -336,19 +331,17 @@
     }
     .modal-accent:hover{background:rgba(79,70,229,.26)}
     .rating-options{margin-top:10px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-    .rating-option{
-      border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.2);
-      padding:4px 6px;font-size:.78rem;color:#e5e7eb;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;gap:4px
-    }
+    .rating-option{border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.2);padding:4px 6px;font-size:.78rem;color:#e5e7eb;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:4px}
     .rating-option span.emoji{font-size:1rem}
     .rating-option:hover{background:rgba(79,70,229,.35)}
     .rating-option.selected{
-      border-color:rgba(74,222,128,.75);
-      background:rgba(34,197,94,.22);
-      color:#bbf7d0;
+      border-color: rgba(187,247,208,.85);
+      background: rgba(34,197,94,.18);
+      color:#dcfce7;
     }
 
+    /* Comments */
     .comments-list{
       margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;
       display:flex;flex-direction:column;gap:8px;
@@ -397,6 +390,7 @@
     .comment-send:disabled{opacity:.6;cursor:default;box-shadow:none}
     .comment-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
 
+    /* Species overlay */
     .species-overlay{position:fixed;inset:0;background:rgba(15,23,42,.92);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
     .species-overlay.show{display:flex}
     .species-panel{max-width:520px;width:100%;max-height:90vh;background:rgba(15,23,42,.98);border-radius:20px;border:1px solid rgba(148,163,184,.5);
@@ -411,8 +405,13 @@
       font-size:.8rem;
       color:var(--text-muted);
     }
-    .species-tally span.seen{color:#bbf7d0;font-weight:600;}
-    .species-tally span.unseen{color:#e5e7ebb0;}
+    .species-tally span.seen{
+      color:#bbf7d0;
+      font-weight:600;
+    }
+    .species-tally span.unseen{
+      color:#e5e7ebb0;
+    }
     .species-search-row{margin-top:10px}
     .species-search-row input{
       width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);padding:8px 12px;
@@ -430,6 +429,7 @@
     .species-name{text-align:left}
     .species-status{font-size:.75rem;color:#a5b4fc;padding:2px 8px;border-radius:999px;border:1px solid rgba(129,140,248,.7);white-space:nowrap}
 
+    /* Merlin */
     .merlin-help{
       appearance:none;width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
       margin-top:10px;padding:10px 12px;border-radius:999px;border:1px solid rgba(148,163,184,0.45);
@@ -442,6 +442,7 @@
       background: radial-gradient(circle at top left, rgba(34,197,94,0.28) 0, transparent 60%), rgba(15,23,42,1);
     }
 
+    /* Rankings */
     .rankings-btn{
       font-size:.78rem;
       padding:6px 10px;
@@ -498,6 +499,28 @@
     }
     .rules-list{margin:8px 0 0;padding-left:18px;color:var(--text-muted)}
     .rules-list li{margin:4px 0}
+
+    /* ========= Performance optimizations (mobile) ========= */
+    @media (hover:none) and (pointer:coarse){
+      body{ background: var(--bg); } /* reduce heavy gradient overdraw on phones */
+      .card{ backdrop-filter:none; box-shadow:none; }
+      .rarity-badge-wrap{ backdrop-filter:none; box-shadow:none; }
+      .dropzone-icon{ box-shadow:none; }
+      .btn-primary{ box-shadow:none; }
+      .photo-thumb img{ transition:none; } /* no hover on phones */
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior:auto !important; }
+      .photo-thumb img{ transition:none !important; }
+      .btn-primary{ transition:none !important; }
+      .dropzone{ transition:none !important; }
+      .parrot{ transition:none !important; }
+    }
+    .photo-card{
+      content-visibility:auto;
+      contain: layout paint;
+      contain-intrinsic-size: 280px 260px;
+    }
   </style>
 </head>
 <body>
@@ -531,8 +554,7 @@
         </div>
         <strong>Drop a birb photo</strong>
         <p>or click to browse – JPG, PNG, HEIC etc.</p>
-        <!-- UPDATED TIP LINE -->
-        <div class="chip"><span class="chip-dot"></span>Tip: centre the birb in-frame (close-up and sharp usually scores higher)</div>
+        <div class="chip"><span class="chip-dot"></span>Tip: keep the bird centred & in focus — uploads are auto-downscaled for speed</div>
         <input id="fileInput" class="hidden-input" type="file" accept="image/*" />
       </div>
 
@@ -540,7 +562,7 @@
         <img id="previewImg" alt="Preview" />
         <div class="preview-text">
           <div><strong id="previewName"></strong></div>
-          <div style="margin-top:2px;" id="previewMeta">Ready to upload</div>
+          <div style="margin-top:2px;">Ready to upload (will be downscaled)</div>
         </div>
       </div>
 
@@ -595,7 +617,7 @@
           </button>
           <button class="sort-option" data-mode="mostValuable">
             <span>Most valuable</span>
-            <span class="hint">Rating × rarity × repeat factor</span>
+            <span class="hint">Rating × rarity multiplier</span>
           </button>
           <button class="sort-option" data-mode="rarity">
             <span>Rarity</span>
@@ -617,12 +639,11 @@
       <div id="galleryGrid" class="gallery-grid"></div>
 
       <div id="pager" class="pager" style="display:none;">
-        <div class="pager-left" id="pagerLeft">Showing 1–9</div>
-        <div class="pager-actions">
+        <div class="pager-left">
           <button id="prevPageBtn" class="pager-btn" type="button">← Prev</button>
-          <span id="pageIndicator" class="pager-indicator">Page 1 of 1</span>
           <button id="nextPageBtn" class="pager-btn" type="button">Next →</button>
         </div>
+        <div class="pager-info" id="pageInfo">Page 1 of 1</div>
       </div>
     </section>
   </div>
@@ -630,6 +651,7 @@
   <footer>Hornithological Baes · Firebase · GitHub Pages</footer>
 </div>
 
+<!-- Species checklist overlay -->
 <div id="speciesOverlay" class="species-overlay">
   <div class="species-panel">
     <div class="species-panel-header">
@@ -652,11 +674,12 @@
   </div>
 </div>
 
+<!-- Rating modal -->
 <div id="ratingModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
       <h3>Rate this birb</h3>
-      <p id="ratingModalHint">Pick a score out of 10.</p>
+      <p>Pick a score out of 10.</p>
     </div>
     <div class="rating-options">
       <button class="rating-option" data-value="1"><span class="emoji">🦜</span><span>1</span></button>
@@ -676,6 +699,7 @@
   </div>
 </div>
 
+<!-- Comments modal -->
 <div id="commentsModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
@@ -695,11 +719,12 @@
   </div>
 </div>
 
+<!-- Rankings modal -->
 <div id="rankingsModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
       <h3>Rankings</h3>
-      <p>Points by uploader (rating × rarity multiplier × repeat factor).</p>
+      <p>Points by uploader (rating × rarity multiplier).</p>
     </div>
 
     <div class="modal-footer" style="justify-content:space-between;margin-top:6px;">
@@ -716,6 +741,7 @@
   </div>
 </div>
 
+<!-- Scoring rules modal -->
 <div id="scoringModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
@@ -725,14 +751,14 @@
 
     <div class="rules-box">
       Each post earns:
-      <div><code>points = (average rating out of 10) × (rarity multiplier) × (repeat factor)</code></div>
+      <div><code>points = (average rating out of 10) × (rarity multiplier) × (repeat penalty)</code></div>
       <ul class="rules-list">
         <li>Super rare multiplier: <strong>25</strong></li>
         <li>Rare multiplier: <strong>15</strong></li>
         <li>Uncommon multiplier: <strong>8</strong></li>
         <li>Common multiplier: <strong>4</strong></li>
         <li>Very common multiplier: <strong>1</strong></li>
-        <li>Repeat species (already posted): <strong>× 0.5</strong></li>
+        <li>If your post is a species already posted before → <strong>50%</strong> points (repeat penalty = 0.5)</li>
         <li>No ratings yet → that post contributes <strong>0</strong> points</li>
         <li>Total points = sum of all your post points</li>
       </ul>
@@ -744,6 +770,7 @@
   </div>
 </div>
 
+<!-- Fullscreen image overlay -->
 <div id="imageFullscreenOverlay" class="image-fullscreen-overlay">
   <img id="imageFullscreenImg" src="" alt="Full-size birb">
 </div>
@@ -772,6 +799,7 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
+  // Device ID
   const deviceKey = "hb_device_id_v1";
   let deviceId = localStorage.getItem(deviceKey);
   if (!deviceId) {
@@ -779,9 +807,12 @@
     localStorage.setItem(deviceKey, deviceId);
   }
 
-  const uploaderNameKey = "hb_uploader_name_v1";
-  let lockedUploaderName = (localStorage.getItem(uploaderNameKey) || "").trim();
+  // Persist uploader name per device (prefill & reduce multi-name uploads)
+  const uploaderKey = "hb_uploaded_by_v1";
+  let storedUploader = "";
+  try { storedUploader = (localStorage.getItem(uploaderKey) || "").trim(); } catch { storedUploader = ""; }
 
+  // "Last seen" timestamp for new birbs banner
   const lastSeenKey = "hb_last_seen_ts_v1";
   let lastSeenTs = 0;
   try {
@@ -792,9 +823,7 @@
   let newSinceLastSeenCount = 0;
   let initialSnapshotHandled = false;
 
-  const PAGE_SIZE = 9;
-  let currentPage = 1;
-
+  // Species JSON and rarity helpers
   let SPECIES = [];
   let SPECIES_INDEX = new Map();
   let speciesLoaded = false;
@@ -879,12 +908,12 @@
 
   const photosCol = collection(db, "birdPhotos");
 
+  // DOM
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("fileInput");
   const preview = document.getElementById("preview");
   const previewImg = document.getElementById("previewImg");
   const previewName = document.getElementById("previewName");
-  const previewMeta = document.getElementById("previewMeta");
   const birdNameInput = document.getElementById("birdName");
   const locationInput = document.getElementById("location");
   const uploadedByInput = document.getElementById("uploadedBy");
@@ -897,33 +926,14 @@
   const galleryCountLabel = document.getElementById("galleryCountLabel");
   const newBirbsBanner = document.getElementById("newBirbsBanner");
 
-  function applyUploaderLock(name) {
-    const n = (name || "").trim();
-    if (!n) return;
-    lockedUploaderName = n;
-    try { localStorage.setItem(uploaderNameKey, lockedUploaderName); } catch {}
-    uploadedByInput.value = lockedUploaderName;
-    uploadedByInput.readOnly = true;
-    uploadedByInput.title = "Locked to the first uploader name used on this device";
-  }
-
-  if (lockedUploaderName) {
-    applyUploaderLock(lockedUploaderName);
-  } else {
-    uploadedByInput.readOnly = false;
-    uploadedByInput.title = "";
-  }
-
   const pager = document.getElementById("pager");
   const prevPageBtn = document.getElementById("prevPageBtn");
   const nextPageBtn = document.getElementById("nextPageBtn");
-  const pageIndicator = document.getElementById("pageIndicator");
-  const pagerLeft = document.getElementById("pagerLeft");
+  const pageInfo = document.getElementById("pageInfo");
 
   const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
   const ratingModalCancel = document.getElementById("ratingModalCancel");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
-  const ratingModalHint = document.getElementById("ratingModalHint");
 
   const commentsModalBackdrop = document.getElementById("commentsModalBackdrop");
   const commentsTitle = document.getElementById("commentsTitle");
@@ -942,6 +952,7 @@
 
   const merlinSmartBtn = document.getElementById("merlinSmartBtn");
 
+  // Rankings DOM
   const openRankingsBtn = document.getElementById("openRankingsBtn");
   const rankingsModalBackdrop = document.getElementById("rankingsModalBackdrop");
   const rankingsClose = document.getElementById("rankingsClose");
@@ -950,13 +961,22 @@
   const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
   const scoringClose = document.getElementById("scoringClose");
 
+  // Sorting DOM
   const sortModeBtn = document.getElementById("sortModeBtn");
   const sortModeLabel = document.getElementById("sortModeLabel");
   const sortMenu = document.getElementById("sortMenu");
 
+  // Fullscreen overlay DOM
   const imageFsOverlay = document.getElementById("imageFullscreenOverlay");
   const imageFsImg = document.getElementById("imageFullscreenImg");
 
+  // Prefill uploader if previously stored
+  if (storedUploader) {
+    uploadedByInput.value = storedUploader;
+    uploadedByInput.readOnly = true;
+  }
+
+  // Open Merlin Bird ID in app / store / web
   function openMerlinSmart() {
     const merlinWeb = "https://merlin.allaboutbirds.org/";
     const iosStore = "https://apps.apple.com/au/app/merlin-bird-id-by-cornell-lab/id773457673";
@@ -984,15 +1004,18 @@
   if (merlinSmartBtn) merlinSmartBtn.addEventListener("click", openMerlinSmart);
 
   let selectedFile = null;
+  let selectedObjectUrl = "";
   let ratingTargetPhotoId = null;
   let currentSeenSpecies = new Set();
 
+  // Comments state
   let commentsTargetPhotoId = null;
   let commentsUnsub = null;
-  let commentsExistingCount = null;
 
+  // Rankings state
   let latestDocsForRankings = [];
 
+  // Sorting state
   let currentPhotos = [];
   let sortMode = "newest";
   const SORT_LABELS = {
@@ -1003,6 +1026,18 @@
     oldest: "Oldest first"
   };
 
+  // Pagination state
+  const PAGE_SIZE = 9;
+  let currentPage = 0; // 0-based
+  let totalPages = 1;
+
+  // Ratings stored locally per browser
+  const ratingsKey = "hornithological_baes_ratings_v1";
+  let localRatings = {};
+  try { const stored = localStorage.getItem(ratingsKey); if (stored) localRatings = JSON.parse(stored); } catch { localRatings = {}; }
+  function saveLocalRatings(){ try { localStorage.setItem(ratingsKey, JSON.stringify(localRatings)); } catch {} }
+
+  // Fullscreen helpers
   function openImageFullscreen(url) {
     if (!url) return;
     imageFsImg.src = url;
@@ -1014,14 +1049,18 @@
   }
   imageFsOverlay.addEventListener("click", () => closeImageFullscreen());
 
+  // Drag/drop
   function handleFiles(files) {
     if (!files || !files.length) return;
     const file = files[0];
     if (!file.type.startsWith("image/")) return showError("Please upload an image file.");
     selectedFile = file;
-    previewImg.src = URL.createObjectURL(file);
+
+    if (selectedObjectUrl) URL.revokeObjectURL(selectedObjectUrl);
+    selectedObjectUrl = URL.createObjectURL(file);
+
+    previewImg.src = selectedObjectUrl;
     previewName.textContent = file.name;
-    previewMeta.textContent = `Original: ${formatBytes(file.size)} (will downscale on upload)`;
     preview.style.display = "flex";
     hideError(); hideSuccess();
   }
@@ -1032,107 +1071,116 @@
   dropzone.addEventListener("drop", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
   fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
 
-  async function downscaleImageFile(file, opts = {}) {
-    const { maxDim = 1600, quality = 0.85, outputType = "image/jpeg" } = opts;
+  // Image downscale (client-side) to reduce grey-screen risk & improve responsiveness
+  async function downscaleImageFile(file, maxDim = 2048, quality = 0.82) {
+    const mimeOut = "image/jpeg";
+
+    const loadViaImage = () => new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Could not decode image")); };
+      img.src = url;
+    });
+
+    let w = 0, h = 0;
+    let drawSource = null;
 
     try {
-      const bmp = await createImageBitmap(file);
-      const w = bmp.width || 0;
-      const h = bmp.height || 0;
-      if (!w || !h) return { file, changed: false };
-
-      const maxSide = Math.max(w, h);
-      const scale = Math.min(1, maxDim / maxSide);
-      if (scale >= 1) return { file, changed: false };
-
-      const tw = Math.max(1, Math.floor(w * scale));
-      const th = Math.max(1, Math.floor(h * scale));
-
-      const canvas = document.createElement("canvas");
-      canvas.width = tw;
-      canvas.height = th;
-      const ctx = canvas.getContext("2d", { alpha: false });
-      if (!ctx) return { file, changed: false };
-
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(bmp, 0, 0, tw, th);
-
-      const blob = await new Promise((resolve) => {
-        canvas.toBlob((b) => resolve(b), outputType, quality);
-      });
-      if (!blob) return { file, changed: false };
-
-      const safeBase = (file.name || "birb")
-        .replace(/\.[^.]+$/, "")
-        .replace(/[^\w\-]+/g, "_")
-        .slice(0, 60) || "birb";
-
-      const newName = safeBase + ".jpg";
-      const newFile = new File([blob], newName, { type: blob.type || outputType });
-
-      return { file: newFile, changed: true, originalBytes: file.size, newBytes: newFile.size };
-    } catch (e) {
-      console.warn("Downscale failed, uploading original:", e);
-      return { file, changed: false };
+      if ("createImageBitmap" in window) {
+        const bmp = await createImageBitmap(file);
+        w = bmp.width; h = bmp.height;
+        drawSource = bmp;
+      } else {
+        const img = await loadViaImage();
+        w = img.naturalWidth; h = img.naturalHeight;
+        drawSource = img;
+      }
+    } catch {
+      const img = await loadViaImage();
+      w = img.naturalWidth; h = img.naturalHeight;
+      drawSource = img;
     }
+
+    const longest = Math.max(w, h);
+    const scale = longest > maxDim ? (maxDim / longest) : 1;
+    const outW = Math.max(1, Math.round(w * scale));
+    const outH = Math.max(1, Math.round(h * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = outW;
+    canvas.height = outH;
+
+    const ctx = canvas.getContext("2d", { alpha: false });
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(drawSource, 0, 0, outW, outH);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, mimeOut, quality));
+    if (!blob) throw new Error("Downscale failed");
+    return { blob, mime: mimeOut, width: outW, height: outH };
   }
 
+  // Upload
   uploadBtn.addEventListener("click", async () => {
     hideError(); hideSuccess();
+
     const birdName = birdNameInput.value.trim();
     const location = locationInput.value.trim();
 
-    const effectiveUploaderName = (lockedUploaderName || uploadedByInput.value || "").trim();
+    // Enforce stored uploader if available; otherwise let first upload set it
+    let uploadedBy = (uploadedByInput.value || "").trim();
 
     if (!selectedFile) return showError("Select or drop a birb photo first.");
     if (!birdName) { showError("Choose a birb species from the checklist."); birdNameInput.focus(); return; }
     if (!location) { showError("Enter where the photo was taken."); locationInput.focus(); return; }
-    if (!effectiveUploaderName) { showError("Enter your uploader name (this will lock to this device)."); uploadedByInput.focus(); return; }
+
+    if (storedUploader) {
+      uploadedBy = storedUploader;
+    } else {
+      if (!uploadedBy) { showError("Enter your name once (it will be remembered on this device)."); uploadedByInput.focus(); return; }
+    }
 
     uploadBtn.disabled = true;
     uploadBtn.textContent = "Uploading…";
-    statusText.textContent = "Downscaling image…";
+    statusText.textContent = "Downscaling image (for speed) and saving to the database…";
 
     try {
-      const scaled = await downscaleImageFile(selectedFile, { maxDim: 1600, quality: 0.85, outputType: "image/jpeg" });
-      const fileToUpload = scaled.file;
-
-      statusText.textContent = scaled.changed
-        ? `Uploading downscaled image (${formatBytes(fileToUpload.size)})…`
-        : "Uploading image…";
-
-      const fileId = `${Date.now()}_${fileToUpload.name}`;
+      // Downscale before upload
+      const down = await downscaleImageFile(selectedFile, 2048, 0.82);
+      const fileId = `${Date.now()}_${Math.random().toString(16).slice(2)}.jpg`;
       const storagePath = `birdPhotos/${fileId}`;
       const imgRef = storageRef(storage, storagePath);
 
-      await uploadBytes(imgRef, fileToUpload, { contentType: fileToUpload.type || "image/jpeg" });
+      await uploadBytes(imgRef, down.blob, { contentType: down.mime });
       const url = await getDownloadURL(imgRef);
 
       await addDoc(photosCol, {
         birdName,
         location,
-        uploadedBy: effectiveUploaderName,
+        uploadedBy: uploadedBy || null,
         imageUrl: url,
         storagePath,
         createdAt: serverTimestamp(),
         ratingTotal: 0,
         ratingCount: 0,
         commentCount: 0,
-        ownerDeviceId: deviceId,
-        originalFileName: selectedFile?.name || null,
-        originalBytes: selectedFile?.size || null,
-        storedBytes: fileToUpload?.size || null
+        ownerDeviceId: deviceId
       });
 
-      applyUploaderLock(effectiveUploaderName);
+      // Persist uploader name once we have one
+      if (!storedUploader && uploadedBy) {
+        storedUploader = uploadedBy;
+        try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
+        uploadedByInput.value = storedUploader;
+        uploadedByInput.readOnly = true;
+      }
 
       showSuccess("Sighting saved. Check the gallery on the right.");
       resetForm();
-      currentPage = 1;
     } catch (err) {
       console.error(err);
-      showError("Upload failed. Check Firebase config, rules, or bucket name.");
+      showError("Upload failed. Check Firebase config/rules, bucket name, or image decode.");
     } finally {
       uploadBtn.disabled = false;
       uploadBtn.innerHTML = "<span>↑</span>Save sighting";
@@ -1145,7 +1193,9 @@
     fileInput.value = "";
     birdNameInput.value = "";
     locationInput.value = "";
+    if (!storedUploader) uploadedByInput.value = "";
     preview.style.display = "none";
+    if (selectedObjectUrl) { URL.revokeObjectURL(selectedObjectUrl); selectedObjectUrl = ""; }
   }
 
   function showError(msg){ errorMsg.textContent = msg; errorMsg.style.display = "block"; }
@@ -1153,16 +1203,7 @@
   function showSuccess(msg){ successMsg.textContent = msg; successMsg.style.display = "block"; setTimeout(()=>successMsg.style.display="none",3500); }
   function hideSuccess(){ successMsg.textContent = ""; successMsg.style.display = "none"; }
 
-  const ratingsKey = "hornithological_baes_ratings_v1";
-  let localRatings = {};
-  try { const stored = localStorage.getItem(ratingsKey); if (stored) localRatings = JSON.parse(stored); } catch { localRatings = {}; }
-  function saveLocalRatings(){ try { localStorage.setItem(ratingsKey, JSON.stringify(localRatings)); } catch {} }
-  function getLocalRating(photoId){
-    const v = localRatings?.[photoId];
-    const n = parseInt(v, 10);
-    return Number.isFinite(n) && n >= 1 && n <= 10 ? n : null;
-  }
-
+  // Firestore listener
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
 
   onSnapshot(qPhotos, (snapshot) => {
@@ -1172,15 +1213,20 @@
     latestDocsForRankings = docs;
     currentPhotos = docs;
 
-    if (!lockedUploaderName) {
-      for (const { data } of docs) {
-        if (data?.ownerDeviceId === deviceId) {
-          const n = (data?.uploadedBy || "").trim();
-          if (n) { applyUploaderLock(n); break; }
+    // Prefill uploader from a previous upload on this device (if not already stored)
+    if (!storedUploader) {
+      const mine = docs.find(x => x?.data?.ownerDeviceId === deviceId && (x?.data?.uploadedBy || "").trim());
+      if (mine) {
+        storedUploader = (mine.data.uploadedBy || "").trim();
+        if (storedUploader) {
+          try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
+          uploadedByInput.value = storedUploader;
+          uploadedByInput.readOnly = true;
         }
       }
     }
 
+    // New birbs banner logic
     let maxTs = 0;
     let countNew = 0;
     docs.forEach(({ data }) => {
@@ -1203,6 +1249,10 @@
     newestTs = maxTs;
     newSinceLastSeenCount = countNew;
     updateNewBirbsBanner();
+
+    // Reset page if it is out of range after updates
+    totalPages = Math.max(1, Math.ceil(currentPhotos.length / PAGE_SIZE));
+    if (currentPage > totalPages - 1) currentPage = totalPages - 1;
 
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
@@ -1242,6 +1292,7 @@
       `<span class="seen">Seen: ${seen}</span> · <span class="unseen">Unseen: ${unseen}</span>`;
   }
 
+  // "New birbs since you last visited" banner update
   function updateNewBirbsBanner() {
     if (!newBirbsBanner) return;
 
@@ -1268,89 +1319,33 @@
       }
       newSinceLastSeenCount = 0;
       updateNewBirbsBanner();
-      currentPage = 1;
-      renderGallery();
-      // keep existing scroll position here too (no forced scroll)
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      updateNewBirbsBanner();
-    }
-  });
-
-  function safeTs(d){
-    const dt = (d.createdAt && d.createdAt.toDate) ? d.createdAt.toDate() : null;
-    return dt ? dt.getTime() : Number.POSITIVE_INFINITY;
-  }
-
-  function buildFirstPostMap(docs){
-    const first = new Map();
-    for (const { id, data } of docs){
-      const species = (data.birdName || "").trim();
-      if (!species) continue;
-      const ts = safeTs(data);
-      const curr = first.get(species);
-      if (!curr || ts < curr.ts || (ts === curr.ts && id < curr.id)) {
-        first.set(species, { ts, id });
-      }
-    }
-    return first;
-  }
-
-  function updatePager(totalItems, page, pageSize) {
-    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-    const clampedPage = Math.min(Math.max(1, page), totalPages);
-    currentPage = clampedPage;
-
-    if (!pager) return;
-
-    if (totalItems <= pageSize) {
-      pager.style.display = totalItems ? "flex" : "none";
-    } else {
-      pager.style.display = "flex";
-    }
-
-    const start = totalItems === 0 ? 0 : ((clampedPage - 1) * pageSize) + 1;
-    const end = Math.min(totalItems, clampedPage * pageSize);
-
-    pagerLeft.textContent = totalItems === 0 ? "No results" : `Showing ${start}–${end} of ${totalItems}`;
-    pageIndicator.textContent = `Page ${clampedPage} of ${totalPages}`;
-
-    prevPageBtn.disabled = clampedPage <= 1;
-    nextPageBtn.disabled = clampedPage >= totalPages;
-  }
-
-  // UPDATED: removed auto scrollTo top on pagination
-  prevPageBtn.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage -= 1;
-      renderGallery();
-      // no scroll adjustment
-    }
-  });
-  nextPageBtn.addEventListener("click", () => {
-    currentPage += 1;
-    renderGallery();
-    // no scroll adjustment
+    if (document.visibilityState === "visible") updateNewBirbsBanner();
   });
 
   function renderGallery() {
     galleryGrid.innerHTML = "";
     galleryEmpty.style.display = "none";
 
-    if (!currentPhotos.length) {
+    const total = currentPhotos.length;
+
+    if (!total) {
       galleryEmpty.style.display = "block";
       galleryCountLabel.textContent = "No sightings yet.";
       currentSeenSpecies = new Set();
       updateSpeciesTally();
-      if (pager) pager.style.display = "none";
+      pager.style.display = "none";
       return;
     }
 
-    galleryCountLabel.textContent = `${currentPhotos.length} sighting${currentPhotos.length > 1 ? "s" : ""}`;
+    totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    galleryCountLabel.textContent = `${total} sighting${total > 1 ? "s" : ""} · Showing ${PAGE_SIZE} per page`;
 
+    // Build speciesCounts across all docs for repeat-species tag
     const speciesCounts = {};
     currentPhotos.forEach(({ data }) => {
       const name = (data.birdName || "Unknown birb").trim();
@@ -1360,22 +1355,24 @@
     currentSeenSpecies = new Set(Object.keys(speciesCounts));
     updateSpeciesTally();
 
+    // Sort copy based on current sort mode
     const docs = currentPhotos.slice();
 
-    const firstPostBySpecies = buildFirstPostMap(docs);
-    function repeatFactorFor(id, species){
-      const first = firstPostBySpecies.get((species || "").trim());
-      return (first && first.id !== id) ? 0.5 : 1;
-    }
+    const rarityOrder = {
+      super_rare: 0,
+      rare: 1,
+      uncommon: 2,
+      common: 3,
+      very_common: 4,
+      none: 5
+    };
 
-    const rarityOrder = { super_rare:0, rare:1, uncommon:2, common:3, very_common:4, none:5 };
     function avgRatingOf(data) {
       const total = Number(data.ratingTotal || 0);
       const count = Number(data.ratingCount || 0);
       return count > 0 ? total / count : 0;
     }
 
-    const POINTS_BY_RARITY = { super_rare:25, rare:15, uncommon:8, common:4, very_common:1 };
     function multiplierForSpeciesInternal(speciesName){
       const rarity = getRarityForSpecies(speciesName);
       return POINTS_BY_RARITY[rarity] ?? 1;
@@ -1395,17 +1392,22 @@
 
       const multA = multiplierForSpeciesInternal(da.birdName || "");
       const multB = multiplierForSpeciesInternal(db.birdName || "");
-
-      const valA = avgA * multA * repeatFactorFor(a.id, da.birdName || "");
-      const valB = avgB * multB * repeatFactorFor(b.id, db.birdName || "");
+      const valA = avgA * multA;
+      const valB = avgB * multB;
 
       const rA = getRarityForSpecies(da.birdName || "") || "none";
       const rB = getRarityForSpecies(db.birdName || "") || "none";
       const roA = rarityOrder[rA] ?? rarityOrder.none;
       const roB = rarityOrder[rB] ?? rarityOrder.none;
 
-      if (sortMode === "newest") return (tsB - tsA) || 0;
-      if (sortMode === "oldest") return (tsA - tsB) || 0;
+      if (sortMode === "newest") {
+        if (tsA !== tsB) return tsB - tsA;
+        return 0;
+      }
+      if (sortMode === "oldest") {
+        if (tsA !== tsB) return tsA - tsB;
+        return 0;
+      }
       if (sortMode === "highestRated") {
         if (avgB !== avgA) return avgB - avgA;
         const cntA = Number(da.ratingCount || 0);
@@ -1427,16 +1429,15 @@
       return tsB - tsA;
     });
 
-    const totalItems = docs.length;
-    const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
-    if (currentPage > totalPages) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
+    // Apply pagination AFTER sorting
+    const start = currentPage * PAGE_SIZE;
+    const pageDocs = docs.slice(start, start + PAGE_SIZE);
 
-    updatePager(totalItems, currentPage, PAGE_SIZE);
-
-    const sliceStart = (currentPage - 1) * PAGE_SIZE;
-    const sliceEnd = sliceStart + PAGE_SIZE;
-    const pageDocs = docs.slice(sliceStart, sliceEnd);
+    // Pager UI
+    pager.style.display = totalPages > 1 ? "flex" : "none";
+    pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+    prevPageBtn.disabled = currentPage <= 0;
+    nextPageBtn.disabled = currentPage >= totalPages - 1;
 
     pageDocs.forEach(({ id, data }) => {
       const imgUrl = data.imageUrl || "";
@@ -1464,21 +1465,21 @@
       const rarityText = rarity ? rarityLabel(rarity) : "";
       const rarityHtml = rarity
         ? `<div class="rarity-badge-wrap" title="${escapeHtml(rarityText)}">
-             <img class="rarity-badge" src="${rarity}.png" alt="${escapeHtml(rarityText)} badge" loading="lazy" />
+             <img class="rarity-badge" src="${rarity}.png" alt="${escapeHtml(rarityText)} badge" loading="lazy" decoding="async" />
            </div>`
         : "";
 
       const isOwner = data.ownerDeviceId && data.ownerDeviceId === deviceId;
 
-      const myRating = getLocalRating(id);
+      const myRating = localRatings[id];
+      const rateLabel = myRating ? `You rated ${myRating}/10` : "Tap here to rate /10";
+
       const rateBtnHtml = isOwner
         ? `<button class="rate-btn" data-photo-id="${id}" disabled title="You can't rate your own post">Your post</button>`
-        : (myRating
-            ? `<button class="rate-btn rated" data-photo-id="${id}" title="Tap to change your rating">You rated ${myRating}/10</button>`
-            : `<button class="rate-btn" data-photo-id="${id}" title="Tap to rate (or change later)">Tap here to rate /10</button>`
-          );
+        : `<button class="rate-btn" data-photo-id="${id}">${escapeHtml(rateLabel)}</button>`;
 
       const commentCount = Number(data.commentCount || 0);
+      const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">Comments (${commentCount})</button>`;
 
       const card = document.createElement("article");
       card.className = "photo-card";
@@ -1517,7 +1518,7 @@
           <div class="card-footer-row">
             <div class="footer-actions-left">
               ${rateBtnHtml}
-              <button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">Comments (${commentCount})</button>
+              ${commentsBtnHtml}
             </div>
             <button class="delete-btn" data-photo-id="${id}">🗑 Delete</button>
           </div>
@@ -1529,21 +1530,35 @@
     if (speciesOverlay.classList.contains("show")) renderSpeciesList(speciesSearch.value);
   }
 
+  // Pager controls (no auto scroll)
+  prevPageBtn.addEventListener("click", () => {
+    if (currentPage > 0) {
+      currentPage -= 1;
+      renderGallery();
+    }
+  });
+  nextPageBtn.addEventListener("click", () => {
+    if (currentPage < totalPages - 1) {
+      currentPage += 1;
+      renderGallery();
+    }
+  });
+
+  // Rating modal
   function openRatingModal(photoId){
     ratingTargetPhotoId = photoId;
-    const prev = getLocalRating(photoId);
 
-    ratingOptionButtons.forEach(b => b.classList.toggle("selected", prev !== null && parseInt(b.dataset.value,10) === prev));
-    ratingModalHint.textContent = prev ? `Pick a score out of 10. Your current rating: ${prev}/10` : "Pick a score out of 10.";
+    // highlight previous rating choice
+    ratingOptionButtons.forEach(b => b.classList.remove("selected"));
+    const prev = localRatings[photoId];
+    if (prev) {
+      const btn = ratingModalBackdrop.querySelector(`.rating-option[data-value="${prev}"]`);
+      if (btn) btn.classList.add("selected");
+    }
 
     ratingModalBackdrop.classList.add("show");
   }
-  function closeRatingModal(){
-    ratingTargetPhotoId = null;
-    ratingOptionButtons.forEach(b => b.classList.remove("selected"));
-    ratingModalHint.textContent = "Pick a score out of 10.";
-    ratingModalBackdrop.classList.remove("show");
-  }
+  function closeRatingModal(){ ratingTargetPhotoId = null; ratingModalBackdrop.classList.remove("show"); }
   ratingModalCancel.addEventListener("click", closeRatingModal);
   ratingModalBackdrop.addEventListener("click", (e) => { if (e.target === ratingModalBackdrop) closeRatingModal(); });
 
@@ -1569,8 +1584,8 @@
     let ratingTotal = data.ratingTotal || 0;
     let ratingCount = data.ratingCount || 0;
 
-    const prevRating = getLocalRating(photoId);
-    if (prevRating === null) {
+    const prevRating = localRatings[photoId];
+    if (!prevRating) {
       ratingTotal += ratingValue;
       ratingCount += 1;
     } else {
@@ -1578,28 +1593,14 @@
     }
 
     await updateDoc(docRef, { ratingTotal, ratingCount });
-
     localRatings[photoId] = ratingValue;
     saveLocalRatings();
-
-    renderGallery();
-    if (rankingsModalBackdrop.classList.contains("show")) {
-      renderRankings(buildRankings(latestDocsForRankings));
-    }
   }
 
-  function updateCommentButtonCount(photoId, count) {
-    const card = galleryGrid.querySelector(`.photo-card[data-photo-id="${photoId}"]`);
-    if (!card) return;
-    const btn = card.querySelector(`.comments-btn[data-photo-id="${photoId}"]`);
-    if (!btn) return;
-    btn.textContent = `Comments (${Number(count || 0)})`;
-  }
-
-  async function openCommentsModal(photoId, birdName) {
+  // Comments modal
+  function openCommentsModal(photoId, birdName) {
     closeCommentsModal();
     commentsTargetPhotoId = photoId;
-    commentsExistingCount = null;
 
     commentsTitle.textContent = `Comments · ${birdName || "Birb"}`;
     commentsSubtitle.textContent = "Comments for this sighting (only visible when opened).";
@@ -1607,58 +1608,37 @@
     commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
     commentsModalBackdrop.classList.add("show");
 
-    try {
-      const parentSnap = await getDoc(doc(db, "birdPhotos", photoId));
-      if (parentSnap.exists()) {
-        const d = parentSnap.data();
-        commentsExistingCount = (d && typeof d.commentCount === "number") ? d.commentCount : null;
-      }
-    } catch {}
-
     const commentsCol = collection(db, "birdPhotos", photoId, "comments");
     const q = query(commentsCol, orderBy("createdAt", "asc"));
 
     commentsUnsub = onSnapshot(
       q,
-      async (snap) => {
+      (snap) => {
         const items = [];
         snap.forEach((d) => items.push({ id: d.id, data: d.data() }));
 
         commentsList.innerHTML = "";
         if (!items.length) {
           commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
-        } else {
-          for (const item of items) {
-            const text = (item.data.text || "").toString();
-            const dt = item.data.createdAt && item.data.createdAt.toDate ? item.data.createdAt.toDate() : null;
-            const stamp = dt ? toDDMMYY(dt) : "--/--/--";
-            const canDelete = item.data.deviceId && item.data.deviceId === deviceId;
-
-            const el = document.createElement("div");
-            el.className = "comment-item";
-            el.innerHTML = `
-              <div class="comment-meta">
-                <div class="time">${escapeHtml(stamp)}</div>
-                ${canDelete ? `<button class="comment-del" title="Delete comment" aria-label="Delete comment" data-comment-id="${item.id}">×</button>` : ``}
-              </div>
-              <div class="comment-text">${escapeHtml(text)}</div>
-            `;
-            commentsList.appendChild(el);
-          }
+          return;
         }
 
-        if (commentsTargetPhotoId) {
-          const newCount = items.length;
-          updateCommentButtonCount(commentsTargetPhotoId, newCount);
+        for (const item of items) {
+          const text = (item.data.text || "").toString();
+          const dt = item.data.createdAt && item.data.createdAt.toDate ? item.data.createdAt.toDate() : null;
+          const stamp = dt ? toDDMMYY(dt) : "--/--/--";
+          const canDelete = item.data.deviceId && item.data.deviceId === deviceId;
 
-          if (commentsExistingCount === null || commentsExistingCount !== newCount) {
-            try {
-              await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: newCount });
-              commentsExistingCount = newCount;
-            } catch (e) {
-              console.warn("Could not sync commentCount:", e);
-            }
-          }
+          const el = document.createElement("div");
+          el.className = "comment-item";
+          el.innerHTML = `
+            <div class="comment-meta">
+              <div class="time">${escapeHtml(stamp)}</div>
+              ${canDelete ? `<button class="comment-del" title="Delete comment" aria-label="Delete comment" data-comment-id="${item.id}">×</button>` : ``}
+            </div>
+            <div class="comment-text">${escapeHtml(text)}</div>
+          `;
+          commentsList.appendChild(el);
         }
       },
       (err) => {
@@ -1672,7 +1652,6 @@
     if (commentsUnsub) { try { commentsUnsub(); } catch {} }
     commentsUnsub = null;
     commentsTargetPhotoId = null;
-    commentsExistingCount = null;
     commentsModalBackdrop.classList.remove("show");
   }
 
@@ -1694,7 +1673,8 @@
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
 
-      try { await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) }); } catch {}
+      // maintain commentCount on parent doc for the button badge
+      await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) });
 
       commentInput.value = "";
       commentInput.focus();
@@ -1719,13 +1699,14 @@
 
     try {
       await deleteDoc(doc(db, "birdPhotos", commentsTargetPhotoId, "comments", commentId));
-      try { await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(-1) }); } catch {}
+      await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(-1) });
     } catch (err) {
       console.error(err);
       showError("Could not delete comment. Check Firebase rules.");
     }
   });
 
+  // Gallery buttons
   galleryGrid.addEventListener("click", async (e) => {
     const fsBtn = e.target.closest(".fullscreen-btn");
     if (fsBtn) {
@@ -1795,6 +1776,7 @@
     await deleteDoc(docRef);
   }
 
+  // Species overlay
   function openSpeciesOverlay(){
     speciesOverlay.classList.add("show");
     speciesSearch.value = "";
@@ -1864,16 +1846,42 @@
     closeSpeciesOverlay();
   });
 
-  const POINTS_BY_RARITY = { super_rare:25, rare:15, uncommon:8, common:4, very_common:1 };
+  // Rankings
+  const POINTS_BY_RARITY = {
+    super_rare: 25,
+    rare: 15,
+    uncommon: 8,
+    common: 4,
+    very_common: 1
+  };
 
   function multiplierForSpecies(speciesName){
     const rarity = getRarityForSpecies(speciesName);
     return POINTS_BY_RARITY[rarity] ?? 1;
   }
 
+  function getTimeMsForDoc(d){
+    const dt = getCreatedDate(d);
+    return dt ? dt.getTime() : 0;
+  }
+
+  function buildFirstSeenMap(docs){
+    const first = new Map(); // species -> {ts, id}
+    for (const { id, data } of docs){
+      const species = (data.birdName || "").trim();
+      if (!species) continue;
+      const ts = getTimeMsForDoc(data);
+      const curr = first.get(species);
+      if (!curr || ts < curr.ts || (ts === curr.ts && id < curr.id)) {
+        first.set(species, { ts, id });
+      }
+    }
+    return first;
+  }
+
   function buildRankings(docs){
-    const firstPostBySpecies = buildFirstPostMap(docs);
-    const map = new Map();
+    const map = new Map(); // uploader -> {uploads, points}
+    const firstSeen = buildFirstSeenMap(docs);
 
     for (const { id, data } of docs){
       const uploader = (data.uploadedBy || "").trim() || "Unknown";
@@ -1885,10 +1893,12 @@
 
       const mult = multiplierForSpecies(species);
 
-      const first = firstPostBySpecies.get(species);
-      const repeatFactor = (first && first.id !== id) ? 0.5 : 1;
+      // Repeat penalty: if not first seen species, only 50% points
+      let repeatPenalty = 1;
+      const first = firstSeen.get(species);
+      if (first && first.id !== id) repeatPenalty = 0.5;
 
-      const postPoints = avgRating * mult * repeatFactor;
+      const postPoints = avgRating * mult * repeatPenalty;
 
       const curr = map.get(uploader) || { uploads: 0, points: 0 };
       curr.uploads += 1;
@@ -1934,7 +1944,9 @@
     rankingsModalBackdrop.classList.add("show");
     renderRankings(buildRankings(latestDocsForRankings));
   }
-  function closeRankings(){ rankingsModalBackdrop.classList.remove("show"); }
+  function closeRankings(){
+    rankingsModalBackdrop.classList.remove("show");
+  }
 
   openRankingsBtn.addEventListener("click", openRankings);
   rankingsClose.addEventListener("click", closeRankings);
@@ -1950,11 +1962,12 @@
     if (e.target === scoringModalBackdrop) closeScoringRules();
   });
 
+  // Sorting UI logic
   function setSortMode(mode) {
     sortMode = mode;
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
     sortMenu.classList.remove("show");
-    currentPage = 1;
+    currentPage = 0; // reset to first page on sort
     renderGallery();
   }
 
@@ -1978,6 +1991,7 @@
     if (!insideBtn && !insideMenu) sortMenu.classList.remove("show");
   });
 
+  // Helpers
   function escapeHtml(str) {
     if (typeof str !== "string") return "";
     return str.replace(/[&<>"']/g, (c) => (
@@ -2003,15 +2017,6 @@
 
   function toDDMMYY(d) {
     return d.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
-  }
-
-  function formatBytes(bytes) {
-    const b = Number(bytes || 0);
-    if (!b) return "0 B";
-    const units = ["B","KB","MB","GB"];
-    const i = Math.min(units.length - 1, Math.floor(Math.log(b) / Math.log(1024)));
-    const v = b / Math.pow(1024, i);
-    return `${v.toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
   }
 </script>
 </body>
