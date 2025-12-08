@@ -30,7 +30,11 @@
       width:auto;border-radius:12px;object-fit:contain;background:rgba(15,23,42,.7);
       padding:4px 8px;border:1px solid rgba(148,163,184,.4);
     }
+
+    /* Live indicator pill (now clickable) */
     .title-pill{
+      appearance:none;
+      border:none;
       font-size:.78rem;
       text-transform:uppercase;
       letter-spacing:.17em;
@@ -42,29 +46,52 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
+      cursor:default;
+      user-select:none;
     }
+    .title-pill.has-new{ cursor:pointer; }
+    .title-pill:focus{ outline:none; box-shadow:0 0 0 2px rgba(129,140,248,.35); }
+
     .title-pill-dot{
       width:8px;height:8px;border-radius:999px;
+      display:inline-block;
+    }
+    .title-pill-dot.live-stale{
+      background:#ef4444;
+      box-shadow:0 0 0 0 rgba(239,68,68,.0);
+    }
+    @keyframes pulseGreen {
+      0%   { box-shadow:0 0 0 0 rgba(52,211,153,.35); filter:brightness(1.0); }
+      50%  { box-shadow:0 0 0 6px rgba(52,211,153,.0); filter:brightness(1.2); }
+      100% { box-shadow:0 0 0 0 rgba(52,211,153,.0); filter:brightness(1.0); }
+    }
+    .title-pill-dot.live-new{
       background:#34d399;
       box-shadow:0 0 0 4px rgba(52,211,153,.35);
+      animation:pulseGreen 1.25s ease-in-out infinite;
     }
+
     .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em}
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
     .layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px}
     @media (max-width:900px){header{flex-direction:column;align-items:flex-start}.layout{grid-template-columns:minmax(0,1fr)}}
+
     .card{
       background:radial-gradient(circle at top,rgba(148,163,184,.12) 0,transparent 55%),var(--bg-elevated);
       border-radius:var(--radius-lg);padding:18px 18px 16px;box-shadow:var(--shadow-soft);
       border:1px solid rgba(148,163,184,.18);backdrop-filter:blur(18px);
     }
+
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:#e5e7eb}
-    .header-actions{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  flex-wrap: nowrap;  /* changed from wrap */
-}
+
+    .card-header-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:nowrap;
+    }
+
     .dropzone{
       border-radius:var(--radius-md);border:1px dashed rgba(148,163,184,.55);padding:18px;
       background:radial-gradient(circle at top left,rgba(79,70,229,.16) 0,transparent 55%),rgba(15,23,42,.85);
@@ -138,47 +165,51 @@
       border-color:rgba(129,140,248,.55);
       background:rgba(79,70,229,.16);
     }
-    .filter-badge.sort-btn:hover{background:rgba(79,70,229,.26)}
+    .filter-badge.sort-btn:hover{
+      background:rgba(79,70,229,.26);
+    }
     .sort-menu{
-      position:absolute;right:0;top:100%;margin-top:6px;
+      position:absolute;
+      right:0;
+      top:100%;
+      margin-top:6px;
       background:rgba(15,23,42,.98);
-      border-radius:14px;border:1px solid rgba(148,163,184,.45);
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.45);
       box-shadow:0 18px 45px rgba(15,23,42,.9);
-      padding:6px;z-index:15;min-width:220px;display:none;
+      padding:6px;
+      z-index:15;
+      min-width:220px;
+      display:none;
     }
     .sort-menu.show{display:block;}
     .sort-option{
-      width:100%;appearance:none;border:none;background:transparent;color:#e5e7eb;text-align:left;
-      padding:6px 8px;border-radius:10px;font-size:.82rem;cursor:pointer;
-      display:flex;justify-content:space-between;gap:8px;align-items:center;
+      width:100%;
+      appearance:none;
+      border:none;
+      background:transparent;
+      color:#e5e7eb;
+      text-align:left;
+      padding:6px 8px;
+      border-radius:10px;
+      font-size:.82rem;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
     }
     .sort-option span.hint{color:var(--text-muted);font-size:.76rem;}
-    .sort-option:hover{background:rgba(79,70,229,.2);}
-
-    .new-birbs-banner{
-      display:none;margin-bottom:10px;padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(74,222,128,.6);background:rgba(34,197,94,.16);
-      font-size:.8rem;color:#bbf7d0;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;
+    .sort-option:hover{
+      background:rgba(79,70,229,.2);
     }
-    .new-birbs-banner span.secondary{font-size:.78rem;color:#dcfce7;white-space:nowrap;}
 
-    .gallery-empty{
-      padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);
-      border:1px dashed rgba(148,163,184,.45);text-align:center;font-size:.86rem;color:var(--text-muted)
-    }
-    .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  /* ensure uniform spacing */
-  column-gap: 14px;
-  row-gap: 14px;
-}
+    .gallery-empty{padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);border:1px dashed rgba(148,163,184,.45);
+      text-align:center;font-size:.86rem;color:var(--text-muted)}
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
     .photo-card{
       background:radial-gradient(circle at top,rgba(79,70,229,.18) 0,transparent 55%),rgba(15,23,42,.96);
       border-radius:16px;border:1px solid rgba(148,163,184,.3);overflow:hidden;display:flex;flex-direction:column;min-height:230px;
-      content-visibility:auto;
-      contain: layout paint;
-      contain-intrinsic-size: 280px 260px;
     }
     .photo-thumb{position:relative;padding-top:66%;overflow:hidden}
     .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out}
@@ -257,16 +288,32 @@
     footer{margin-top:18px;font-size:.78rem;color:var(--text-muted);text-align:right;opacity:.8}
 
     .pager{
-      margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;
-      padding-top:10px;border-top:1px solid rgba(148,163,184,.18);
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding-top:10px;
+      border-top:1px solid rgba(148,163,184,.18);
     }
     .pager-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     .pager-info{font-size:.8rem;color:var(--text-muted)}
     .pager-btn{
-      border-radius:999px;border:1px solid rgba(129,140,248,.65);
-      background:rgba(79,70,229,.16);color:#c7d2fe;font-size:.8rem;padding:6px 10px;cursor:pointer;
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,.65);
+      background:rgba(79,70,229,.16);
+      color:#c7d2fe;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
     }
-    .pager-btn:disabled{opacity:.55;cursor:default;border-style:dashed;background:rgba(15,23,42,.85);color:#9ca3af}
+    .pager-btn:disabled{
+      opacity:.55;
+      cursor:default;
+      border-style:dashed;
+      background:rgba(15,23,42,.85);
+      color:#9ca3af;
+    }
     .pager-btn:hover:not(:disabled){background:rgba(79,70,229,.26)}
 
     .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
@@ -275,7 +322,8 @@
       background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:380px;width:100%;
       box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.5)
     }
-    .modal-header{margin-bottom:8px}
+    .modal-wide{max-width:980px;}
+    .modal-header{margin-bottom:8px;display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
     .modal-header h3{margin:0;font-size:1rem}
     .modal-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
     .modal-footer{margin-top:10px;display:flex;justify-content:flex-end;gap:8px}
@@ -313,7 +361,9 @@
       border-radius:14px;
       padding:8px 10px;
     }
-    .comment-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px;}
+    .comment-meta{
+      display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px;
+    }
     .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
     .comment-del{
       width:26px;height:26px;border-radius:999px;
@@ -357,7 +407,11 @@
     .species-panel-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
     .species-close-btn{border-radius:999px;border:1px solid rgba(148,163,184,.6);background:rgba(15,23,42,.9);color:var(--text-muted);font-size:.78rem;padding:4px 10px;cursor:pointer;white-space:nowrap}
     .species-close-btn:hover{background:rgba(15,23,42,1)}
-    .species-tally{margin-top:6px;font-size:.8rem;color:var(--text-muted);}
+    .species-tally{
+      margin-top:6px;
+      font-size:.8rem;
+      color:var(--text-muted);
+    }
     .species-tally span.seen{color:#bbf7d0;font-weight:600;}
     .species-tally span.unseen{color:#e5e7ebb0;}
     .species-search-row{margin-top:10px}
@@ -389,7 +443,7 @@
       background: radial-gradient(circle at top left, rgba(34,197,94,0.28) 0, transparent 60%), rgba(15,23,42,1);
     }
 
-    .rankings-btn, .collage-btn{
+    .rankings-btn,.gallery-btn{
       font-size:.78rem;
       padding:6px 10px;
       border-radius:999px;
@@ -399,7 +453,7 @@
       cursor:pointer;
       white-space:nowrap;
     }
-    .rankings-btn:hover, .collage-btn:hover{background:rgba(79,70,229,.28)}
+    .rankings-btn:hover,.gallery-btn:hover{background:rgba(79,70,229,.28)}
     .rankings-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto;padding-right:3px}
     .rankings-row{
       display:grid;
@@ -424,16 +478,63 @@
     .rankings-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
 
     .rules-box{
-      margin-top:10px;border-radius:14px;border:1px solid rgba(148,163,184,.25);
-      background:rgba(15,23,42,.9);padding:10px 12px;color:#e5e7eb;font-size:.86rem;line-height:1.35;
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(15,23,42,.9);
+      padding:10px 12px;
+      color:#e5e7eb;
+      font-size:.86rem;
+      line-height:1.35;
     }
     .rules-box code{
-      display:inline-block;margin-top:6px;padding:4px 8px;border-radius:10px;
-      background:rgba(79,70,229,.14);border:1px solid rgba(129,140,248,.35);
-      color:#e5e7eb;font-size:.82rem;
+      display:inline-block;
+      margin-top:6px;
+      padding:4px 8px;
+      border-radius:10px;
+      background:rgba(79,70,229,.14);
+      border:1px solid rgba(129,140,248,.35);
+      color:#e5e7eb;
+      font-size:.82rem;
     }
     .rules-list{margin:8px 0 0;padding-left:18px;color:var(--text-muted)}
     .rules-list li{margin:4px 0}
+
+    .collage-scroll{
+      max-height:80vh;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.18);
+      background:rgba(15,23,42,.55);
+    }
+    .collage-grid{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:12px;
+      align-content:start;
+    }
+    @media (max-width:520px){ .collage-grid{grid-template-columns:repeat(4,minmax(0,1fr));} }
+    @media (max-width:380px){ .collage-grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
+    .collage-tile{
+      position:relative;
+      width:100%;
+      padding-top:100%;
+      overflow:hidden;
+      border:0;
+      background:transparent;
+      border-radius:0;
+      margin:0;
+      display:block;
+      cursor:pointer;
+    }
+    .collage-tile img{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      display:block;
+    }
 
     @media (hover:none) and (pointer:coarse){
       body{ background: var(--bg); }
@@ -449,57 +550,12 @@
       .btn-primary{ transition:none !important; }
       .dropzone{ transition:none !important; }
       .parrot{ transition:none !important; }
+      .title-pill-dot.live-new{ animation:none !important; }
     }
-
-    .modal.collage-modal{
-      max-width: 920px;
-      width: min(920px, calc(100vw - 32px));
-      max-height: min(88vh, 820px);
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
-    }
-    .collage-grid{
-      flex:1 1 auto;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-      margin-top:10px;
-      border-radius:16px;
-      background: rgba(15,23,42,.65);
-      padding:6px;
-      display:grid;
-      grid-template-columns:repeat(5, minmax(0,1fr));
-      gap:6px;
-    }
-    @media (max-width: 900px){ .collage-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); } }
-    @media (max-width: 520px){ .collage-grid{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
-    .collage-item{
-      position:relative;
-      aspect-ratio: 1 / 1;
-      overflow:hidden;
-      border-radius:12px;
-      cursor:pointer;
-      background: rgba(15,23,42,.9);
-      border:none;
-      padding:0;
-    }
-    .collage-item img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform:translateZ(0);
-    }
-    .collage-meta{
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-    .collage-meta #collageCount{
-      font-size:.8rem;
-      color:var(--text-muted);
+    .photo-card{
+      content-visibility:auto;
+      contain: layout paint;
+      contain-intrinsic-size: 280px 260px;
     }
   </style>
 </head>
@@ -510,7 +566,10 @@
       <div class="title-row">
         <img src="Logo.png" alt="Hornithological Baes logo" class="logo">
         <div>
-          <div class="title-pill"><span class="title-pill-dot"></span>Live birb photo log</div>
+          <button type="button" id="liveIndicatorBtn" class="title-pill" aria-label="Live birb status">
+            <span id="liveDot" class="title-pill-dot live-stale"></span>
+            <span id="liveText">LIVE BIRB PHOTO LOG</span>
+          </button>
           <h1>Hornithological Baes</h1>
         </div>
       </div>
@@ -522,9 +581,9 @@
     <section class="card">
       <div class="card-header">
         <h2>Add a sighting</h2>
-        <div class="header-actions">
+        <div class="card-header-actions">
           <button type="button" id="openRankingsBtn" class="rankings-btn">Rankings</button>
-          <button type="button" id="openCollageBtn" class="collage-btn">Gallery</button>
+          <button type="button" id="openCollageBtn" class="gallery-btn">Gallery</button>
         </div>
       </div>
 
@@ -537,7 +596,7 @@
         </div>
         <strong>Drop a birb photo</strong>
         <p>or click to browse – JPG, PNG, HEIC etc.</p>
-        <div class="chip"><span class="chip-dot"></span>Tip: keep the bird centred & in focus — it usually scores higher</div>
+        <div class="chip"><span class="chip-dot"></span>Tip: keep the bird centred & in focus — it helps you score higher</div>
         <input id="fileInput" class="hidden-input" type="file" accept="image/*" />
       </div>
 
@@ -576,7 +635,7 @@
       <div id="successMsg" class="success-message" style="display:none;"></div>
     </section>
 
-    <section class="card">
+    <section id="galleryCard" class="card">
       <div class="gallery-header">
         <div>
           <h2>Latest birbs</h2>
@@ -613,7 +672,6 @@
         </div>
       </div>
 
-      <div id="newBirbsBanner" class="new-birbs-banner" style="display:none;"></div>
       <div id="galleryEmpty" class="gallery-empty" style="display:none;">
         No birb photos yet. Upload the very first sighting and start the flock.
       </div>
@@ -642,7 +700,9 @@
       </div>
       <button type="button" id="closeSpeciesOverlayBtn" class="species-close-btn">Close</button>
     </div>
-    <div id="speciesTally" class="species-tally">Species checklist loading…</div>
+    <div id="speciesTally" class="species-tally">
+      Species checklist loading…
+    </div>
     <div class="species-search-row">
       <input id="speciesSearch" type="text" placeholder="Search Australian birb species…" />
     </div>
@@ -656,8 +716,11 @@
 <div id="ratingModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
-      <h3>Rate this birb</h3>
-      <p>Pick a score out of 10.</p>
+      <div>
+        <h3>Rate this birb</h3>
+        <p>Pick a score out of 10.</p>
+      </div>
+      <button id="ratingModalCancel" class="modal-cancel" type="button">Cancel</button>
     </div>
     <div class="rating-options">
       <button class="rating-option" data-value="1"><span class="emoji">🦜</span><span>1</span></button>
@@ -671,25 +734,24 @@
       <button class="rating-option" data-value="9"><span class="emoji">🦜</span><span>9</span></button>
       <button class="rating-option" data-value="10"><span class="emoji">🦜</span><span>10</span></button>
     </div>
-    <div class="modal-footer">
-      <button id="ratingModalCancel" class="modal-cancel">Cancel</button>
-    </div>
   </div>
 </div>
 
 <div id="commentsModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="commentsTitle">Comments</h3>
-      <p id="commentsSubtitle">Comments for this sighting (only visible when opened).</p>
+      <div>
+        <h3 id="commentsTitle">Comments</h3>
+        <p id="commentsSubtitle">Comments for this sighting (only visible when opened).</p>
+      </div>
+      <button id="commentsClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div id="commentsList" class="comments-list"></div>
 
     <div class="comment-compose">
       <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add a comment…"></textarea>
-      <div class="modal-footer" style="justify-content:space-between;">
-        <button id="commentsClose" class="modal-cancel">Close</button>
+      <div class="modal-footer" style="justify-content:flex-end;">
         <button id="commentSend" class="comment-send">Post comment</button>
       </div>
     </div>
@@ -699,13 +761,15 @@
 <div id="rankingsModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
-      <h3>Rankings</h3>
-      <p>Points by uploader (rating × rarity multiplier).</p>
+      <div>
+        <h3>Rankings</h3>
+        <p>Points by uploader (rating × rarity multiplier).</p>
+      </div>
+      <button id="rankingsClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div class="modal-footer" style="justify-content:space-between;margin-top:6px;">
       <button id="rankingsRulesBtn" class="modal-accent" type="button">Scoring rules</button>
-      <button id="rankingsClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div id="rankingsList" class="rankings-list" style="margin-top:10px;">
@@ -720,8 +784,11 @@
 <div id="scoringModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
-      <h3>Scoring rules</h3>
-      <p>How points are calculated.</p>
+      <div>
+        <h3>Scoring rules</h3>
+        <p>How points are calculated.</p>
+      </div>
+      <button id="scoringClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div class="rules-box">
@@ -738,25 +805,21 @@
         <li>Total points = sum of all your post points</li>
       </ul>
     </div>
-
-    <div class="modal-footer">
-      <button id="scoringClose" class="modal-cancel" type="button">Close</button>
-    </div>
   </div>
 </div>
 
 <div id="collageModalBackdrop" class="modal-backdrop">
-  <div class="modal collage-modal">
+  <div class="modal modal-wide">
     <div class="modal-header">
-      <h3>Birb Gallery</h3>
-      <p>Tap an image to view full screen. Tap again to close.</p>
+      <div>
+        <h3>Birb collage</h3>
+        <p>Tap a photo to view full screen. Tap again to return.</p>
+      </div>
+      <button id="collageCloseTop" class="modal-cancel" type="button">Close</button>
     </div>
 
-    <div id="collageGrid" class="collage-grid"></div>
-
-    <div class="collage-meta">
-      <div id="collageCount">Loading…</div>
-      <button id="collageClose" class="modal-cancel" type="button">Close</button>
+    <div class="collage-scroll">
+      <div id="collageGrid" class="collage-grid"></div>
     </div>
   </div>
 </div>
@@ -789,7 +852,6 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // Device ID
   const deviceKey = "hb_device_id_v1";
   let deviceId = localStorage.getItem(deviceKey);
   if (!deviceId) {
@@ -801,14 +863,20 @@
   let storedUploader = "";
   try { storedUploader = (localStorage.getItem(uploaderKey) || "").trim(); } catch { storedUploader = ""; }
 
+  // Last-seen timestamp for "new birb" pulse
   const lastSeenKey = "hb_last_seen_ts_v1";
   let lastSeenTs = 0;
-  try { const raw = localStorage.getItem(lastSeenKey); if (raw) lastSeenTs = parseInt(raw, 10) || 0; } catch { lastSeenTs = 0; }
+  try {
+    const raw = localStorage.getItem(lastSeenKey);
+    if (raw) lastSeenTs = parseInt(raw, 10) || 0;
+  } catch { lastSeenTs = 0; }
+
   let newestTs = 0;
   let newSinceLastSeenCount = 0;
   let initialSnapshotHandled = false;
+  let newestPhotoId = null;
 
-  // Species JSON and rarity helpers
+  // Species
   let SPECIES = [];
   let SPECIES_INDEX = new Map();
   let speciesLoaded = false;
@@ -837,7 +905,6 @@
     };
     return map[v] || "unknown";
   }
-
   function rarityLabel(token) {
     switch (token) {
       case "super_rare": return "Super rare";
@@ -848,26 +915,12 @@
       default: return "";
     }
   }
-
   function getRarityForSpecies(speciesName) {
     const entry = SPECIES_INDEX.get(normalizeName(speciesName));
     if (!entry) return null;
     const rarity = normalizeRarity(entry.rarity);
     if (!rarity || rarity === "unknown") return null;
     return rarity;
-  }
-
-  // ✅ FIX: scoring constants declared BEFORE any render/onSnapshot usage
-  const POINTS_BY_RARITY = {
-    super_rare: 25,
-    rare: 15,
-    uncommon: 8,
-    common: 4,
-    very_common: 1
-  };
-  function multiplierForSpecies(speciesName){
-    const rarity = getRarityForSpecies(speciesName);
-    return POINTS_BY_RARITY[rarity] ?? 1;
   }
 
   async function loadSpeciesJson() {
@@ -907,6 +960,10 @@
   const photosCol = collection(db, "birdPhotos");
 
   // DOM
+  const liveIndicatorBtn = document.getElementById("liveIndicatorBtn");
+  const liveDot = document.getElementById("liveDot");
+  const liveText = document.getElementById("liveText");
+
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("fileInput");
   const preview = document.getElementById("preview");
@@ -922,7 +979,6 @@
   const galleryGrid = document.getElementById("galleryGrid");
   const galleryEmpty = document.getElementById("galleryEmpty");
   const galleryCountLabel = document.getElementById("galleryCountLabel");
-  const newBirbsBanner = document.getElementById("newBirbsBanner");
 
   const pager = document.getElementById("pager");
   const prevPageBtn = document.getElementById("prevPageBtn");
@@ -930,7 +986,6 @@
   const pageInfo = document.getElementById("pageInfo");
 
   const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
-  const ratingModalCancel = document.getElementById("ratingModalCancel");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
 
   const commentsModalBackdrop = document.getElementById("commentsModalBackdrop");
@@ -958,12 +1013,6 @@
   const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
   const scoringClose = document.getElementById("scoringClose");
 
-  const openCollageBtn = document.getElementById("openCollageBtn");
-  const collageModalBackdrop = document.getElementById("collageModalBackdrop");
-  const collageGrid = document.getElementById("collageGrid");
-  const collageClose = document.getElementById("collageClose");
-  const collageCount = document.getElementById("collageCount");
-
   const sortModeBtn = document.getElementById("sortModeBtn");
   const sortModeLabel = document.getElementById("sortModeLabel");
   const sortMenu = document.getElementById("sortMenu");
@@ -971,11 +1020,56 @@
   const imageFsOverlay = document.getElementById("imageFullscreenOverlay");
   const imageFsImg = document.getElementById("imageFullscreenImg");
 
+  const openCollageBtn = document.getElementById("openCollageBtn");
+  const collageModalBackdrop = document.getElementById("collageModalBackdrop");
+  const collageCloseTop = document.getElementById("collageCloseTop");
+  const collageGrid = document.getElementById("collageGrid");
+
+  // Prefill uploader if stored
   if (storedUploader) {
     uploadedByInput.value = storedUploader;
     uploadedByInput.readOnly = true;
   }
 
+  // Live indicator helpers
+  function setLiveIndicator(hasNew) {
+    if (hasNew) {
+      liveDot.classList.add("live-new");
+      liveDot.classList.remove("live-stale");
+      liveIndicatorBtn.classList.add("has-new");
+      liveText.textContent = "NEW BIRB ADDED, TAP HERE!";
+    } else {
+      liveDot.classList.remove("live-new");
+      liveDot.classList.add("live-stale");
+      liveIndicatorBtn.classList.remove("has-new");
+      liveText.textContent = "LIVE BIRB PHOTO LOG";
+    }
+  }
+  setLiveIndicator(false);
+
+  // Clicking the pill: jump to newest and mark as seen
+  liveIndicatorBtn.addEventListener("click", () => {
+    if (!(newSinceLastSeenCount > 0) || !newestTs) return;
+
+    // Make sure we're showing newest first, page 1
+    setSortMode("newest");
+
+    requestAnimationFrame(() => {
+      const target = newestPhotoId
+        ? document.querySelector(`.photo-card[data-photo-id="${newestPhotoId}"]`)
+        : null;
+
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      else document.getElementById("galleryCard")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    lastSeenTs = newestTs;
+    try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
+    newSinceLastSeenCount = 0;
+    setLiveIndicator(false);
+  });
+
+  // Merlin opener
   function openMerlinSmart() {
     const merlinWeb = "https://merlin.allaboutbirds.org/";
     const iosStore = "https://apps.apple.com/au/app/merlin-bird-id-by-cornell-lab/id773457673";
@@ -1041,6 +1135,48 @@
     imageFsImg.src = "";
   }
   imageFsOverlay.addEventListener("click", () => closeImageFullscreen());
+
+  function renderCollage() {
+    collageGrid.innerHTML = "";
+    if (!Array.isArray(currentPhotos) || !currentPhotos.length) {
+      collageGrid.innerHTML = `<div style="color:#9ca3af;font-size:.85rem;padding:6px 2px;">No birb photos yet.</div>`;
+      return;
+    }
+    for (const { data } of currentPhotos) {
+      const url = data?.imageUrl || "";
+      if (!url) continue;
+
+      const tile = document.createElement("button");
+      tile.type = "button";
+      tile.className = "collage-tile";
+      tile.dataset.url = url;
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.alt = data?.birdName ? String(data.birdName) : "Birb photo";
+
+      tile.appendChild(img);
+      collageGrid.appendChild(tile);
+    }
+  }
+  function openCollage() {
+    collageModalBackdrop.classList.add("show");
+    renderCollage();
+  }
+  function closeCollage() {
+    collageModalBackdrop.classList.remove("show");
+  }
+  openCollageBtn.addEventListener("click", openCollage);
+  collageCloseTop.addEventListener("click", closeCollage);
+  collageModalBackdrop.addEventListener("click", (e) => { if (e.target === collageModalBackdrop) closeCollage(); });
+  collageGrid.addEventListener("click", (e) => {
+    const tile = e.target.closest(".collage-tile");
+    if (!tile) return;
+    const url = tile.dataset.url;
+    if (url) openImageFullscreen(url);
+  });
 
   function handleFiles(files) {
     if (!files || !files.length) return;
@@ -1117,7 +1253,6 @@
 
     const birdName = birdNameInput.value.trim();
     const location = locationInput.value.trim();
-
     let uploadedBy = (uploadedByInput.value || "").trim();
 
     if (!selectedFile) return showError("Select or drop a birb photo first.");
@@ -1190,18 +1325,16 @@
   function showSuccess(msg){ successMsg.textContent = msg; successMsg.style.display = "block"; setTimeout(()=>successMsg.style.display="none",3500); }
   function hideSuccess(){ successMsg.textContent = ""; successMsg.style.display = "none"; }
 
-  function getCreatedDate(data) {
-    if (data.createdAt && data.createdAt.toDate) return data.createdAt.toDate();
-    return null;
-  }
-
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
+
   onSnapshot(qPhotos, (snapshot) => {
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
 
     latestDocsForRankings = docs;
     currentPhotos = docs;
+
+    if (collageModalBackdrop.classList.contains("show")) renderCollage();
 
     if (!storedUploader) {
       const mine = docs.find(x => x?.data?.ownerDeviceId === deviceId && (x?.data?.uploadedBy || "").trim());
@@ -1215,18 +1348,25 @@
       }
     }
 
+    // compute newest + "since last seen"
     let maxTs = 0;
+    let maxId = null;
     let countNew = 0;
-    docs.forEach(({ data }) => {
+
+    docs.forEach(({ id, data }) => {
       const d = getCreatedDate(data);
       if (!d) return;
       const t = d.getTime();
-      if (t > maxTs) maxTs = t;
+      if (t > maxTs || (t === maxTs && id && maxId && id < maxId)) {
+        maxTs = t;
+        maxId = id;
+      }
       if (lastSeenTs && t > lastSeenTs) countNew++;
     });
 
     if (!initialSnapshotHandled) {
       initialSnapshotHandled = true;
+      // first ever visit on this device: treat as "seen"
       if (!lastSeenTs && maxTs) {
         lastSeenTs = maxTs;
         try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
@@ -1235,8 +1375,10 @@
     }
 
     newestTs = maxTs;
+    newestPhotoId = maxId;
     newSinceLastSeenCount = countNew;
-    updateNewBirbsBanner();
+
+    setLiveIndicator(newSinceLastSeenCount > 0);
 
     totalPages = Math.max(1, Math.ceil(currentPhotos.length / PAGE_SIZE));
     if (currentPage > totalPages - 1) currentPage = totalPages - 1;
@@ -1244,46 +1386,14 @@
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
     }
-    if (collageModalBackdrop.classList.contains("show")) {
-      renderCollage();
-    }
 
     renderGallery();
   });
 
-  function updateNewBirbsBanner() {
-    if (!newBirbsBanner) return;
-
-    if (!newSinceLastSeenCount || newSinceLastSeenCount <= 0) {
-      newBirbsBanner.style.display = "none";
-      newBirbsBanner.textContent = "";
-      return;
-    }
-
-    const label = newSinceLastSeenCount === 1
-      ? "1 new birb sighting since you last visited"
-      : `${newSinceLastSeenCount} new birb sightings since you last visited`;
-
-    newBirbsBanner.innerHTML =
-      `<span>${escapeHtml(label)}</span><span class="secondary">Tap to jump to latest</span>`;
-    newBirbsBanner.style.display = "flex";
+  function getCreatedDate(data) {
+    if (data.createdAt && data.createdAt.toDate) return data.createdAt.toDate();
+    return null;
   }
-
-  if (newBirbsBanner) {
-    newBirbsBanner.addEventListener("click", () => {
-      if (newestTs) {
-        lastSeenTs = newestTs;
-        try { localStorage.setItem(lastSeenKey, String(lastSeenTs)); } catch {}
-      }
-      newSinceLastSeenCount = 0;
-      updateNewBirbsBanner();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") updateNewBirbsBanner();
-  });
 
   function updateSpeciesTally() {
     if (!speciesTallyEl) return;
@@ -1340,12 +1450,24 @@
 
     const docs = currentPhotos.slice();
 
-    const rarityOrder = { super_rare: 0, rare: 1, uncommon: 2, common: 3, very_common: 4, none: 5 };
+    const rarityOrder = {
+      super_rare: 0,
+      rare: 1,
+      uncommon: 2,
+      common: 3,
+      very_common: 4,
+      none: 5
+    };
 
     function avgRatingOf(data) {
       const total = Number(data.ratingTotal || 0);
       const count = Number(data.ratingCount || 0);
       return count > 0 ? total / count : 0;
+    }
+
+    function multiplierForSpeciesInternal(speciesName){
+      const rarity = getRarityForSpecies(speciesName);
+      return POINTS_BY_RARITY[rarity] ?? 1;
     }
 
     docs.sort((a, b) => {
@@ -1360,8 +1482,8 @@
       const avgA = avgRatingOf(da);
       const avgB = avgRatingOf(db);
 
-      const multA = multiplierForSpecies(da.birdName || "");
-      const multB = multiplierForSpecies(db.birdName || "");
+      const multA = multiplierForSpeciesInternal(da.birdName || "");
+      const multB = multiplierForSpeciesInternal(db.birdName || "");
       const valA = avgA * multA;
       const valB = avgB * multB;
 
@@ -1370,8 +1492,14 @@
       const roA = rarityOrder[rA] ?? rarityOrder.none;
       const roB = rarityOrder[rB] ?? rarityOrder.none;
 
-      if (sortMode === "newest") return tsB - tsA;
-      if (sortMode === "oldest") return tsA - tsB;
+      if (sortMode === "newest") {
+        if (tsA !== tsB) return tsB - tsA;
+        return 0;
+      }
+      if (sortMode === "oldest") {
+        if (tsA !== tsB) return tsA - tsB;
+        return 0;
+      }
       if (sortMode === "highestRated") {
         if (avgB !== avgA) return avgB - avgA;
         const cntA = Number(da.ratingCount || 0);
@@ -1451,7 +1579,15 @@
         <div class="photo-thumb">
           <img src="${imgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" decoding="async" />
           ${rarityHtml}
-          <button type="button" class="fullscreen-btn" data-full-url="${imgUrl}" title="View full screen" aria-label="View full screen">⤢</button>
+          <button
+            type="button"
+            class="fullscreen-btn"
+            data-full-url="${imgUrl}"
+            title="View full screen"
+            aria-label="View full screen"
+          >
+            ⤢
+          </button>
         </div>
         <div class="photo-body">
           <div class="photo-title">${escapeHtml(birdName)}</div>
@@ -1485,24 +1621,31 @@
   }
 
   prevPageBtn.addEventListener("click", () => {
-    if (currentPage > 0) { currentPage -= 1; renderGallery(); }
+    if (currentPage > 0) {
+      currentPage -= 1;
+      renderGallery();
+    }
   });
   nextPageBtn.addEventListener("click", () => {
-    if (currentPage < totalPages - 1) { currentPage += 1; renderGallery(); }
+    if (currentPage < totalPages - 1) {
+      currentPage += 1;
+      renderGallery();
+    }
   });
 
   function openRatingModal(photoId){
     ratingTargetPhotoId = photoId;
+
     ratingOptionButtons.forEach(b => b.classList.remove("selected"));
     const prev = localRatings[photoId];
     if (prev) {
       const btn = ratingModalBackdrop.querySelector(`.rating-option[data-value="${prev}"]`);
       if (btn) btn.classList.add("selected");
     }
+
     ratingModalBackdrop.classList.add("show");
   }
   function closeRatingModal(){ ratingTargetPhotoId = null; ratingModalBackdrop.classList.remove("show"); }
-  ratingModalCancel.addEventListener("click", closeRatingModal);
   ratingModalBackdrop.addEventListener("click", (e) => { if (e.target === ratingModalBackdrop) closeRatingModal(); });
 
   ratingOptionButtons.forEach(btn => {
@@ -1612,7 +1755,6 @@
     try {
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
-
       await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) });
 
       commentInput.value = "";
@@ -1783,6 +1925,19 @@
     closeSpeciesOverlay();
   });
 
+  const POINTS_BY_RARITY = {
+    super_rare: 25,
+    rare: 15,
+    uncommon: 8,
+    common: 4,
+    very_common: 1
+  };
+
+  function multiplierForSpecies(speciesName){
+    const rarity = getRarityForSpecies(speciesName);
+    return POINTS_BY_RARITY[rarity] ?? 1;
+  }
+
   function getTimeMsForDoc(d){
     const dt = getCreatedDate(d);
     return dt ? dt.getTime() : 0;
@@ -1878,44 +2033,6 @@
   scoringClose.addEventListener("click", closeScoringRules);
   scoringModalBackdrop.addEventListener("click", (e) => { if (e.target === scoringModalBackdrop) closeScoringRules(); });
 
-  function renderCollage(){
-    collageGrid.innerHTML = "";
-    const total = currentPhotos.length;
-    collageCount.textContent = total ? `${total} image${total === 1 ? "" : "s"}` : "No images yet.";
-
-    if (!total) {
-      collageGrid.innerHTML = `<div class="comment-empty">No birb photos yet.</div>`;
-      return;
-    }
-
-    for (const { data } of currentPhotos) {
-      const url = data?.imageUrl || "";
-      if (!url) continue;
-
-      const item = document.createElement("button");
-      item.type = "button";
-      item.className = "collage-item";
-      item.dataset.fullUrl = url;
-      item.title = (data?.birdName || "Birb") + " (tap to view)";
-      item.innerHTML = `<img src="${url}" alt="${escapeHtml(data?.birdName || "Birb")}" loading="lazy" decoding="async" />`;
-      collageGrid.appendChild(item);
-    }
-  }
-
-  function openCollage(){ collageModalBackdrop.classList.add("show"); renderCollage(); }
-  function closeCollage(){ collageModalBackdrop.classList.remove("show"); }
-
-  openCollageBtn.addEventListener("click", openCollage);
-  collageClose.addEventListener("click", closeCollage);
-  collageModalBackdrop.addEventListener("click", (e) => { if (e.target === collageModalBackdrop) closeCollage(); });
-
-  collageGrid.addEventListener("click", (e) => {
-    const item = e.target.closest(".collage-item");
-    if (!item) return;
-    const url = item.dataset.fullUrl;
-    if (url) openImageFullscreen(url);
-  });
-
   function setSortMode(mode) {
     sortMode = mode;
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
@@ -1939,8 +2056,8 @@
 
   document.addEventListener("click", (e) => {
     if (!sortMenu.classList.contains("show")) return;
-    const insideBtn = sortModeBtn.contains(e.target);
-    const insideMenu = sortMenu.contains(e.target);
+    const insideBtn = e.target === sortModeBtn || sortModeBtn.contains(e.target);
+    const insideMenu = e.target === sortMenu || sortMenu.contains(e.target);
     if (!insideBtn && !insideMenu) sortMenu.classList.remove("show");
   });
 
