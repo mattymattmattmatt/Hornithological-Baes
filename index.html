@@ -1037,58 +1037,6 @@
   try { const stored = localStorage.getItem(ratingsKey); if (stored) localRatings = JSON.parse(stored); } catch { localRatings = {}; }
   function saveLocalRatings(){ try { localStorage.setItem(ratingsKey, JSON.stringify(localRatings)); } catch {} }
 
-  // ====== #4: Avoid re-rendering while user is scrolling + throttle renders ======
-  const isCoarsePointer = window.matchMedia && window.matchMedia("(hover:none) and (pointer:coarse)").matches;
-
-  let renderScheduled = false;
-  function scheduleRender() {
-    if (renderScheduled) return;
-    renderScheduled = true;
-    requestAnimationFrame(() => {
-      renderScheduled = false;
-      renderGallery();
-    });
-  }
-
-  let rankingsScheduled = false;
-  function scheduleRankings() {
-    if (rankingsScheduled) return;
-    rankingsScheduled = true;
-    requestAnimationFrame(() => {
-      rankingsScheduled = false;
-      if (rankingsModalBackdrop.classList.contains("show")) {
-        renderRankings(buildRankings(latestDocsForRankings));
-      }
-    });
-  }
-
-  let isUserScrolling = false;
-  let scrollIdleTimer = null;
-  let pendingSnapshotDocs = null;
-  let pendingSnapshotDirty = false;
-
-  function flushPendingSnapshotIfAny() {
-    if (!pendingSnapshotDirty || !pendingSnapshotDocs) return;
-    const docs = pendingSnapshotDocs;
-    pendingSnapshotDocs = null;
-    pendingSnapshotDirty = false;
-    applySnapshotNow(docs);
-  }
-
-  // Mark "scrolling" and flush pending snapshot after scroll settles
-  window.addEventListener("scroll", () => {
-    if (!isCoarsePointer) return; // mainly needed on phones
-    isUserScrolling = true;
-    if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
-    scrollIdleTimer = setTimeout(() => {
-      isUserScrolling = false;
-      flushPendingSnapshotIfAny();
-      // If there was no pending snapshot, still re-render once after scroll settles
-      scheduleRender();
-      scheduleRankings();
-    }, 140);
-  }, { passive: true });
-
   // Fullscreen helpers
   function openImageFullscreen(url) {
     if (!url) return;
@@ -1123,7 +1071,7 @@
   dropzone.addEventListener("drop", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
   fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
 
-  // Image downscale (client-side)
+  // Image downscale (client-side) to reduce grey-screen risk & improve responsiveness
   async function downscaleImageFile(file, maxDim = 2048, quality = 0.82) {
     const mimeOut = "image/jpeg";
 
@@ -1180,6 +1128,7 @@
     const birdName = birdNameInput.value.trim();
     const location = locationInput.value.trim();
 
+    // Enforce stored uploader if available; otherwise let first upload set it
     let uploadedBy = (uploadedByInput.value || "").trim();
 
     if (!selectedFile) return showError("Select or drop a birb photo first.");
@@ -1197,6 +1146,7 @@
     statusText.textContent = "Downscaling image (for speed) and saving to the database…";
 
     try {
+      // Downscale before upload
       const down = await downscaleImageFile(selectedFile, 2048, 0.82);
       const fileId = `${Date.now()}_${Math.random().toString(16).slice(2)}.jpg`;
       const storagePath = `birdPhotos/${fileId}`;
@@ -1218,6 +1168,7 @@
         ownerDeviceId: deviceId
       });
 
+      // Persist uploader name once we have one
       if (!storedUploader && uploadedBy) {
         storedUploader = uploadedBy;
         try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
@@ -1259,17 +1210,6 @@
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
 
-    // If user is actively scrolling on phone, defer applying snapshot to avoid jank
-    if (isCoarsePointer && isUserScrolling) {
-      pendingSnapshotDocs = docs;
-      pendingSnapshotDirty = true;
-      return;
-    }
-
-    applySnapshotNow(docs);
-  });
-
-  function applySnapshotNow(docs) {
     latestDocsForRankings = docs;
     currentPhotos = docs;
 
@@ -1314,10 +1254,12 @@
     totalPages = Math.max(1, Math.ceil(currentPhotos.length / PAGE_SIZE));
     if (currentPage > totalPages - 1) currentPage = totalPages - 1;
 
-    // Throttled renders
-    if (rankingsModalBackdrop.classList.contains("show")) scheduleRankings();
-    scheduleRender();
-  }
+    if (rankingsModalBackdrop.classList.contains("show")) {
+      renderRankings(buildRankings(latestDocsForRankings));
+    }
+
+    renderGallery();
+  });
 
   function getCreatedDate(data) {
     if (data.createdAt && data.createdAt.toDate) return data.createdAt.toDate();
@@ -1350,6 +1292,7 @@
       `<span class="seen">Seen: ${seen}</span> · <span class="unseen">Unseen: ${unseen}</span>`;
   }
 
+  // "New birbs since you last visited" banner update
   function updateNewBirbsBanner() {
     if (!newBirbsBanner) return;
 
@@ -1587,17 +1530,17 @@
     if (speciesOverlay.classList.contains("show")) renderSpeciesList(speciesSearch.value);
   }
 
-  // Pager controls (no auto scroll) -> throttle render
+  // Pager controls (no auto scroll)
   prevPageBtn.addEventListener("click", () => {
     if (currentPage > 0) {
       currentPage -= 1;
-      scheduleRender();
+      renderGallery();
     }
   });
   nextPageBtn.addEventListener("click", () => {
     if (currentPage < totalPages - 1) {
       currentPage += 1;
-      scheduleRender();
+      renderGallery();
     }
   });
 
@@ -1605,10 +1548,11 @@
   function openRatingModal(photoId){
     ratingTargetPhotoId = photoId;
 
+    // highlight previous rating choice
     ratingOptionButtons.forEach(b => b.classList.remove("selected"));
     const prev = localRatings[photoId];
     if (prev) {
-      const btn = ratingModalBackdrop.querySelector(\`.rating-option[data-value="\${prev}"]\`);
+      const btn = ratingModalBackdrop.querySelector(`.rating-option[data-value="${prev}"]`);
       if (btn) btn.classList.add("selected");
     }
 
@@ -1658,10 +1602,10 @@
     closeCommentsModal();
     commentsTargetPhotoId = photoId;
 
-    commentsTitle.textContent = \`Comments · \${birdName || "Birb"}\`;
+    commentsTitle.textContent = `Comments · ${birdName || "Birb"}`;
     commentsSubtitle.textContent = "Comments for this sighting (only visible when opened).";
     commentInput.value = "";
-    commentsList.innerHTML = \`<div class="comment-empty">Loading comments…</div>\`;
+    commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
     commentsModalBackdrop.classList.add("show");
 
     const commentsCol = collection(db, "birdPhotos", photoId, "comments");
@@ -1675,7 +1619,7 @@
 
         commentsList.innerHTML = "";
         if (!items.length) {
-          commentsList.innerHTML = \`<div class="comment-empty">No comments yet. Be the first.</div>\`;
+          commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
           return;
         }
 
@@ -1699,7 +1643,7 @@
       },
       (err) => {
         console.error("Comments listener error:", err);
-        commentsList.innerHTML = \`<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>\`;
+        commentsList.innerHTML = `<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>`;
       }
     );
   }
@@ -1729,6 +1673,7 @@
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
 
+      // maintain commentCount on parent doc for the button badge
       await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) });
 
       commentInput.value = "";
@@ -2023,7 +1968,7 @@
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
     sortMenu.classList.remove("show");
     currentPage = 0; // reset to first page on sort
-    scheduleRender();
+    renderGallery();
   }
 
   sortModeBtn.addEventListener("click", (e) => {
