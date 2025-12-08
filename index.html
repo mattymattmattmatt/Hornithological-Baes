@@ -521,6 +521,49 @@
       contain: layout paint;
       contain-intrinsic-size: 280px 260px;
     }
+
+    /* ===== Collage modal ===== */
+    .collage-grid{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns:repeat(5, minmax(0, 1fr));
+      gap:0; /* borderless */
+      overflow:hidden;
+      border-radius:16px;
+    }
+    @media (max-width:900px){
+      .collage-grid{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width:600px){
+      .collage-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    }
+    .collage-item{
+      position:relative;
+      width:100%;
+      aspect-ratio:1/1;
+      overflow:hidden;
+      background:rgba(15,23,42,.6);
+      cursor:pointer;
+      border:none;
+      padding:0;
+      display:block;
+    }
+    .collage-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transform:scale(1.01); /* hides tiny seams on some browsers */
+    }
+    .collage-meta{
+      margin-top:8px;
+      font-size:.78rem;
+      color:var(--text-muted);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
   </style>
 </head>
 <body>
@@ -542,7 +585,10 @@
     <section class="card">
       <div class="card-header">
         <h2>Add a sighting</h2>
-        <button type="button" id="openRankingsBtn" class="rankings-btn">Rankings</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" id="openRankingsBtn" class="rankings-btn">Rankings</button>
+          <button type="button" id="openCollageBtn" class="rankings-btn">Gallery</button>
+        </div>
       </div>
 
       <div id="dropzone" class="dropzone">
@@ -770,6 +816,23 @@
   </div>
 </div>
 
+<!-- Collage modal -->
+<div id="collageModalBackdrop" class="modal-backdrop">
+  <div class="modal" style="max-width:920px;">
+    <div class="modal-header">
+      <h3>Birb Gallery</h3>
+      <p>Tap an image to view full screen. Tap again to close.</p>
+    </div>
+
+    <div id="collageGrid" class="collage-grid"></div>
+
+    <div class="collage-meta">
+      <div id="collageCount">Loading…</div>
+      <button id="collageClose" class="modal-cancel" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Fullscreen image overlay -->
 <div id="imageFullscreenOverlay" class="image-fullscreen-overlay">
   <img id="imageFullscreenImg" src="" alt="Full-size birb">
@@ -960,6 +1023,13 @@
   const rankingsRulesBtn = document.getElementById("rankingsRulesBtn");
   const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
   const scoringClose = document.getElementById("scoringClose");
+
+  // Collage DOM
+  const openCollageBtn = document.getElementById("openCollageBtn");
+  const collageModalBackdrop = document.getElementById("collageModalBackdrop");
+  const collageGrid = document.getElementById("collageGrid");
+  const collageClose = document.getElementById("collageClose");
+  const collageCount = document.getElementById("collageCount");
 
   // Sorting DOM
   const sortModeBtn = document.getElementById("sortModeBtn");
@@ -1256,6 +1326,10 @@
 
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
+    }
+
+    if (collageModalBackdrop.classList.contains("show")) {
+      renderCollage();
     }
 
     renderGallery();
@@ -1960,6 +2034,57 @@
   scoringClose.addEventListener("click", closeScoringRules);
   scoringModalBackdrop.addEventListener("click", (e) => {
     if (e.target === scoringModalBackdrop) closeScoringRules();
+  });
+
+  // Collage (Gallery) modal
+  function openCollage(){
+    collageModalBackdrop.classList.add("show");
+    renderCollage();
+  }
+  function closeCollage(){
+    collageModalBackdrop.classList.remove("show");
+  }
+
+  function renderCollage(){
+    if (!collageGrid || !collageCount) return;
+
+    const docs = (currentPhotos || []).slice();
+    if (!docs.length){
+      collageGrid.innerHTML = "";
+      collageCount.textContent = "No images yet.";
+      return;
+    }
+
+    collageCount.textContent = `${docs.length} image${docs.length === 1 ? "" : "s"}`;
+
+    // Newest first (independent of feed pagination)
+    docs.sort((a,b) => {
+      const da = getCreatedDate(a.data);
+      const db = getCreatedDate(b.data);
+      return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);
+    });
+
+    collageGrid.innerHTML = docs.map(({ data }) => {
+      const url = data.imageUrl || "";
+      const name = data.birdName || "Birb";
+      return `
+        <button class="collage-item" type="button" data-full-url="${escapeHtml(url)}" aria-label="${escapeHtml(name)}">
+          <img src="${escapeHtml(url)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" />
+        </button>
+      `;
+    }).join("");
+  }
+
+  openCollageBtn.addEventListener("click", openCollage);
+  collageClose.addEventListener("click", closeCollage);
+  collageModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === collageModalBackdrop) closeCollage();
+  });
+  collageGrid.addEventListener("click", (e) => {
+    const item = e.target.closest(".collage-item");
+    if (!item) return;
+    const url = item.dataset.fullUrl;
+    if (url) openImageFullscreen(url);
   });
 
   // Sorting UI logic
