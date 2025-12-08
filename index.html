@@ -59,6 +59,7 @@
     }
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:#e5e7eb}
+    .header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
     .dropzone{
       border-radius:var(--radius-md);border:1px dashed rgba(148,163,184,.55);padding:18px;
@@ -199,6 +200,9 @@
     .photo-card{
       background:radial-gradient(circle at top,rgba(79,70,229,.18) 0,transparent 55%),rgba(15,23,42,.96);
       border-radius:16px;border:1px solid rgba(148,163,184,.3);overflow:hidden;display:flex;flex-direction:column;min-height:230px;
+      content-visibility:auto;
+      contain: layout paint;
+      contain-intrinsic-size: 280px 260px;
     }
     .photo-thumb{position:relative;padding-top:66%;overflow:hidden}
     .photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:center;transition:transform .2s ease-out}
@@ -308,7 +312,7 @@
     .pager-btn:hover:not(:disabled){background:rgba(79,70,229,.26)}
 
     /* Modals */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
     .modal-backdrop.show{display:flex}
     .modal{
       background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:380px;width:100%;
@@ -443,7 +447,7 @@
     }
 
     /* Rankings */
-    .rankings-btn{
+    .rankings-btn, .collage-btn{
       font-size:.78rem;
       padding:6px 10px;
       border-radius:999px;
@@ -453,7 +457,7 @@
       cursor:pointer;
       white-space:nowrap;
     }
-    .rankings-btn:hover{background:rgba(79,70,229,.28)}
+    .rankings-btn:hover, .collage-btn:hover{background:rgba(79,70,229,.28)}
     .rankings-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto;padding-right:3px}
     .rankings-row{
       display:grid;
@@ -502,12 +506,12 @@
 
     /* ========= Performance optimizations (mobile) ========= */
     @media (hover:none) and (pointer:coarse){
-      body{ background: var(--bg); } /* reduce heavy gradient overdraw on phones */
+      body{ background: var(--bg); }
       .card{ backdrop-filter:none; box-shadow:none; }
       .rarity-badge-wrap{ backdrop-filter:none; box-shadow:none; }
       .dropzone-icon{ box-shadow:none; }
       .btn-primary{ box-shadow:none; }
-      .photo-thumb img{ transition:none; } /* no hover on phones */
+      .photo-thumb img{ transition:none; }
     }
     @media (prefers-reduced-motion: reduce){
       *{ scroll-behavior:auto !important; }
@@ -516,53 +520,59 @@
       .dropzone{ transition:none !important; }
       .parrot{ transition:none !important; }
     }
-    .photo-card{
-      content-visibility:auto;
-      contain: layout paint;
-      contain-intrinsic-size: 280px 260px;
-    }
 
     /* ===== Collage modal ===== */
-    .collage-grid{
-      margin-top:10px;
-      display:grid;
-      grid-template-columns:repeat(5, minmax(0, 1fr));
-      gap:0; /* borderless */
+    .modal.collage-modal{
+      max-width: 920px;
+      width: min(920px, calc(100vw - 32px));
+      max-height: min(88vh, 820px);
+      display:flex;
+      flex-direction:column;
       overflow:hidden;
+    }
+    .collage-grid{
+      flex:1 1 auto;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top:10px;
       border-radius:16px;
+      background: rgba(15,23,42,.65);
+      padding:6px;
+      display:grid;
+      grid-template-columns:repeat(5, minmax(0,1fr));
+      gap:6px;
     }
-    @media (max-width:900px){
-      .collage-grid{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 900px){
+      .collage-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
     }
-    @media (max-width:600px){
-      .collage-grid{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 520px){
+      .collage-grid{ grid-template-columns:repeat(3, minmax(0,1fr)); }
     }
     .collage-item{
       position:relative;
-      width:100%;
-      aspect-ratio:1/1;
+      aspect-ratio: 1 / 1;
       overflow:hidden;
-      background:rgba(15,23,42,.6);
+      border-radius:12px;
       cursor:pointer;
-      border:none;
-      padding:0;
-      display:block;
+      background: rgba(15,23,42,.9);
     }
     .collage-item img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
-      transform:scale(1.01); /* hides tiny seams on some browsers */
+      transform:translateZ(0);
     }
     .collage-meta{
-      margin-top:8px;
-      font-size:.78rem;
-      color:var(--text-muted);
+      margin-top:10px;
       display:flex;
       justify-content:space-between;
-      gap:10px;
       align-items:center;
+      gap:10px;
+    }
+    .collage-meta #collageCount{
+      font-size:.8rem;
+      color:var(--text-muted);
     }
   </style>
 </head>
@@ -585,9 +595,9 @@
     <section class="card">
       <div class="card-header">
         <h2>Add a sighting</h2>
-        <div style="display:flex;gap:8px;align-items:center;">
+        <div class="header-actions">
           <button type="button" id="openRankingsBtn" class="rankings-btn">Rankings</button>
-          <button type="button" id="openCollageBtn" class="rankings-btn">Gallery</button>
+          <button type="button" id="openCollageBtn" class="collage-btn">Gallery</button>
         </div>
       </div>
 
@@ -600,7 +610,7 @@
         </div>
         <strong>Drop a birb photo</strong>
         <p>or click to browse – JPG, PNG, HEIC etc.</p>
-        <div class="chip"><span class="chip-dot"></span>Tip: keep the bird centred & in focus — uploads are auto-downscaled for speed</div>
+        <div class="chip"><span class="chip-dot"></span>Tip: keep the bird centred & in focus — it usually scores higher</div>
         <input id="fileInput" class="hidden-input" type="file" accept="image/*" />
       </div>
 
@@ -816,9 +826,9 @@
   </div>
 </div>
 
-<!-- Collage modal -->
+<!-- Collage gallery modal -->
 <div id="collageModalBackdrop" class="modal-backdrop">
-  <div class="modal" style="max-width:920px;">
+  <div class="modal collage-modal">
     <div class="modal-header">
       <h3>Birb Gallery</h3>
       <p>Tap an image to view full screen. Tap again to close.</p>
@@ -1141,7 +1151,7 @@
   dropzone.addEventListener("drop", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove("dragover"); handleFiles(e.dataTransfer.files); });
   fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
 
-  // Image downscale (client-side) to reduce grey-screen risk & improve responsiveness
+  // Image downscale (client-side)
   async function downscaleImageFile(file, maxDim = 2048, quality = 0.82) {
     const mimeOut = "image/jpeg";
 
@@ -1216,7 +1226,6 @@
     statusText.textContent = "Downscaling image (for speed) and saving to the database…";
 
     try {
-      // Downscale before upload
       const down = await downscaleImageFile(selectedFile, 2048, 0.82);
       const fileId = `${Date.now()}_${Math.random().toString(16).slice(2)}.jpg`;
       const storagePath = `birdPhotos/${fileId}`;
@@ -1238,7 +1247,6 @@
         ownerDeviceId: deviceId
       });
 
-      // Persist uploader name once we have one
       if (!storedUploader && uploadedBy) {
         storedUploader = uploadedBy;
         try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
@@ -1327,7 +1335,6 @@
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
     }
-
     if (collageModalBackdrop.classList.contains("show")) {
       renderCollage();
     }
@@ -1622,11 +1629,10 @@
   function openRatingModal(photoId){
     ratingTargetPhotoId = photoId;
 
-    // highlight previous rating choice
     ratingOptionButtons.forEach(b => b.classList.remove("selected"));
     const prev = localRatings[photoId];
     if (prev) {
-      const btn = ratingModalBackdrop.querySelector(`.rating-option[data-value="${prev}"]`);
+      const btn = ratingModalBackdrop.querySelector(\`.rating-option[data-value="\${prev}"]\`);
       if (btn) btn.classList.add("selected");
     }
 
@@ -1676,10 +1682,10 @@
     closeCommentsModal();
     commentsTargetPhotoId = photoId;
 
-    commentsTitle.textContent = `Comments · ${birdName || "Birb"}`;
+    commentsTitle.textContent = \`Comments · \${birdName || "Birb"}\`;
     commentsSubtitle.textContent = "Comments for this sighting (only visible when opened).";
     commentInput.value = "";
-    commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
+    commentsList.innerHTML = \`<div class="comment-empty">Loading comments…</div>\`;
     commentsModalBackdrop.classList.add("show");
 
     const commentsCol = collection(db, "birdPhotos", photoId, "comments");
@@ -1693,7 +1699,7 @@
 
         commentsList.innerHTML = "";
         if (!items.length) {
-          commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
+          commentsList.innerHTML = \`<div class="comment-empty">No comments yet. Be the first.</div>\`;
           return;
         }
 
@@ -1717,7 +1723,7 @@
       },
       (err) => {
         console.error("Comments listener error:", err);
-        commentsList.innerHTML = `<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>`;
+        commentsList.innerHTML = \`<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>\`;
       }
     );
   }
@@ -1747,7 +1753,6 @@
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
 
-      // maintain commentCount on parent doc for the button badge
       await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) });
 
       commentInput.value = "";
@@ -1967,7 +1972,6 @@
 
       const mult = multiplierForSpecies(species);
 
-      // Repeat penalty: if not first seen species, only 50% points
       let repeatPenalty = 1;
       const first = firstSeen.get(species);
       if (first && first.id !== id) repeatPenalty = 0.5;
@@ -2036,7 +2040,35 @@
     if (e.target === scoringModalBackdrop) closeScoringRules();
   });
 
-  // Collage (Gallery) modal
+  // Collage gallery
+  function renderCollage(){
+    if (!collageGrid) return;
+    collageGrid.innerHTML = "";
+
+    const total = currentPhotos.length;
+    collageCount.textContent = total ? `${total} image${total === 1 ? "" : "s"}` : "No images yet.";
+
+    if (!total) {
+      collageGrid.innerHTML = `<div class="comment-empty">No birb photos yet.</div>`;
+      return;
+    }
+
+    // Always newest-first in collage (fast, simple)
+    for (const { id, data } of currentPhotos) {
+      const url = data?.imageUrl || "";
+      if (!url) continue;
+
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "collage-item";
+      item.dataset.fullUrl = url;
+      item.title = (data?.birdName || "Birb") + " (tap to view)";
+
+      item.innerHTML = `<img src="${url}" alt="${escapeHtml(data?.birdName || "Birb")}" loading="lazy" decoding="async" />`;
+      collageGrid.appendChild(item);
+    }
+  }
+
   function openCollage(){
     collageModalBackdrop.classList.add("show");
     renderCollage();
@@ -2045,41 +2077,12 @@
     collageModalBackdrop.classList.remove("show");
   }
 
-  function renderCollage(){
-    if (!collageGrid || !collageCount) return;
-
-    const docs = (currentPhotos || []).slice();
-    if (!docs.length){
-      collageGrid.innerHTML = "";
-      collageCount.textContent = "No images yet.";
-      return;
-    }
-
-    collageCount.textContent = `${docs.length} image${docs.length === 1 ? "" : "s"}`;
-
-    // Newest first (independent of feed pagination)
-    docs.sort((a,b) => {
-      const da = getCreatedDate(a.data);
-      const db = getCreatedDate(b.data);
-      return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);
-    });
-
-    collageGrid.innerHTML = docs.map(({ data }) => {
-      const url = data.imageUrl || "";
-      const name = data.birdName || "Birb";
-      return `
-        <button class="collage-item" type="button" data-full-url="${escapeHtml(url)}" aria-label="${escapeHtml(name)}">
-          <img src="${escapeHtml(url)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async" />
-        </button>
-      `;
-    }).join("");
-  }
-
   openCollageBtn.addEventListener("click", openCollage);
   collageClose.addEventListener("click", closeCollage);
   collageModalBackdrop.addEventListener("click", (e) => {
     if (e.target === collageModalBackdrop) closeCollage();
   });
+
   collageGrid.addEventListener("click", (e) => {
     const item = e.target.closest(".collage-item");
     if (!item) return;
@@ -2092,7 +2095,7 @@
     sortMode = mode;
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
     sortMenu.classList.remove("show");
-    currentPage = 0; // reset to first page on sort
+    currentPage = 0;
     renderGallery();
   }
 
