@@ -31,14 +31,22 @@
       padding:4px 8px;border:1px solid rgba(148,163,184,.4);
     }
     .title-pill{
-      font-size:.78rem;text-transform:uppercase;letter-spacing:.17em;color:#e5e7eb;
-      background:rgba(255,255,255,.08);border-radius:999px;padding:4px 10px;
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.17em;
+      color:#e5e7eb;
+      background:rgba(255,255,255,.08);
+      border-radius:999px;
+      padding:4px 10px;
       border:1px solid rgba(255,255,255,.18);
-      display:inline-flex;align-items:center;gap:6px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
     }
     .title-pill-dot{
       width:8px;height:8px;border-radius:999px;
-      background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.35);
+      background:#34d399;
+      box-shadow:0 0 0 4px rgba(52,211,153,.35);
     }
     .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em}
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
@@ -50,9 +58,17 @@
       border-radius:var(--radius-lg);padding:18px 18px 16px;box-shadow:var(--shadow-soft);
       border:1px solid rgba(148,163,184,.18);backdrop-filter:blur(18px);
     }
+
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:#e5e7eb}
-    .card-header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap} /* keeps inline on desktop + mobile */
+
+    /* Keep action buttons aligned inline on desktop + mobile */
+    .card-header-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:nowrap;
+    }
 
     .dropzone{
       border-radius:var(--radius-md);border:1px dashed rgba(148,163,184,.55);padding:18px;
@@ -119,38 +135,76 @@
       color:var(--text-muted);background:rgba(15,23,42,.9);
     }
     .filter-badge.sort-btn{
-      cursor:pointer;display:inline-flex;align-items:center;gap:4px;color:#e5e7eb;
-      border-color:rgba(129,140,248,.55);background:rgba(79,70,229,.16);
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      color:#e5e7eb;
+      border-color:rgba(129,140,248,.55);
+      background:rgba(79,70,229,.16);
     }
-    .filter-badge.sort-btn:hover{background:rgba(79,70,229,.26)}
+    .filter-badge.sort-btn:hover{
+      background:rgba(79,70,229,.26);
+    }
     .sort-menu{
-      position:absolute;right:0;top:100%;margin-top:6px;
-      background:rgba(15,23,42,.98);border-radius:14px;border:1px solid rgba(148,163,184,.45);
+      position:absolute;
+      right:0;
+      top:100%;
+      margin-top:6px;
+      background:rgba(15,23,42,.98);
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.45);
       box-shadow:0 18px 45px rgba(15,23,42,.9);
-      padding:6px;z-index:15;min-width:220px;display:none;
+      padding:6px;
+      z-index:15;
+      min-width:220px;
+      display:none;
     }
     .sort-menu.show{display:block;}
     .sort-option{
-      width:100%;appearance:none;border:none;background:transparent;color:#e5e7eb;text-align:left;
-      padding:6px 8px;border-radius:10px;font-size:.82rem;cursor:pointer;
-      display:flex;justify-content:space-between;gap:8px;align-items:center;
+      width:100%;
+      appearance:none;
+      border:none;
+      background:transparent;
+      color:#e5e7eb;
+      text-align:left;
+      padding:6px 8px;
+      border-radius:10px;
+      font-size:.82rem;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
     }
     .sort-option span.hint{color:var(--text-muted);font-size:.76rem;}
-    .sort-option:hover{background:rgba(79,70,229,.2);}
+    .sort-option:hover{
+      background:rgba(79,70,229,.2);
+    }
 
     /* New birbs banner */
     .new-birbs-banner{
-      display:none;margin-bottom:10px;padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(74,222,128,.6);background:rgba(34,197,94,.16);
-      font-size:.8rem;color:#bbf7d0;align-items:center;justify-content:space-between;gap:10px;
+      display:none;
+      margin-bottom:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(74,222,128,.6);
+      background:rgba(34,197,94,.16);
+      font-size:.8rem;
+      color:#bbf7d0;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
       cursor:pointer;
     }
-    .new-birbs-banner span.secondary{font-size:.78rem;color:#dcfce7;white-space:nowrap;}
-
-    .gallery-empty{
-      padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);
-      border:1px dashed rgba(148,163,184,.45);text-align:center;font-size:.86rem;color:var(--text-muted)
+    .new-birbs-banner span.secondary{
+      font-size:.78rem;
+      color:#dcfce7;
+      white-space:nowrap;
     }
+
+    .gallery-empty{padding:16px 12px 12px;border-radius:var(--radius-md);background:rgba(15,23,42,.85);border:1px dashed rgba(148,163,184,.45);
+      text-align:center;font-size:.86rem;color:var(--text-muted)}
     .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
     .photo-card{
       background:radial-gradient(circle at top,rgba(79,70,229,.18) 0,transparent 55%),rgba(15,23,42,.96);
@@ -169,20 +223,43 @@
     .rarity-badge{width:32px;height:32px;object-fit:contain;display:block;}
 
     /* Fullscreen icon only */
-    .fullscreen-btn{
-      position:absolute;right:6px;bottom:6px;border:none;background:none;color:#e5e7eb;
-      font-size:16px;cursor:pointer;padding:0;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,0.9);
+    .fullscreen-btn {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      border: none;
+      background: none;
+      color: #e5e7eb;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
     }
-    .fullscreen-btn:hover{transform:scale(1.05);}
-    .image-fullscreen-overlay{
-      position:fixed;inset:0;background:rgba(3,7,18,0.96);
-      display:none;align-items:center;justify-content:center;z-index:120;
+    .fullscreen-btn:hover { transform: scale(1.05); }
+    .image-fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3,7,18,0.96);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 120;
     }
-    .image-fullscreen-overlay.show{display:flex;}
-    .image-fullscreen-overlay img{max-width:100vw;max-height:100vh;object-fit:contain;}
-    .image-fullscreen-overlay::after{
-      content:"Tap anywhere to close";position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
-      font-size:0.8rem;color:rgba(229,231,235,0.8);
+    .image-fullscreen-overlay.show { display: flex; }
+    .image-fullscreen-overlay img {
+      max-width: 100vw;
+      max-height: 100vh;
+      object-fit: contain;
+    }
+    .image-fullscreen-overlay::after {
+      content: "Tap anywhere to close";
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: rgba(229,231,235,0.8);
     }
 
     .photo-body{padding:10px 11px 9px;display:flex;flex-direction:column;gap:5px;flex-grow:1}
@@ -212,16 +289,32 @@
 
     /* Pager */
     .pager{
-      margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;
-      padding-top:10px;border-top:1px solid rgba(148,163,184,.18);
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding-top:10px;
+      border-top:1px solid rgba(148,163,184,.18);
     }
     .pager-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     .pager-info{font-size:.8rem;color:var(--text-muted)}
     .pager-btn{
-      border-radius:999px;border:1px solid rgba(129,140,248,.65);background:rgba(79,70,229,.16);color:#c7d2fe;
-      font-size:.8rem;padding:6px 10px;cursor:pointer;
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,.65);
+      background:rgba(79,70,229,.16);
+      color:#c7d2fe;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
     }
-    .pager-btn:disabled{opacity:.55;cursor:default;border-style:dashed;background:rgba(15,23,42,.85);color:#9ca3af}
+    .pager-btn:disabled{
+      opacity:.55;
+      cursor:default;
+      border-style:dashed;
+      background:rgba(15,23,42,.85);
+      color:#9ca3af;
+    }
     .pager-btn:hover:not(:disabled){background:rgba(79,70,229,.26)}
 
     /* Modals */
@@ -232,7 +325,7 @@
       box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid rgba(148,163,184,.5)
     }
     .modal-wide{max-width:980px;}
-    .modal-header{margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .modal-header{margin-bottom:8px;display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
     .modal-header h3{margin:0;font-size:1rem}
     .modal-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
     .modal-footer{margin-top:10px;display:flex;justify-content:flex-end;gap:8px}
@@ -253,30 +346,57 @@
       display:flex;align-items:center;justify-content:center;gap:4px}
     .rating-option span.emoji{font-size:1rem}
     .rating-option:hover{background:rgba(79,70,229,.35)}
-    .rating-option.selected{border-color: rgba(187,247,208,.85);background: rgba(34,197,94,.18);color:#dcfce7;}
+    .rating-option.selected{
+      border-color: rgba(187,247,208,.85);
+      background: rgba(34,197,94,.18);
+      color:#dcfce7;
+    }
 
     /* Comments */
-    .comments-list{margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;display:flex;flex-direction:column;gap:8px;}
+    .comments-list{
+      margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;
+      display:flex;flex-direction:column;gap:8px;
+    }
     .comment-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
-    .comment-item{border:1px solid rgba(148,163,184,.35);background:rgba(15,23,42,.9);border-radius:14px;padding:8px 10px;}
-    .comment-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px;}
+    .comment-item{
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(15,23,42,.9);
+      border-radius:14px;
+      padding:8px 10px;
+    }
+    .comment-meta{
+      display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px;
+    }
     .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
     .comment-del{
-      width:26px;height:26px;border-radius:999px;border:1px solid rgba(248,113,113,.55);
-      background:rgba(239,68,68,.10);color:#fecaca;font-size:18px;line-height:1;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;padding:0;
+      width:26px;height:26px;border-radius:999px;
+      border:1px solid rgba(248,113,113,.55);
+      background:rgba(239,68,68,.10);
+      color:#fecaca;
+      font-size:18px;line-height:1;
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      padding:0;
     }
     .comment-del:hover{background:rgba(239,68,68,.20)}
-    .comment-text{font-size:.88rem;color:#e5e7eb;line-height:1.35;white-space:pre-wrap;word-break:break-word}
+    .comment-text{
+      font-size:.88rem;color:#e5e7eb;line-height:1.35;
+      white-space:pre-wrap;word-break:break-word
+    }
     .comment-compose{margin-top:10px;display:flex;flex-direction:column;gap:8px;}
     textarea.comment-input{
-      width:100%;min-height:72px;resize:none;border-radius:14px;border:1px solid rgba(148,163,184,.35);background:rgba(15,23,42,.92);
-      padding:10px 10px;color:#e5e7eb;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:.9rem;outline:none;
+      width:100%;min-height:72px;resize:none;border-radius:14px;
+      border:1px solid rgba(148,163,184,.35);background:rgba(15,23,42,.92);
+      padding:10px 10px;color:#e5e7eb;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      font-size:.9rem;outline:none;
     }
-    textarea.comment-input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98);}
+    textarea.comment-input:focus{
+      border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98);
+    }
     .comment-send{
-      align-self:flex-end;appearance:none;border:none;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700;
-      background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.45);
+      align-self:flex-end;appearance:none;border:none;border-radius:999px;padding:8px 14px;
+      font-size:.85rem;font-weight:700;background:linear-gradient(135deg,#4f46e5,#06b6d4);
+      color:#fff;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.45);
     }
     .comment-send:disabled{opacity:.6;cursor:default;box-shadow:none}
     .comment-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
@@ -291,9 +411,18 @@
     .species-panel-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
     .species-close-btn{border-radius:999px;border:1px solid rgba(148,163,184,.6);background:rgba(15,23,42,.9);color:var(--text-muted);font-size:.78rem;padding:4px 10px;cursor:pointer;white-space:nowrap}
     .species-close-btn:hover{background:rgba(15,23,42,1)}
-    .species-tally{margin-top:6px;font-size:.8rem;color:var(--text-muted);}
-    .species-tally span.seen{color:#bbf7d0;font-weight:600;}
-    .species-tally span.unseen{color:#e5e7ebb0;}
+    .species-tally{
+      margin-top:6px;
+      font-size:.8rem;
+      color:var(--text-muted);
+    }
+    .species-tally span.seen{
+      color:#bbf7d0;
+      font-weight:600;
+    }
+    .species-tally span.unseen{
+      color:#e5e7ebb0;
+    }
     .species-search-row{margin-top:10px}
     .species-search-row input{
       width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);padding:8px 12px;
@@ -324,60 +453,101 @@
       background: radial-gradient(circle at top left, rgba(34,197,94,0.28) 0, transparent 60%), rgba(15,23,42,1);
     }
 
-    /* Rankings */
-    .rankings-btn, .gallery-btn{
-      font-size:.78rem;padding:6px 10px;border-radius:999px;border:1px solid rgba(129,140,248,.7);
-      background:rgba(79,70,229,.18);color:#c7d2fe;cursor:pointer;white-space:nowrap;
+    /* Rankings + Gallery buttons */
+    .rankings-btn,.gallery-btn{
+      font-size:.78rem;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,.7);
+      background:rgba(79,70,229,.18);
+      color:#c7d2fe;
+      cursor:pointer;
+      white-space:nowrap;
     }
     .rankings-btn:hover,.gallery-btn:hover{background:rgba(79,70,229,.28)}
     .rankings-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto;padding-right:3px}
     .rankings-row{
-      display:grid;grid-template-columns:40px 1fr 80px 90px;gap:10px;align-items:center;
-      padding:8px 10px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);
+      display:grid;
+      grid-template-columns:40px 1fr 80px 90px;
+      gap:10px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(15,23,42,.9);
       font-size:.88rem;
     }
     .rankings-head{
-      background:rgba(79,70,229,.14);border-color:rgba(129,140,248,.35);
-      font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);
+      background:rgba(79,70,229,.14);
+      border-color:rgba(129,140,248,.35);
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--text-muted);
     }
     .rankings-row .right{text-align:right}
     .rankings-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
 
     .rules-box{
-      margin-top:10px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);
-      padding:10px 12px;color:#e5e7eb;font-size:.86rem;line-height:1.35;
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(15,23,42,.9);
+      padding:10px 12px;
+      color:#e5e7eb;
+      font-size:.86rem;
+      line-height:1.35;
     }
     .rules-box code{
-      display:inline-block;margin-top:6px;padding:4px 8px;border-radius:10px;background:rgba(79,70,229,.14);
-      border:1px solid rgba(129,140,248,.35);color:#e5e7eb;font-size:.82rem;
+      display:inline-block;
+      margin-top:6px;
+      padding:4px 8px;
+      border-radius:10px;
+      background:rgba(79,70,229,.14);
+      border:1px solid rgba(129,140,248,.35);
+      color:#e5e7eb;
+      font-size:.82rem;
     }
     .rules-list{margin:8px 0 0;padding-left:18px;color:var(--text-muted)}
     .rules-list li{margin:4px 0}
 
-    /* === Collage gallery (scrollable, equal gaps, no overlap) === */
+    /* Collage */
     .collage-scroll{
-      max-height:80vh;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px;
+      max-height:80vh;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,.18);
+      background:rgba(15,23,42,.55);
     }
     .collage-grid{
       display:grid;
       grid-template-columns:repeat(5,minmax(0,1fr));
-      gap:12px;
+      gap:12px;                /* horizontal == vertical */
       align-content:start;
-      font-size:0;
     }
-    @media (max-width:520px){
-      .collage-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); }
-    }
-    @media (max-width:380px){
-      .collage-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
-    }
+    @media (max-width:520px){ .collage-grid{grid-template-columns:repeat(4,minmax(0,1fr));} }
+    @media (max-width:380px){ .collage-grid{grid-template-columns:repeat(3,minmax(0,1fr));} }
+
+    /* square tiles WITHOUT aspect-ratio (prevents vertical overlap on some mobiles) */
     .collage-tile{
-      position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;
-      border:0;padding:0;margin:0;background:transparent;border-radius:0;display:block;cursor:pointer;
+      position:relative;
+      width:100%;
+      padding-top:100%;
+      overflow:hidden;
+      border:0;
+      background:transparent;
+      border-radius:0;
+      margin:0;
+      display:block;
+      cursor:pointer;
     }
     .collage-tile img{
-      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-      transform:none !important;transition:none !important;
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      display:block;
     }
 
     /* ========= Performance optimizations (mobile) ========= */
@@ -391,7 +561,10 @@
     }
     @media (prefers-reduced-motion: reduce){
       *{ scroll-behavior:auto !important; }
-      .photo-thumb img,.btn-primary,.dropzone,.parrot{ transition:none !important; }
+      .photo-thumb img{ transition:none !important; }
+      .btn-primary{ transition:none !important; }
+      .dropzone{ transition:none !important; }
+      .parrot{ transition:none !important; }
     }
     .photo-card{
       content-visibility:auto;
@@ -541,7 +714,9 @@
       </div>
       <button type="button" id="closeSpeciesOverlayBtn" class="species-close-btn">Close</button>
     </div>
-    <div id="speciesTally" class="species-tally">Species checklist loading…</div>
+    <div id="speciesTally" class="species-tally">
+      Species checklist loading…
+    </div>
     <div class="species-search-row">
       <input id="speciesSearch" type="text" placeholder="Search Australian birb species…" />
     </div>
@@ -560,7 +735,7 @@
         <h3>Rate this birb</h3>
         <p>Pick a score out of 10.</p>
       </div>
-      <button id="ratingModalCancelTop" class="modal-cancel" type="button">Close</button>
+      <button id="ratingModalCancel" class="modal-cancel" type="button">Cancel</button>
     </div>
     <div class="rating-options">
       <button class="rating-option" data-value="1"><span class="emoji">🦜</span><span>1</span></button>
@@ -585,7 +760,7 @@
         <h3 id="commentsTitle">Comments</h3>
         <p id="commentsSubtitle">Comments for this sighting (only visible when opened).</p>
       </div>
-      <button id="commentsCloseTop" class="modal-cancel" type="button">Close</button>
+      <button id="commentsClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div id="commentsList" class="comments-list"></div>
@@ -607,12 +782,11 @@
         <h3>Rankings</h3>
         <p>Points by uploader (rating × rarity multiplier).</p>
       </div>
-      <button id="rankingsCloseTop" class="modal-cancel" type="button">Close</button>
+      <button id="rankingsClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div class="modal-footer" style="justify-content:space-between;margin-top:6px;">
       <button id="rankingsRulesBtn" class="modal-accent" type="button">Scoring rules</button>
-      <span></span>
     </div>
 
     <div id="rankingsList" class="rankings-list" style="margin-top:10px;">
@@ -632,7 +806,7 @@
         <h3>Scoring rules</h3>
         <p>How points are calculated.</p>
       </div>
-      <button id="scoringCloseTop" class="modal-cancel" type="button">Close</button>
+      <button id="scoringClose" class="modal-cancel" type="button">Close</button>
     </div>
 
     <div class="rules-box">
@@ -662,6 +836,7 @@
       </div>
       <button id="collageCloseTop" class="modal-cancel" type="button">Close</button>
     </div>
+
     <div class="collage-scroll">
       <div id="collageGrid" class="collage-grid"></div>
     </div>
@@ -830,7 +1005,6 @@
   const pageInfo = document.getElementById("pageInfo");
 
   const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
-  const ratingModalCancelTop = document.getElementById("ratingModalCancelTop");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
 
   const commentsModalBackdrop = document.getElementById("commentsModalBackdrop");
@@ -839,7 +1013,7 @@
   const commentsList = document.getElementById("commentsList");
   const commentInput = document.getElementById("commentInput");
   const commentSend = document.getElementById("commentSend");
-  const commentsCloseTop = document.getElementById("commentsCloseTop");
+  const commentsClose = document.getElementById("commentsClose");
 
   const speciesOverlay = document.getElementById("speciesOverlay");
   const speciesListEl = document.getElementById("speciesList");
@@ -853,17 +1027,11 @@
   // Rankings DOM
   const openRankingsBtn = document.getElementById("openRankingsBtn");
   const rankingsModalBackdrop = document.getElementById("rankingsModalBackdrop");
-  const rankingsCloseTop = document.getElementById("rankingsCloseTop");
+  const rankingsClose = document.getElementById("rankingsClose");
   const rankingsList = document.getElementById("rankingsList");
   const rankingsRulesBtn = document.getElementById("rankingsRulesBtn");
   const scoringModalBackdrop = document.getElementById("scoringModalBackdrop");
-  const scoringCloseTop = document.getElementById("scoringCloseTop");
-
-  // Collage DOM
-  const openCollageBtn = document.getElementById("openCollageBtn");
-  const collageModalBackdrop = document.getElementById("collageModalBackdrop");
-  const collageCloseTop = document.getElementById("collageCloseTop");
-  const collageGrid = document.getElementById("collageGrid");
+  const scoringClose = document.getElementById("scoringClose");
 
   // Sorting DOM
   const sortModeBtn = document.getElementById("sortModeBtn");
@@ -873,6 +1041,12 @@
   // Fullscreen overlay DOM
   const imageFsOverlay = document.getElementById("imageFullscreenOverlay");
   const imageFsImg = document.getElementById("imageFullscreenImg");
+
+  // Collage DOM
+  const openCollageBtn = document.getElementById("openCollageBtn");
+  const collageModalBackdrop = document.getElementById("collageModalBackdrop");
+  const collageCloseTop = document.getElementById("collageCloseTop");
+  const collageGrid = document.getElementById("collageGrid");
 
   // Prefill uploader if previously stored
   if (storedUploader) {
@@ -953,6 +1127,55 @@
   }
   imageFsOverlay.addEventListener("click", () => closeImageFullscreen());
 
+  // Collage helpers
+  function renderCollage() {
+    collageGrid.innerHTML = "";
+    if (!Array.isArray(currentPhotos) || !currentPhotos.length) {
+      collageGrid.innerHTML = `<div style="color:#9ca3af;font-size:.85rem;padding:6px 2px;">No birb photos yet.</div>`;
+      return;
+    }
+
+    for (const { data } of currentPhotos) {
+      const url = data?.imageUrl || "";
+      if (!url) continue;
+
+      const tile = document.createElement("button");
+      tile.type = "button";
+      tile.className = "collage-tile";
+      tile.dataset.url = url;
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.alt = data?.birdName ? String(data.birdName) : "Birb photo";
+
+      tile.appendChild(img);
+      collageGrid.appendChild(tile);
+    }
+  }
+
+  function openCollage() {
+    collageModalBackdrop.classList.add("show");
+    renderCollage();
+  }
+  function closeCollage() {
+    collageModalBackdrop.classList.remove("show");
+  }
+
+  openCollageBtn.addEventListener("click", openCollage);
+  collageCloseTop.addEventListener("click", closeCollage);
+  collageModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === collageModalBackdrop) closeCollage();
+  });
+
+  collageGrid.addEventListener("click", (e) => {
+    const tile = e.target.closest(".collage-tile");
+    if (!tile) return;
+    const url = tile.dataset.url;
+    if (url) openImageFullscreen(url);
+  });
+
   // Drag/drop
   function handleFiles(files) {
     if (!files || !files.length) return;
@@ -1032,6 +1255,7 @@
     const birdName = birdNameInput.value.trim();
     const location = locationInput.value.trim();
 
+    // Enforce stored uploader if available; otherwise let first upload set it
     let uploadedBy = (uploadedByInput.value || "").trim();
 
     if (!selectedFile) return showError("Select or drop a birb photo first.");
@@ -1049,6 +1273,7 @@
     statusText.textContent = "Downscaling image (for speed) and saving to the database…";
 
     try {
+      // Downscale before upload
       const down = await downscaleImageFile(selectedFile, 2048, 0.82);
       const fileId = `${Date.now()}_${Math.random().toString(16).slice(2)}.jpg`;
       const storagePath = `birdPhotos/${fileId}`;
@@ -1070,6 +1295,7 @@
         ownerDeviceId: deviceId
       });
 
+      // Persist uploader name once we have one
       if (!storedUploader && uploadedBy) {
         storedUploader = uploadedBy;
         try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
@@ -1104,14 +1330,20 @@
   function showSuccess(msg){ successMsg.textContent = msg; successMsg.style.display = "block"; setTimeout(()=>successMsg.style.display="none",3500); }
   function hideSuccess(){ successMsg.textContent = ""; successMsg.style.display = "none"; }
 
-  // Firestore listener (no scroll throttling / no paused rendering)
+  // Firestore listener (NO throttling / NO scroll-pausing)
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
+
   onSnapshot(qPhotos, (snapshot) => {
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
 
     latestDocsForRankings = docs;
     currentPhotos = docs;
+
+    // If collage is open, keep it updated
+    if (collageModalBackdrop.classList.contains("show")) {
+      renderCollage();
+    }
 
     // Prefill uploader from a previous upload on this device (if not already stored)
     if (!storedUploader) {
@@ -1150,14 +1382,12 @@
     newSinceLastSeenCount = countNew;
     updateNewBirbsBanner();
 
+    // Reset page if it is out of range after updates
     totalPages = Math.max(1, Math.ceil(currentPhotos.length / PAGE_SIZE));
     if (currentPage > totalPages - 1) currentPage = totalPages - 1;
 
     if (rankingsModalBackdrop.classList.contains("show")) {
       renderRankings(buildRankings(latestDocsForRankings));
-    }
-    if (collageModalBackdrop.classList.contains("show")) {
-      renderCollage();
     }
 
     renderGallery();
@@ -1229,31 +1459,61 @@
     if (document.visibilityState === "visible") updateNewBirbsBanner();
   });
 
-  const POINTS_BY_RARITY = {
-    super_rare: 25,
-    rare: 15,
-    uncommon: 8,
-    common: 4,
-    very_common: 1
-  };
+  function renderGallery() {
+    galleryGrid.innerHTML = "";
+    galleryEmpty.style.display = "none";
 
-  function getSortedDocs(docsInput) {
-    const docs = (docsInput || []).slice();
+    const total = currentPhotos.length;
 
-    const rarityOrder = { super_rare:0, rare:1, uncommon:2, common:3, very_common:4, none:5 };
+    if (!total) {
+      galleryEmpty.style.display = "block";
+      galleryCountLabel.textContent = "No sightings yet.";
+      currentSeenSpecies = new Set();
+      updateSpeciesTally();
+      pager.style.display = "none";
+      return;
+    }
+
+    totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    galleryCountLabel.textContent = `${total} sighting${total > 1 ? "s" : ""} · Showing ${PAGE_SIZE} per page`;
+
+    // Build speciesCounts across all docs for repeat-species tag
+    const speciesCounts = {};
+    currentPhotos.forEach(({ data }) => {
+      const name = (data.birdName || "Unknown birb").trim();
+      if (!name) return;
+      speciesCounts[name] = (speciesCounts[name] || 0) + 1;
+    });
+    currentSeenSpecies = new Set(Object.keys(speciesCounts));
+    updateSpeciesTally();
+
+    // Sort copy based on current sort mode
+    const docs = currentPhotos.slice();
+
+    const rarityOrder = {
+      super_rare: 0,
+      rare: 1,
+      uncommon: 2,
+      common: 3,
+      very_common: 4,
+      none: 5
+    };
 
     function avgRatingOf(data) {
       const total = Number(data.ratingTotal || 0);
       const count = Number(data.ratingCount || 0);
       return count > 0 ? total / count : 0;
     }
+
     function multiplierForSpeciesInternal(speciesName){
       const rarity = getRarityForSpecies(speciesName);
       return POINTS_BY_RARITY[rarity] ?? 1;
     }
 
     docs.sort((a, b) => {
-      const da = a.data, db = b.data;
+      const da = a.data;
+      const db = b.data;
+
       const dateA = getCreatedDate(da);
       const dateB = getCreatedDate(db);
       const tsA = dateA ? dateA.getTime() : 0;
@@ -1272,8 +1532,14 @@
       const roA = rarityOrder[rA] ?? rarityOrder.none;
       const roB = rarityOrder[rB] ?? rarityOrder.none;
 
-      if (sortMode === "newest") return tsB - tsA;
-      if (sortMode === "oldest") return tsA - tsB;
+      if (sortMode === "newest") {
+        if (tsA !== tsB) return tsB - tsA;
+        return 0;
+      }
+      if (sortMode === "oldest") {
+        if (tsA !== tsB) return tsA - tsB;
+        return 0;
+      }
       if (sortMode === "highestRated") {
         if (avgB !== avgA) return avgB - avgA;
         const cntA = Number(da.ratingCount || 0);
@@ -1294,39 +1560,6 @@
       }
       return tsB - tsA;
     });
-
-    return docs;
-  }
-
-  function renderGallery() {
-    galleryGrid.innerHTML = "";
-    galleryEmpty.style.display = "none";
-
-    const total = currentPhotos.length;
-
-    if (!total) {
-      galleryEmpty.style.display = "block";
-      galleryCountLabel.textContent = "No sightings yet.";
-      currentSeenSpecies = new Set();
-      updateSpeciesTally();
-      pager.style.display = "none";
-      return;
-    }
-
-    totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    galleryCountLabel.textContent = `${total} sighting${total > 1 ? "s" : ""} · Showing ${PAGE_SIZE} per page`;
-
-    // speciesCounts across all docs for repeat-species tag + tally
-    const speciesCounts = {};
-    currentPhotos.forEach(({ data }) => {
-      const name = (data.birdName || "Unknown birb").trim();
-      if (!name) return;
-      speciesCounts[name] = (speciesCounts[name] || 0) + 1;
-    });
-    currentSeenSpecies = new Set(Object.keys(speciesCounts));
-    updateSpeciesTally();
-
-    const docs = getSortedDocs(currentPhotos);
 
     // Apply pagination AFTER sorting
     const start = currentPage * PAGE_SIZE;
@@ -1388,7 +1621,15 @@
         <div class="photo-thumb">
           <img src="${imgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" decoding="async" />
           ${rarityHtml}
-          <button type="button" class="fullscreen-btn" data-full-url="${imgUrl}" title="View full screen" aria-label="View full screen">⤢</button>
+          <button
+            type="button"
+            class="fullscreen-btn"
+            data-full-url="${imgUrl}"
+            title="View full screen"
+            aria-label="View full screen"
+          >
+            ⤢
+          </button>
         </div>
         <div class="photo-body">
           <div class="photo-title">${escapeHtml(birdName)}</div>
@@ -1449,7 +1690,6 @@
     ratingModalBackdrop.classList.add("show");
   }
   function closeRatingModal(){ ratingTargetPhotoId = null; ratingModalBackdrop.classList.remove("show"); }
-  ratingModalCancelTop.addEventListener("click", closeRatingModal);
   ratingModalBackdrop.addEventListener("click", (e) => { if (e.target === ratingModalBackdrop) closeRatingModal(); });
 
   ratingOptionButtons.forEach(btn => {
@@ -1545,7 +1785,7 @@
     commentsModalBackdrop.classList.remove("show");
   }
 
-  commentsCloseTop.addEventListener("click", closeCommentsModal);
+  commentsClose.addEventListener("click", closeCommentsModal);
   commentsModalBackdrop.addEventListener("click", (e) => {
     if (e.target === commentsModalBackdrop) closeCommentsModal();
   });
@@ -1563,6 +1803,7 @@
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
 
+      // maintain commentCount on parent doc for the button badge
       await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) });
 
       commentInput.value = "";
@@ -1736,6 +1977,14 @@
   });
 
   // Rankings
+  const POINTS_BY_RARITY = {
+    super_rare: 25,
+    rare: 15,
+    uncommon: 8,
+    common: 4,
+    very_common: 1
+  };
+
   function multiplierForSpecies(speciesName){
     const rarity = getRarityForSpecies(speciesName);
     return POINTS_BY_RARITY[rarity] ?? 1;
@@ -1774,6 +2023,7 @@
 
       const mult = multiplierForSpecies(species);
 
+      // Repeat penalty: if not first seen species, only 50% points
       let repeatPenalty = 1;
       const first = firstSeen.get(species);
       if (first && first.id !== id) repeatPenalty = 0.5;
@@ -1792,6 +2042,7 @@
       (b.uploads - a.uploads) ||
       a.name.localeCompare(b.name)
     );
+
     return rows;
   }
 
@@ -1800,11 +2051,13 @@
       <div class="rankings-row rankings-head">
         <div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div>
       </div>
-    `;
+   `;
+
     if (!rows.length){
       rankingsList.innerHTML += `<div class="rankings-empty">No uploads yet.</div>`;
       return;
     }
+
     rows.forEach((r, i) => {
       rankingsList.innerHTML += `
         <div class="rankings-row">
@@ -1824,62 +2077,19 @@
   function closeRankings(){
     rankingsModalBackdrop.classList.remove("show");
   }
+
   openRankingsBtn.addEventListener("click", openRankings);
-  rankingsCloseTop.addEventListener("click", closeRankings);
-  rankingsModalBackdrop.addEventListener("click", (e) => { if (e.target === rankingsModalBackdrop) closeRankings(); });
+  rankingsClose.addEventListener("click", closeRankings);
+  rankingsModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === rankingsModalBackdrop) closeRankings();
+  });
 
   function openScoringRules(){ scoringModalBackdrop.classList.add("show"); }
   function closeScoringRules(){ scoringModalBackdrop.classList.remove("show"); }
   rankingsRulesBtn.addEventListener("click", openScoringRules);
-  scoringCloseTop.addEventListener("click", closeScoringRules);
-  scoringModalBackdrop.addEventListener("click", (e) => { if (e.target === scoringModalBackdrop) closeScoringRules(); });
-
-  // Collage
-  function renderCollage(){
-    collageGrid.innerHTML = "";
-    const docs = getSortedDocs(currentPhotos);
-
-    if (!docs.length) {
-      collageGrid.innerHTML = `<div class="text-muted" style="font-size:.85rem;padding:6px 2px;">No birb photos yet.</div>`;
-      return;
-    }
-
-    for (const { data } of docs) {
-      const url = data.imageUrl || "";
-      if (!url) continue;
-      const tile = document.createElement("button");
-      tile.type = "button";
-      tile.className = "collage-tile";
-      tile.setAttribute("aria-label", "Open image full screen");
-      tile.dataset.url = url;
-
-      const img = document.createElement("img");
-      img.src = url;
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.alt = (data.birdName || "Birb photo");
-
-      tile.appendChild(img);
-      collageGrid.appendChild(tile);
-    }
-  }
-
-  function openCollage(){
-    collageModalBackdrop.classList.add("show");
-    renderCollage();
-  }
-  function closeCollage(){
-    collageModalBackdrop.classList.remove("show");
-  }
-  openCollageBtn.addEventListener("click", openCollage);
-  collageCloseTop.addEventListener("click", closeCollage);
-  collageModalBackdrop.addEventListener("click", (e) => { if (e.target === collageModalBackdrop) closeCollage(); });
-
-  collageGrid.addEventListener("click", (e) => {
-    const tile = e.target.closest(".collage-tile");
-    if (!tile) return;
-    const url = tile.dataset.url;
-    if (url) openImageFullscreen(url);
+  scoringClose.addEventListener("click", closeScoringRules);
+  scoringModalBackdrop.addEventListener("click", (e) => {
+    if (e.target === scoringModalBackdrop) closeScoringRules();
   });
 
   // Sorting UI logic
@@ -1887,9 +2097,8 @@
     sortMode = mode;
     sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
     sortMenu.classList.remove("show");
-    currentPage = 0;
+    currentPage = 0; // reset to first page on sort
     renderGallery();
-    if (collageModalBackdrop.classList.contains("show")) renderCollage();
   }
 
   sortModeBtn.addEventListener("click", (e) => {
