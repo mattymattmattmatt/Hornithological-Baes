@@ -1170,6 +1170,10 @@
   function closeRatingModal(){ ratingTargetPhotoId = null; ratingModalBackdrop.classList.remove("show"); }
   ratingModalBackdrop.addEventListener("click", (e) => { if (e.target === ratingModalBackdrop) closeRatingModal(); });
 
+  // FIXED: Cancel button now closes the rating modal
+  const ratingModalCancel = document.getElementById("ratingModalCancel");
+  if (ratingModalCancel) ratingModalCancel.addEventListener("click", closeRatingModal);
+
   ratingOptionButtons.forEach(btn => {
     btn.addEventListener("click", async () => {
       if (!ratingTargetPhotoId) return;
