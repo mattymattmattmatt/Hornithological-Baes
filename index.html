@@ -80,8 +80,8 @@
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-main)}
     .card-header-actions{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
-    .dropzone{border-radius:var(--radius-md);border:1px dashed var(--border-subtle);padding:18px;background:radial-gradient(circle at top left,var(--accent-soft) 0,transparent 55%),rgba(15,23,42,.85);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transition:border .15s ease,background .15s ease,transform .08s ease;cursor:pointer}
-    .dropzone.dragover{border-color:#a5b4fc;background:radial-gradient(circle at top left,var(--accent-strong) 0,transparent 65%),rgba(15,23,42,.96);transform:translateY(-1px)}
+    .dropzone{border-radius:var(--radius-md);border:1px dashed var(--border-subtle);padding:18px;background:var(--bg-elevated);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transition:border .15s ease,background .15s ease,transform .08s ease;cursor:pointer}
+    .dropzone.dragover{border-color:#a5b4fc;background:var(--accent-soft);transform:translateY(-1px)}
     .dropzone-icon{width:40px;height:40px;border-radius:16px;background:linear-gradient(145deg,rgba(129,140,248,.3),rgba(56,189,248,.25));display:flex;align-items:center;justify-content:center;margin-bottom:8px;box-shadow:0 14px 35px rgba(37,99,235,.5)}
     .dropzone-icon svg{width:21px;height:21px}
     .dropzone strong{font-size:.92rem;color:var(--text-main)}
@@ -96,8 +96,8 @@
     .form-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
     .field{display:flex;flex-direction:column;gap:4px}
     .field label{font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted)}
-    .field input{border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);padding:8px 12px;font-size:.9rem;color:var(--text-main);outline:none;transition:border .15s ease,box-shadow .15s ease,background .15s ease}
-    .field input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
+    .field input{border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);padding:8px 12px;font-size:.9rem;color:var(--text-main);outline:none;transition:border .15s ease,box-shadow .15s ease,background .15s ease}
+    .field input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:var(--bg-elevated)}
     .species-input-row{display:flex;gap:8px;align-items:center}
     .species-input-row input{flex:1;cursor:pointer}
     .checklist-btn{border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.16);color:var(--text-main);font-size:.78rem;padding:6px 10px;cursor:pointer;white-space:nowrap}
@@ -206,12 +206,12 @@
     .species-tally span.seen{color:#bbf7d0;font-weight:600}
     .species-tally span.unseen{color:#e5e7ebb0}
     .species-search-row{margin-top:10px}
-    .species-search-row input{width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);padding:8px 12px;font-size:.9rem;color:var(--text-main);outline:none}
-    .species-search-row input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
+    .species-search-row input{width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);padding:8px 12px;font-size:.9rem;color:var(--text-main);outline:none}
+    .species-search-row input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:var(--bg-elevated)}
     .species-list{margin-top:10px;overflow-y:auto;padding-right:4px}
     .species-empty{font-size:.82rem;color:var(--text-muted);padding:8px 2px}
-    .species-item{width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);color:var(--text-main);font-size:.86rem;padding:6px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
-    .species-item:hover{background:rgba(15,23,42,1)}
+    .species-item{width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-main);font-size:.86rem;padding:6px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
+    .species-item:hover{background:#fffaf0}
     .species-item.seen{border-color:rgba(129,140,248,.8);background:rgba(79,70,229,.18)}
     .species-name{text-align:left}
     .species-status{font-size:.75rem;color:var(--accent);padding:2px 8px;border-radius:999px;border:1px solid rgba(129,140,248,.7);white-space:nowrap}
@@ -242,6 +242,7 @@
 </head>
 <body>
 <div class="app-shell">
+  <!-- Your entire original HTML body content (header, layout, cards, all modals, etc.) is 100% intact below -->
   <header>
     <div class="title-block">
       <div class="title-row">
@@ -361,7 +362,7 @@
   <footer>Hornithological Baes · Firebase · GitHub Pages</footer>
 </div>
 
-<!-- ALL ORIGINAL MODALS (unchanged) -->
+<!-- ALL YOUR ORIGINAL MODALS (unchanged) -->
 <div id="speciesOverlay" class="species-overlay">
   <div class="species-panel">
     <div class="species-panel-header">
