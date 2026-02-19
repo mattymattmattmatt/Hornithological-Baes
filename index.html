@@ -14,7 +14,7 @@
       --shadow-soft:0 18px 45px rgba(15,23,42,.65);
     }
 
-    /* TIME-BASED THEMES - ADELAIDE TIME */
+    /* TIME-BASED THEMES (Adelaide time) */
     html[data-theme="morning"] {
       --bg:#fff0e0;--bg-elevated:#fff8f0;--accent:#ff7e5e;--accent-soft:rgba(255,126,94,.18);
       --accent-strong:rgba(255,150,100,.35);--text-main:#2c1f14;--text-muted:#6b5e4a;
@@ -68,18 +68,14 @@
       padding:4px 8px;border:1px solid rgba(148,163,184,.4);
     }
     .title-pill{
-      appearance:none;border:none;font-size:.78rem;text-transform:uppercase;letter-spacing:.17em;
-      color:var(--text-main);background:rgba(255,255,255,.08);border-radius:999px;padding:4px 10px;
-      border:1px solid rgba(255,255,255,.18);display:inline-flex;align-items:center;gap:6px;cursor:default;user-select:none;
+      appearance:none;border:none;font-size:.78rem;text-transform:uppercase;letter-spacing:.17em;color:var(--text-main);background:rgba(255,255,255,.08);border-radius:999px;padding:4px 10px;border:1px solid rgba(255,255,255,.18);display:inline-flex;align-items:center;gap:6px;cursor:default;user-select:none;
     }
-    .title-pill.has-new{ cursor:pointer; }
-    .title-pill:focus{ outline:none; box-shadow:0 0 0 2px rgba(129,140,248,.35); }
-    .title-pill-dot{
-      width:8px;height:8px;border-radius:999px;display:inline-block;
-    }
-    .title-pill-dot.live-stale{background:#ef4444;box-shadow:0 0 0 0 rgba(239,68,68,.0);}
-    @keyframes pulseGreen {0% {box-shadow:0 0 0 0 rgba(52,211,153,.35);filter:brightness(1.0);}50% {box-shadow:0 0 0 6px rgba(52,211,153,.0);filter:brightness(1.2);}100% {box-shadow:0 0 0 0 rgba(52,211,153,.0);filter:brightness(1.0);}}
-    .title-pill-dot.live-new{background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.35);animation:pulseGreen 1.25s ease-in-out infinite;}
+    .title-pill.has-new{cursor:pointer}
+    .title-pill:focus{outline:none;box-shadow:0 0 0 2px rgba(129,140,248,.35)}
+    .title-pill-dot{width:8px;height:8px;border-radius:999px;display:inline-block}
+    .title-pill-dot.live-stale{background:#ef4444;box-shadow:0 0 0 0 rgba(239,68,68,.0)}
+    @keyframes pulseGreen{0%{box-shadow:0 0 0 0 rgba(52,211,153,.35);filter:brightness(1.0)}50%{box-shadow:0 0 0 6px rgba(52,211,153,.0);filter:brightness(1.2)}100%{box-shadow:0 0 0 0 rgba(52,211,153,.0);filter:brightness(1.0)}}
+    .title-pill-dot.live-new{background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.35);animation:pulseGreen 1.25s ease-in-out infinite}
     .title-block h1{margin:0;font-size:1.9rem;letter-spacing:.03em}
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
     .days-since{margin-top:6px;font-size:0.85rem;color:var(--text-muted);font-weight:400;letter-spacing:.02em}
@@ -371,7 +367,7 @@
   <footer>Hornithological Baes · Firebase · GitHub Pages</footer>
 </div>
 
-<!-- ALL ORIGINAL MODALS (exactly as in your document) -->
+<!-- ALL ORIGINAL MODALS -->
 <div id="speciesOverlay" class="species-overlay">
   <div class="species-panel">
     <div class="species-panel-header">
@@ -1542,105 +1538,6 @@
   function toDDMMYY(d) {
     return d.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
   }
-
-  const POINTS_BY_RARITY = { super_rare: 25, rare: 15, uncommon: 8, common: 4, very_common: 1 };
-
-  function multiplierForSpecies(speciesName){
-    const rarity = getRarityForSpecies(speciesName);
-    return POINTS_BY_RARITY[rarity] ?? 1;
-  }
-
-  function getTimeMsForDoc(d){
-    const dt = getCreatedDate(d);
-    return dt ? dt.getTime() : 0;
-  }
-
-  function buildFirstSeenMap(docs){
-    const first = new Map();
-    for (const { id, data } of docs){
-      const species = (data.birdName || "").trim();
-      if (!species) continue;
-      const ts = getTimeMsForDoc(data);
-      const curr = first.get(species);
-      if (!curr || ts < curr.ts || (ts === curr.ts && id < curr.id)) {
-        first.set(species, { ts, id });
-      }
-    }
-    return first;
-  }
-
-  function buildRankings(docs){
-    const map = new Map();
-    const firstSeen = buildFirstSeenMap(docs);
-    for (const { id, data } of docs){
-      const uploader = (data.uploadedBy || "").trim() || "Unknown";
-      const species = (data.birdName || "").trim();
-      const ratingTotal = Number(data.ratingTotal || 0);
-      const ratingCount = Number(data.ratingCount || 0);
-      const avgRating = ratingCount > 0 ? (ratingTotal / ratingCount) : 0;
-      const mult = multiplierForSpecies(species);
-      let repeatPenalty = 1;
-      const first = firstSeen.get(species);
-      if (first && first.id !== id) repeatPenalty = 0.5;
-      const postPoints = avgRating * mult * repeatPenalty;
-      const curr = map.get(uploader) || { uploads: 0, points: 0 };
-      curr.uploads += 1;
-      curr.points += postPoints;
-      map.set(uploader, curr);
-    }
-    const rows = Array.from(map.entries()).map(([name, v]) => ({ name, ...v }));
-    rows.sort((a,b) => (b.points - a.points) || (b.uploads - a.uploads) || a.name.localeCompare(b.name));
-    return rows;
-  }
-
-  function renderRankings(rows){
-    rankingsList.innerHTML = `<div class="rankings-row rankings-head"><div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div></div>`;
-    if (!rows.length){
-      rankingsList.innerHTML += `<div class="rankings-empty">No uploads yet.</div>`;
-      return;
-    }
-    rows.forEach((r, i) => {
-      rankingsList.innerHTML += `<div class="rankings-row"><div>${i + 1}</div><div>${escapeHtml(r.name)}</div><div class="right">${r.uploads}</div><div class="right">${Number(r.points || 0).toFixed(1)}</div></div>`;
-    });
-  }
-
-  function openRankings(){
-    rankingsModalBackdrop.classList.add("show");
-    renderRankings(buildRankings(latestDocsForRankings));
-  }
-  function closeRankings(){ rankingsModalBackdrop.classList.remove("show"); }
-  openRankingsBtn.addEventListener("click", openRankings);
-  rankingsClose.addEventListener("click", closeRankings);
-  rankingsModalBackdrop.addEventListener("click", (e) => { if (e.target === rankingsModalBackdrop) closeRankings(); });
-
-  function openScoringRules(){ scoringModalBackdrop.classList.add("show"); }
-  function closeScoringRules(){ scoringModalBackdrop.classList.remove("show"); }
-  rankingsRulesBtn.addEventListener("click", openScoringRules);
-  scoringClose.addEventListener("click", closeScoringRules);
-  scoringModalBackdrop.addEventListener("click", (e) => { if (e.target === scoringModalBackdrop) closeScoringRules(); });
-
-  function setSortMode(mode) {
-    sortMode = mode;
-    sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
-    sortMenu.classList.remove("show");
-    currentPage = 0;
-    renderGallery();
-  }
-
-  sortModeBtn.addEventListener("click", (e) => { e.stopPropagation(); sortMenu.classList.toggle("show"); });
-  sortMenu.addEventListener("click", (e) => {
-    const btn = e.target.closest(".sort-option");
-    if (!btn) return;
-    const mode = btn.dataset.mode;
-    if (!mode) return;
-    setSortMode(mode);
-  });
-  document.addEventListener("click", (e) => {
-    if (!sortMenu.classList.contains("show")) return;
-    const insideBtn = e.target === sortModeBtn || sortModeBtn.contains(e.target);
-    const insideMenu = e.target === sortMenu || sortMenu.contains(e.target);
-    if (!insideBtn && !insideMenu) sortMenu.classList.remove("show");
-  });
 
   // === ADELAIDE TIME THEME SWITCHER ===
   function setAdelaideTheme() {
