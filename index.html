@@ -86,7 +86,7 @@
     .dropzone-icon svg{width:21px;height:21px}
     .dropzone strong{font-size:.92rem;color:var(--text-main)}
     .dropzone p{margin:3px 0 0;font-size:.8rem;color:var(--text-muted)}
-    .chip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:3px 8px;border-radius:999px;background:rgba(15,23,42,.9);border:1px solid var(--border-subtle);font-size:.78rem;color:var(--text-muted)}
+    .chip{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:3px 8px;border-radius:999px;background:var(--bg-elevated);border:1px solid var(--border-subtle);font-size:.78rem;color:var(--text-main)}
     .chip-dot{width:6px;height:6px;border-radius:999px;background:#38bdf8}
     .hidden-input{display:none}
     .preview{margin-top:10px;display:flex;gap:10px;align-items:center}
@@ -114,7 +114,7 @@
     .gallery-header h2{margin:0;font-size:1rem;text-transform:uppercase;letter-spacing:.11em;color:var(--text-main)}
     .gallery-header small{font-size:.8rem;color:var(--text-muted)}
     .filter-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-    .filter-badge{font-size:.76rem;padding:3px 9px;border-radius:999px;border:1px solid var(--border-subtle);color:var(--text-muted);background:rgba(15,23,42,.9)}
+    .filter-badge{font-size:.76rem;padding:3px 9px;border-radius:999px;border:1px solid var(--border-subtle);color:var(--text-main);background:var(--bg-elevated)}
     .filter-badge.sort-btn{cursor:pointer;display:inline-flex;align-items:center;gap:4px;color:var(--text-main);border-color:rgba(129,140,248,.55);background:rgba(79,70,229,.16)}
     .filter-badge.sort-btn:hover{background:rgba(79,70,229,.26)}
     .sort-menu{position:absolute;right:0;top:100%;margin-top:6px;background:rgba(15,23,42,.98);border-radius:14px;border:1px solid var(--border-subtle);box-shadow:0 18px 45px rgba(15,23,42,.9);padding:6px;z-index:15;min-width:220px;display:none}
@@ -148,7 +148,7 @@
     .parrot{opacity:.2;transition:opacity .15s ease}
     .parrot.filled{opacity:1}
     .rating-text{font-size:.75rem;color:var(--text-muted)}
-    .time-tag{font-size:.76rem;color:var(--text-muted);padding:4px 9px;border-radius:999px;background:rgba(15,23,42,.9);border:1px solid var(--border-subtle)}
+    .time-tag{font-size:.76rem;color:var(--text-main);padding:4px 9px;border-radius:999px;background:var(--bg-elevated);border:1px solid var(--border-subtle)}
     .card-footer-row{display:flex;justify-content:space-between;margin-top:6px;gap:8px;align-items:center}
     .footer-actions-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     .rate-btn,.comments-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:rgba(79,70,229,.18);color:var(--text-main);border:1px solid rgba(129,140,248,.6)}
@@ -171,7 +171,7 @@
     .modal-header h3{margin:0;font-size:1rem;color:var(--text-main)}
     .modal-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
     .modal-footer{margin-top:10px;display:flex;justify-content:flex-end;gap:8px}
-    .modal-cancel{border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);color:var(--text-muted);font-size:.78rem;padding:6px 12px;cursor:pointer}
+    .modal-cancel{border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-main);font-size:.78rem;padding:6px 12px;cursor:pointer}
     .modal-cancel:hover{background:rgba(15,23,42,1)}
     .modal-accent{border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.16);color:var(--text-main);font-size:.78rem;padding:6px 12px;cursor:pointer}
     .modal-accent:hover{background:rgba(79,70,229,.26)}
@@ -200,7 +200,7 @@
     .species-panel-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
     .species-panel-header h3{margin:0;font-size:1rem;color:var(--text-main)}
     .species-panel-header p{margin:4px 0 0;font-size:.8rem;color:var(--text-muted)}
-    .species-close-btn{border-radius:999px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);color:var(--text-muted);font-size:.78rem;padding:4px 10px;cursor:pointer;white-space:nowrap}
+    .species-close-btn{border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-main);font-size:.78rem;padding:4px 10px;cursor:pointer;white-space:nowrap}
     .species-close-btn:hover{background:rgba(15,23,42,1)}
     .species-tally{margin-top:6px;font-size:.8rem;color:var(--text-muted)}
     .species-tally span.seen{color:#bbf7d0;font-weight:600}
@@ -242,7 +242,6 @@
 </head>
 <body>
 <div class="app-shell">
-  <!-- Your entire original HTML body content (header, layout, cards, all modals, etc.) is 100% intact below -->
   <header>
     <div class="title-block">
       <div class="title-row">
@@ -362,7 +361,7 @@
   <footer>Hornithological Baes · Firebase · GitHub Pages</footer>
 </div>
 
-<!-- ALL YOUR ORIGINAL MODALS (unchanged) -->
+<!-- ALL ORIGINAL MODALS -->
 <div id="speciesOverlay" class="species-overlay">
   <div class="species-panel">
     <div class="species-panel-header">
