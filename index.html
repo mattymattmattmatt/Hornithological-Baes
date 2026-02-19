@@ -147,7 +147,7 @@
     .photo-uploaded-by{font-size:.78rem;color:var(--text-muted)}
     .photo-location-row{display:flex;justify-content:space-between;gap:6px;align-items:center}
     .photo-location{font-size:.8rem;color:var(--text-muted)}
-    .repeat-species-tag{font-size:.75rem;color:var(--text-main);background:var(--accent-soft);border-radius:999px;padding:2px 8px;border:1px solid rgba(129,140,248,.5);white-space:nowrap}
+    .repeat-species-tag{font-size:.75rem;color:#fff;background:var(--accent);border-radius:999px;padding:2px 8px;border:1px solid var(--accent-strong);white-space:nowrap}
     .photo-meta-row{display:flex;justify-content:space-between;align-items:center;margin-top:2px;gap:6px}
     .rating-wrapper{display:flex;flex-direction:column;gap:3px}
     .parrots{display:inline-flex;gap:1px;flex-wrap:wrap;font-size:.9rem}
@@ -171,7 +171,7 @@
     .pager-btn:hover:not(:disabled){background:rgba(79,70,229,.26)}
     .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
     .modal-backdrop.show{display:flex}
-    .modal{background:rgba(15,23,42,.96);border-radius:18px;padding:16px 16px 14px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid var(--border-subtle)}
+    .modal{background:var(--bg-elevated);border-radius:18px;padding:16px 16px 14px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(15,23,42,.9);border:1px solid var(--border-subtle)}
     .modal-wide{max-width:980px}
     .modal-header{margin-bottom:8px;display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
     .modal-header h3{margin:0;font-size:1rem;color:var(--text-main)}
@@ -227,11 +227,11 @@
     .rankings-btn,.gallery-btn{font-size:.78rem;padding:6px 10px;border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.18);color:var(--text-main);cursor:pointer;white-space:nowrap}
     .rankings-btn:hover,.gallery-btn:hover{background:rgba(79,70,229,.28)}
     .rankings-list{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow:auto;padding-right:3px}
-    .rankings-row{display:grid;grid-template-columns:40px 1fr 80px 90px;gap:10px;align-items:center;padding:8px 10px;border-radius:14px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);font-size:.88rem;color:var(--text-main)}
+    .rankings-row{display:grid;grid-template-columns:40px 1fr 80px 90px;gap:10px;align-items:center;padding:8px 10px;border-radius:14px;border:1px solid var(--border-subtle);background:var(--bg-elevated);font-size:.88rem;color:var(--text-main)}
     .rankings-head{background:rgba(79,70,229,.14);border-color:rgba(129,140,248,.35);font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted)}
     .rankings-row .right{text-align:right}
     .rankings-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
-    .rules-box{margin-top:10px;border-radius:14px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);padding:10px 12px;color:var(--text-main);font-size:.86rem;line-height:1.35}
+    .rules-box{margin-top:10px;border-radius:14px;border:1px solid var(--border-subtle);background:var(--bg-elevated);padding:10px 12px;color:var(--text-main);font-size:.86rem;line-height:1.35}
     .rules-box code{display:inline-block;margin-top:6px;padding:4px 8px;border-radius:10px;background:rgba(79,70,229,.14);border:1px solid rgba(129,140,248,.35);color:var(--text-main);font-size:.82rem}
     .rules-list{margin:8px 0 0;padding-left:18px;color:var(--text-muted)}
     .rules-list li{margin:4px 0}
@@ -367,7 +367,7 @@
   <footer>Hornithological Baes · Firebase · GitHub Pages</footer>
 </div>
 
-<!-- ALL YOUR ORIGINAL MODALS (unchanged) -->
+<!-- ALL ORIGINAL MODALS (unchanged) -->
 <div id="speciesOverlay" class="species-overlay">
   <div class="species-panel">
     <div class="species-panel-header">
@@ -1538,105 +1538,6 @@
   function toDDMMYY(d) {
     return d.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" });
   }
-
-  const POINTS_BY_RARITY = { super_rare: 25, rare: 15, uncommon: 8, common: 4, very_common: 1 };
-
-  function multiplierForSpecies(speciesName){
-    const rarity = getRarityForSpecies(speciesName);
-    return POINTS_BY_RARITY[rarity] ?? 1;
-  }
-
-  function getTimeMsForDoc(d){
-    const dt = getCreatedDate(d);
-    return dt ? dt.getTime() : 0;
-  }
-
-  function buildFirstSeenMap(docs){
-    const first = new Map();
-    for (const { id, data } of docs){
-      const species = (data.birdName || "").trim();
-      if (!species) continue;
-      const ts = getTimeMsForDoc(data);
-      const curr = first.get(species);
-      if (!curr || ts < curr.ts || (ts === curr.ts && id < curr.id)) {
-        first.set(species, { ts, id });
-      }
-    }
-    return first;
-  }
-
-  function buildRankings(docs){
-    const map = new Map();
-    const firstSeen = buildFirstSeenMap(docs);
-    for (const { id, data } of docs){
-      const uploader = (data.uploadedBy || "").trim() || "Unknown";
-      const species = (data.birdName || "").trim();
-      const ratingTotal = Number(data.ratingTotal || 0);
-      const ratingCount = Number(data.ratingCount || 0);
-      const avgRating = ratingCount > 0 ? (ratingTotal / ratingCount) : 0;
-      const mult = multiplierForSpecies(species);
-      let repeatPenalty = 1;
-      const first = firstSeen.get(species);
-      if (first && first.id !== id) repeatPenalty = 0.5;
-      const postPoints = avgRating * mult * repeatPenalty;
-      const curr = map.get(uploader) || { uploads: 0, points: 0 };
-      curr.uploads += 1;
-      curr.points += postPoints;
-      map.set(uploader, curr);
-    }
-    const rows = Array.from(map.entries()).map(([name, v]) => ({ name, ...v }));
-    rows.sort((a,b) => (b.points - a.points) || (b.uploads - a.uploads) || a.name.localeCompare(b.name));
-    return rows;
-  }
-
-  function renderRankings(rows){
-    rankingsList.innerHTML = `<div class="rankings-row rankings-head"><div>#</div><div>Uploader</div><div class="right">Uploads</div><div class="right">Points</div></div>`;
-    if (!rows.length){
-      rankingsList.innerHTML += `<div class="rankings-empty">No uploads yet.</div>`;
-      return;
-    }
-    rows.forEach((r, i) => {
-      rankingsList.innerHTML += `<div class="rankings-row"><div>${i + 1}</div><div>${escapeHtml(r.name)}</div><div class="right">${r.uploads}</div><div class="right">${Number(r.points || 0).toFixed(1)}</div></div>`;
-    });
-  }
-
-  function openRankings(){
-    rankingsModalBackdrop.classList.add("show");
-    renderRankings(buildRankings(latestDocsForRankings));
-  }
-  function closeRankings(){ rankingsModalBackdrop.classList.remove("show"); }
-  openRankingsBtn.addEventListener("click", openRankings);
-  rankingsClose.addEventListener("click", closeRankings);
-  rankingsModalBackdrop.addEventListener("click", (e) => { if (e.target === rankingsModalBackdrop) closeRankings(); });
-
-  function openScoringRules(){ scoringModalBackdrop.classList.add("show"); }
-  function closeScoringRules(){ scoringModalBackdrop.classList.remove("show"); }
-  rankingsRulesBtn.addEventListener("click", openScoringRules);
-  scoringClose.addEventListener("click", closeScoringRules);
-  scoringModalBackdrop.addEventListener("click", (e) => { if (e.target === scoringModalBackdrop) closeScoringRules(); });
-
-  function setSortMode(mode) {
-    sortMode = mode;
-    sortModeLabel.textContent = SORT_LABELS[mode] || "Newest first";
-    sortMenu.classList.remove("show");
-    currentPage = 0;
-    renderGallery();
-  }
-
-  sortModeBtn.addEventListener("click", (e) => { e.stopPropagation(); sortMenu.classList.toggle("show"); });
-  sortMenu.addEventListener("click", (e) => {
-    const btn = e.target.closest(".sort-option");
-    if (!btn) return;
-    const mode = btn.dataset.mode;
-    if (!mode) return;
-    setSortMode(mode);
-  });
-  document.addEventListener("click", (e) => {
-    if (!sortMenu.classList.contains("show")) return;
-    const insideBtn = e.target === sortModeBtn || sortModeBtn.contains(e.target);
-    const insideMenu = e.target === sortMenu || sortMenu.contains(e.target);
-    if (!insideBtn && !insideMenu) sortMenu.classList.remove("show");
-  });
 
   // === ADELAIDE TIME THEME SWITCHER ===
   function setAdelaideTheme() {
