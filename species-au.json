@@ -130,7 +130,7 @@
     },
     {
       "name": "Australian Kestrel",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Australian King Parrot",
@@ -178,7 +178,7 @@
     },
     {
       "name": "Australian Reed-Warbler",
-      "rarity": "common"
+      "rarity": "uncommon"
     },
     {
       "name": "Australian Ringneck",
@@ -306,7 +306,7 @@
     },
     {
       "name": "Black Kite",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Black Swan",
@@ -486,7 +486,7 @@
     },
     {
       "name": "Brown Falcon",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Brown Goshawk",
@@ -1034,7 +1034,7 @@
     },
     {
       "name": "Great Cormorant",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Great Egret",
@@ -1110,7 +1110,7 @@
     },
     {
       "name": "Grey Fantail",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Grey Goshawk",
@@ -1318,7 +1318,7 @@
     },
     {
       "name": "Lewin's Honeyeater",
-      "rarity": "common"
+      "rarity": "uncommon"
     },
     {
       "name": "Lewin's Rail",
@@ -1326,7 +1326,7 @@
     },
     {
       "name": "Little Black Cormorant",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Little Bronze-Cuckoo",
@@ -1378,7 +1378,7 @@
     },
     {
       "name": "Little Pied Cormorant",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Little Raven",
@@ -1518,7 +1518,7 @@
     },
     {
       "name": "Nankeen Night Heron",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Naretha Bluebonnet",
@@ -1550,7 +1550,7 @@
     },
     {
       "name": "Noisy Friarbird",
-      "rarity": "common"
+      "rarity": "very_common"
     },
     {
       "name": "Noisy Miner",
@@ -1646,7 +1646,7 @@
     },
     {
       "name": "Osprey",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Pacific Baza",
@@ -1782,7 +1782,7 @@
     },
     {
       "name": "Pied Cormorant",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Pied Currawong",
@@ -2218,7 +2218,7 @@
     },
     {
       "name": "Singing Honeyeater",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
     "name": "Slaty-backed Gull",
@@ -2346,7 +2346,7 @@
     },
     {
       "name": "Striated Heron",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "Striped Honeyeater",
@@ -2554,7 +2554,7 @@
     },
     {
       "name": "Whistling Kite",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
       "name": "White Wagtail",
@@ -2598,7 +2598,7 @@
     },
     {
       "name": "White-faced Heron",
-      "rarity": "very_common"
+      "rarity": "common"
     },
     {
     "name": "White-faced Storm-Petrel",
