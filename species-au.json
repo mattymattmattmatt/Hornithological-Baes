@@ -9,8 +9,24 @@
       "rarity": "rare"
     },
     {
+    "name": "Antarctic Petrel",
+    "rarity": "rare"
+    },
+    {
       "name": "Antarctic Prion",
       "rarity": "rare"
+    },
+    {
+    "name": "Arctic Tern",
+    "rarity": "rare"
+    },
+    {
+    "name": "Arctic Warbler",
+    "rarity": "super_rare"
+    },
+    {
+    "name": "Amur Falcon",
+    "rarity": "super_rare"
     },
     {
       "name": "Apostlebird",
@@ -29,6 +45,10 @@
       "rarity": "rare"
     },
     {
+    "name": "Asian Brown Flycatcher",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Asian Dowitcher",
       "rarity": "super_rare"
     },
@@ -37,17 +57,25 @@
       "rarity": "uncommon"
     },
     {
+    "name": "Asian House-Martin",
+    "rarity": "super_rare"
+   },
+    {
       "name": "Asian Koel",
       "rarity": "uncommon"
+    },
+    {
+    "name": "Asian Stubtail",
+    "rarity": "super_rare"
     },
     {
       "name": "Australasian Bittern",
       "rarity": "super_rare"
     },
     {
-      "name": "Australasian Darter",
-      "rarity": "common"
-    },
+    "name": "Australasian Fairy Tern",
+    "rarity": "rare"
+   },
     {
       "name": "Australasian Gannet",
       "rarity": "common"
@@ -64,6 +92,10 @@
       "name": "Australasian Swamphen",
       "rarity": "common"
     },
+    {
+    "name": "Australian Boobook",
+    "rarity": "common"
+   },
     {
       "name": "Australian Brushturkey",
       "rarity": "common"
@@ -94,10 +126,6 @@
     },
     {
       "name": "Australian Hobby",
-      "rarity": "common"
-    },
-    {
-      "name": "Australian Ibis",
       "rarity": "common"
     },
     {
@@ -201,6 +229,10 @@
       "rarity": "uncommon"
     },
     {
+    "name": "Baird's Sandpiper",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Banded Honeyeater",
       "rarity": "common"
     },
@@ -281,8 +313,8 @@
       "rarity": "very_common"
     },
     {
-      "name": "Black-backed Bittern",
-      "rarity": "uncommon"
+    "name": "Black Tern",
+    "rarity": "rare"
     },
     {
       "name": "Black-backed Butcherbird",
@@ -429,6 +461,10 @@
       "rarity": "common"
     },
     {
+    "name": "Bridled Tern",
+    "rarity": "rare"
+    },
+    {
       "name": "Broad-billed Flycatcher",
       "rarity": "uncommon"
     },
@@ -463,6 +499,10 @@
     {
       "name": "Brown Quail",
       "rarity": "common"
+    },
+    {
+    "name": "Brown Shrike",
+    "rarity": "super_rare"
     },
     {
       "name": "Brown Skua",
@@ -501,8 +541,16 @@
       "rarity": "common"
     },
     {
+    "name": "Buff-breasted Sandpiper",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Buller's Albatross",
       "rarity": "rare"
+    },
+    {
+    "name": "Buller's Shearwater",
+    "rarity": "rare"
     },
     {
       "name": "Bush Stone-curlew",
@@ -689,6 +737,10 @@
       "rarity": "rare"
     },
     {
+    "name": "Corn Crake",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Cotton Pygmy-Goose",
       "rarity": "uncommon"
     },
@@ -749,6 +801,10 @@
       "rarity": "common"
     },
     {
+    "name": "Dunlin",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Dusky Grasswren",
       "rarity": "uncommon"
     },
@@ -769,8 +825,8 @@
       "rarity": "super_rare"
     },
     {
-      "name": "Eastern Cattle Egret",
-      "rarity": "common"
+    "name": "Eastern Crowned Warbler",
+    "rarity": "super_rare"
     },
     {
       "name": "Eastern Curlew",
@@ -825,6 +881,14 @@
       "rarity": "very_common"
     },
     {
+    "name": "Eurasian Hobby",
+    "rarity": "super_rare"
+    },
+    {
+    "name": "Eurasian Skylark",
+    "rarity": "rare"
+    },
+    {
       "name": "Eurasian Marsh Harrier",
       "rarity": "rare"
     },
@@ -843,6 +907,10 @@
     {
       "name": "European Greenfinch",
       "rarity": "common"
+    },
+    {
+    "name": "European Roller",
+    "rarity": "super_rare"
     },
     {
       "name": "Eyrean Grasswren",
@@ -883,6 +951,10 @@
     {
       "name": "Fork-tailed Swift",
       "rarity": "common"
+    },
+    {
+    "name": "Franklin's Gull",
+    "rarity": "super_rare"
     },
     {
       "name": "Freckled Duck",
@@ -934,10 +1006,6 @@
     },
     {
       "name": "Golden Bowerbird",
-      "rarity": "common"
-    },
-    {
-      "name": "Golden Whistler",
       "rarity": "common"
     },
     {
@@ -997,6 +1065,10 @@
       "rarity": "uncommon"
     },
     {
+    "name": "Greater Flamingo",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Greater Sand Plover",
       "rarity": "rare"
     },
@@ -1023,6 +1095,10 @@
     {
       "name": "Green-winged Teal",
       "rarity": "rare"
+    },
+    {
+    "name": "Grey-backed Storm-Petrel",
+    "rarity": "super_rare"
     },
     {
       "name": "Grey Butcherbird",
@@ -1121,8 +1197,16 @@
       "rarity": "uncommon"
     },
     {
+    "name": "Hoopoe",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Horsfield's Bronze-Cuckoo",
       "rarity": "common"
+    },
+    {
+    "name": "House Crow",
+    "rarity": "super_rare"
     },
     {
       "name": "House Sparrow",
@@ -1131,6 +1215,10 @@
     {
       "name": "House Swift",
       "rarity": "common"
+    },
+    {
+    "name": "Hudsonian Godwit",
+    "rarity": "super_rare"
     },
     {
       "name": "Indian Cuckoo",
@@ -1161,12 +1249,20 @@
       "rarity": "common"
     },
     {
+    "name": "Juan Fernandez Petrel",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Kalkadoon Grasswren",
       "rarity": "super_rare"
     },
     {
       "name": "Kelp Gull",
       "rarity": "common"
+    },
+    {
+    "name": "Kerguelen Petrel",
+    "rarity": "rare"
     },
     {
       "name": "Kerguelen Shag",
@@ -1199,6 +1295,10 @@
     {
       "name": "Leaden Flycatcher",
       "rarity": "common"
+    },
+    {
+    "name": "Lesser Black-backed Gull",
+    "rarity": "super_rare"
     },
     {
       "name": "Lesser Coucal",
@@ -1297,6 +1397,10 @@
       "rarity": "common"
     },
     {
+    "name": "Long-billed Dowitcher",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Long-tailed Finch",
       "rarity": "common"
     },
@@ -1381,12 +1485,20 @@
       "rarity": "very_common"
     },
     {
+    "name": "Matsudaira's Storm-Petrel",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Mistletoebird",
       "rarity": "common"
     },
     {
       "name": "Mossy-nest Swiftlet",
       "rarity": "common"
+    },
+    {
+    "name": "Mugimaki Flycatcher",
+    "rarity": "super_rare"
     },
     {
       "name": "Mulga Parrot",
@@ -1427,6 +1539,10 @@
     {
       "name": "New Zealand Pipit",
       "rarity": "common"
+    },
+    {
+    "name": "Newell's Shearwater",
+    "rarity": "super_rare"
     },
     {
       "name": "Night Parrot",
@@ -1473,6 +1589,10 @@
       "rarity": "common"
     },
     {
+    "name": "Northern Wheatear",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Opalton Grasswren",
       "rarity": "super_rare"
     },
@@ -1515,6 +1635,10 @@
     {
       "name": "Oriental Turtle-Dove",
       "rarity": "common"
+    },
+    {
+    "name": "Oriental Reed Warbler",
+    "rarity": "super_rare"
     },
     {
       "name": "Ornate Sunbird",
@@ -1589,6 +1713,10 @@
       "rarity": "uncommon"
     },
     {
+    "name": "Pallas's Grasshopper Warbler",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Pallid Cuckoo",
       "rarity": "common"
     },
@@ -1635,6 +1763,10 @@
     {
       "name": "Pectoral Sandpiper",
       "rarity": "rare"
+    },
+    {
+    "name": "Persian Shearwater",
+    "rarity": "super_rare"
     },
     {
       "name": "Pheasant Coucal",
@@ -1689,6 +1821,10 @@
       "rarity": "common"
     },
     {
+    "name": "Pink-footed Shearwater",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Plains-wanderer",
       "rarity": "super_rare"
     },
@@ -1699,6 +1835,10 @@
     {
       "name": "Plumed Egret",
       "rarity": "uncommon"
+    },
+    {
+    "name": "Plumed Whistling-Duck",
+    "rarity": "common"
     },
     {
       "name": "Pomarine Jaeger",
@@ -1857,6 +1997,14 @@
       "rarity": "rare"
     },
     {
+    "name": "Red-vented Bulbul",
+    "rarity": "rare"
+    },
+    {
+    "name": "Red-whiskered Bulbul",
+    "rarity": "rare"
+    },
+    {
       "name": "Red-winged Fairywren",
       "rarity": "common"
     },
@@ -2009,6 +2157,10 @@
       "rarity": "super_rare"
     },
     {
+    "name": "Semipalmated Plover",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Sharp-tailed Sandpiper",
       "rarity": "common"
     },
@@ -2021,6 +2173,10 @@
       "rarity": "uncommon"
     },
     {
+    "name": "Short-billed Dowitcher",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Short-tailed Grasswren",
       "rarity": "uncommon"
     },
@@ -2029,8 +2185,20 @@
       "rarity": "rare"
     },
     {
+    "name": "Siberian Blue Robin",
+    "rarity": "super_rare"
+    },
+    {
+    "name": "Siberian Rubythroat",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Siberian Sand Plover",
       "rarity": "super_rare"
+    },
+    {
+    "name": "Siberian Thrush",
+    "rarity": "super_rare"
     },
     {
       "name": "Silver Gull",
@@ -2053,6 +2221,10 @@
       "rarity": "very_common"
     },
     {
+    "name": "Slaty-backed Gull",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Slender-billed Prion",
       "rarity": "rare"
     },
@@ -2063,6 +2235,10 @@
     {
       "name": "Soft-plumaged Petrel",
       "rarity": "rare"
+    },
+    {
+    "name": "Song Thrush",
+    "rarity": "rare"
     },
     {
       "name": "Sooty Oystercatcher",
@@ -2157,6 +2333,10 @@
       "rarity": "common"
     },
     {
+    "name": "Stilt Sandpiper",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Straw-necked Ibis",
       "rarity": "common"
     },
@@ -2179,6 +2359,10 @@
     {
       "name": "Stubble Quail",
       "rarity": "common"
+    },
+    {
+    "name": "Subantarctic Shearwater",
+    "rarity": "rare"
     },
     {
       "name": "Sulphur-crested Cockatoo",
@@ -2213,6 +2397,10 @@
       "rarity": "rare"
     },
     {
+    "name": "Swinhoe's Storm-Petrel",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Tasmanian Nativehen",
       "rarity": "common"
     },
@@ -2241,6 +2429,10 @@
       "rarity": "super_rare"
     },
     {
+    "name": "Tiger Shrike",
+    "rarity": "super_rare"
+    },
+    {
       "name": "Tooth-billed Bowerbird",
       "rarity": "common"
     },
@@ -2263,6 +2455,10 @@
     {
       "name": "Tree Pipit",
       "rarity": "rare"
+    },
+    {
+    "name": "Tristram's Storm-Petrel",
+    "rarity": "super_rare"
     },
     {
       "name": "Tufted Duck",
@@ -2373,6 +2569,10 @@
       "rarity": "common"
     },
     {
+    "name": "White-bellied Storm-Petrel",
+    "rarity": "super_rare"
+    },
+    {
       "name": "White-browed Crake",
       "rarity": "uncommon"
     },
@@ -2399,6 +2599,10 @@
     {
       "name": "White-faced Heron",
       "rarity": "very_common"
+    },
+    {
+    "name": "White-faced Storm-Petrel",
+    "rarity": "super_rare"
     },
     {
       "name": "White-fronted Chat",
@@ -2445,6 +2649,10 @@
       "rarity": "common"
     },
     {
+    "name": "White-rumped Sandpiper",
+    "rarity": "super_rare"
+    },
+    {
       "name": "White-streaked Honeyeater",
       "rarity": "uncommon"
     },
@@ -2483,6 +2691,14 @@
     {
       "name": "Willie Wagtail",
       "rarity": "very_common"
+    },
+    {
+    "name": "Wild Turkey",
+    "rarity": "uncommon"
+    },
+    {
+    "name": "Wilson's Phalarope",
+    "rarity": "super_rare"
     },
     {
       "name": "Wompoo Fruit-Dove",
