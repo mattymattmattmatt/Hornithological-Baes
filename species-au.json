@@ -785,10 +785,6 @@
       "rarity": "common"
     },
     {
-      "name": "Diving Petrel",
-      "rarity": "common"
-    },
-    {
       "name": "Double-banded Plover",
       "rarity": "uncommon"
     },
@@ -1733,7 +1729,7 @@
       "rarity": "rare"
     },
     {
-      "name": "Papuan Pit",
+      "name": "Papuan Pitta",
       "rarity": "common"
     },
     {
@@ -2598,7 +2594,7 @@
     },
     {
       "name": "White-faced Heron",
-      "rarity": "common"
+      "rarity": "very_common"
     },
     {
     "name": "White-faced Storm-Petrel",
