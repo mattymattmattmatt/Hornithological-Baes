@@ -415,16 +415,16 @@
   <div class="modal">
     <div class="modal-header">
       <div>
-        <h3 id="commentsTitle">comments</h3>
-        <p id="commentsSubtitle">comments for this sighting (only visible when opened).</p>
+        <h3 id="commentsTitle">chirps</h3>
+        <p id="commentsSubtitle">chirps for this sighting (only visible when opened).</p>
       </div>
       <button id="commentsClose" class="modal-cancel" type="button">Close</button>
     </div>
     <div id="commentsList" class="comments-list"></div>
     <div class="comment-compose">
-      <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add a comment…"></textarea>
+      <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add a chirp…"></textarea>
       <div class="modal-footer" style="justify-content:flex-end;">
-        <button id="commentSend" class="comment-send">Post comment</button>
+        <button id="commentSend" class="comment-send">Post Chirp</button>
       </div>
     </div>
   </div>
@@ -1116,7 +1116,7 @@
       const rateLabel = myRating ? `You rated ${myRating}/10` : "Tap here to rate /10";
       const rateBtnHtml = isOwner ? `<button class="rate-btn" data-photo-id="${id}" disabled title="You can't rate your own post">Your post</button>` : `<button class="rate-btn" data-photo-id="${id}">${escapeHtml(rateLabel)}</button>`;
       const commentCount = Number(data.commentCount || 0);
-      const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">comments (${commentCount})</button>`;
+      const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">chirps (${commentCount})</button>`;
       const card = document.createElement("article");
       card.className = "photo-card";
       card.dataset.photoId = id;
@@ -1213,8 +1213,8 @@
   function opencommentsModal(photoId, birdName) {
     closecommentsModal();
     commentsTargetPhotoId = photoId;
-    commentsTitle.textContent = `comments · ${birdName || "Birb"}`;
-    commentsSubtitle.textContent = "comments for this sighting (only visible when opened).";
+    commentsTitle.textContent = `chirps · ${birdName || "Birb"}`;
+    commentsSubtitle.textContent = "chirps for this sighting (only visible when opened).";
     commentInput.value = "";
     commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
     commentsModalBackdrop.classList.add("show");
@@ -1225,7 +1225,7 @@
       snap.forEach((d) => items.push({ id: d.id, data: d.data() }));
       commentsList.innerHTML = "";
       if (!items.length) {
-        commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
+        commentsList.innerHTML = `<div class="comment-empty">No chirps yet. Be the first.</div>`;
         return;
       }
       for (const item of items) {
