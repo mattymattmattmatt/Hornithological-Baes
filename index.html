@@ -153,9 +153,9 @@
     .time-tag{font-size:.76rem;color:var(--text-main);padding:4px 9px;border-radius:999px;background:var(--bg-elevated);border:1px solid var(--border-subtle)}
     .card-footer-row{display:flex;justify-content:space-between;margin-top:6px;gap:8px;align-items:center}
     .footer-actions-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .rate-btn,.comments-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:rgba(79,70,229,.18);color:var(--text-main);border:1px solid rgba(129,140,248,.6)}
+    .rate-btn,.chirps-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:rgba(79,70,229,.18);color:var(--text-main);border:1px solid rgba(129,140,248,.6)}
     .rate-btn[disabled]{opacity:.55;cursor:default;background:rgba(15,23,42,.85);border-style:dashed;color:var(--text-muted)}
-    .rate-btn:hover:not(:disabled),.comments-btn:hover{background:rgba(79,70,229,.28)}
+    .rate-btn:hover:not(:disabled),.chirps-btn:hover{background:rgba(79,70,229,.28)}
     /* FIXED DELETE BUTTON FOR ALL THEMES */
     .delete-btn{border:none;border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;background:#fee2e2;color:#b91c1c;border:1px solid #f87171;display:inline-flex;align-items:center;gap:6px}
     .delete-btn:hover{background:#fecaca}
@@ -183,20 +183,20 @@
     .rating-option span.emoji{font-size:1rem}
     .rating-option:hover{background:rgba(79,70,229,.35)}
     .rating-option.selected{border-color:rgba(187,247,208,.85);background:rgba(34,197,94,.18);color:#dcfce7}
-    .comments-list{margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;display:flex;flex-direction:column;gap:8px}
-    .comment-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
-    .comment-item{border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);border-radius:14px;padding:8px 10px}
-    .comment-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
-    .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
-    .comment-del{width:26px;height:26px;border-radius:999px;border:1px solid rgba(248,113,113,.55);background:rgba(239,68,68,.10);color:#fecaca;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
-    .comment-del:hover{background:rgba(239,68,68,.20)}
-    .comment-text{font-size:.88rem;color:var(--text-main);line-height:1.35;white-space:pre-wrap;word-break:break-word}
-    .comment-compose{margin-top:10px;display:flex;flex-direction:column;gap:8px}
-    textarea.comment-input{width:100%;min-height:72px;resize:none;border-radius:14px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.92);padding:10px 10px;color:var(--text-main);font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:.9rem;outline:none}
-    textarea.comment-input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
-    .comment-send{align-self:flex-end;appearance:none;border:none;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700;background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.45)}
-    .comment-send:disabled{opacity:.6;cursor:default;box-shadow:none}
-    .comment-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
+    .chirps-list{margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;display:flex;flex-direction:column;gap:8px}
+    .chirp-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
+    .chirp-item{border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);border-radius:14px;padding:8px 10px}
+    .chirp-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
+    .chirp-meta .time{font-size:.75rem;color:var(--text-muted)}
+    .chirp-del{width:26px;height:26px;border-radius:999px;border:1px solid rgba(248,113,113,.55);background:rgba(239,68,68,.10);color:#fecaca;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+    .chirp-del:hover{background:rgba(239,68,68,.20)}
+    .chirp-text{font-size:.88rem;color:var(--text-main);line-height:1.35;white-space:pre-wrap;word-break:break-word}
+    .chirp-compose{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+    textarea.chirp-input{width:100%;min-height:72px;resize:none;border-radius:14px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.92);padding:10px 10px;color:var(--text-main);font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:.9rem;outline:none}
+    textarea.chirp-input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
+    .chirp-send{align-self:flex-end;appearance:none;border:none;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700;background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.45)}
+    .chirp-send:disabled{opacity:.6;cursor:default;box-shadow:none}
+    .chirp-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
     .species-overlay{position:fixed;inset:0;background:rgba(15,23,42,.92);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
     .species-overlay.show{display:flex}
     .species-panel{max-width:520px;width:100%;max-height:90vh;background:var(--bg-elevated);border-radius:20px;border:3px solid var(--border-subtle);box-shadow:0 24px 60px rgba(0,0,0,0.15);padding:16px 16px 14px;display:flex;flex-direction:column}
@@ -411,20 +411,20 @@
   </div>
 </div>
 
-<div id="commentsModalBackdrop" class="modal-backdrop">
+<div id="chirpsModalBackdrop" class="modal-backdrop">
   <div class="modal">
     <div class="modal-header">
       <div>
-        <h3 id="commentsTitle">Comments</h3>
-        <p id="commentsSubtitle">Comments for this sighting (only visible when opened).</p>
+        <h3 id="chirpsTitle">chirps</h3>
+        <p id="chirpsSubtitle">chirps for this sighting (only visible when opened).</p>
       </div>
-      <button id="commentsClose" class="modal-cancel" type="button">Close</button>
+      <button id="chirpsClose" class="modal-cancel" type="button">Close</button>
     </div>
-    <div id="commentsList" class="comments-list"></div>
-    <div class="comment-compose">
-      <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add a comment…"></textarea>
+    <div id="chirpsList" class="chirps-list"></div>
+    <div class="chirp-compose">
+      <textarea id="chirpInput" class="chirp-input" maxlength="500" placeholder="Add a chirp…"></textarea>
       <div class="modal-footer" style="justify-content:flex-end;">
-        <button id="commentSend" class="comment-send">Post comment</button>
+        <button id="chirpSend" class="chirp-send">Post chirp</button>
       </div>
     </div>
   </div>
@@ -627,13 +627,13 @@
   const pageInfo = document.getElementById("pageInfo");
   const ratingModalBackdrop = document.getElementById("ratingModalBackdrop");
   const ratingOptionButtons = ratingModalBackdrop.querySelectorAll(".rating-option");
-  const commentsModalBackdrop = document.getElementById("commentsModalBackdrop");
-  const commentsTitle = document.getElementById("commentsTitle");
-  const commentsSubtitle = document.getElementById("commentsSubtitle");
-  const commentsList = document.getElementById("commentsList");
-  const commentInput = document.getElementById("commentInput");
-  const commentSend = document.getElementById("commentSend");
-  const commentsClose = document.getElementById("commentsClose");
+  const chirpsModalBackdrop = document.getElementById("chirpsModalBackdrop");
+  const chirpsTitle = document.getElementById("chirpsTitle");
+  const chirpsSubtitle = document.getElementById("chirpsSubtitle");
+  const chirpsList = document.getElementById("chirpsList");
+  const chirpInput = document.getElementById("chirpInput");
+  const chirpSend = document.getElementById("chirpSend");
+  const chirpsClose = document.getElementById("chirpsClose");
   const speciesOverlay = document.getElementById("speciesOverlay");
   const speciesListEl = document.getElementById("speciesList");
   const speciesSearch = document.getElementById("speciesSearch");
@@ -735,8 +735,8 @@
   let selectedObjectUrl = "";
   let ratingTargetPhotoId = null;
   let currentSeenSpecies = new Set();
-  let commentsTargetPhotoId = null;
-  let commentsUnsub = null;
+  let chirpsTargetPhotoId = null;
+  let chirpsUnsub = null;
   let latestDocsForRankings = [];
   let currentPhotos = [];
   let sortMode = "newest";
@@ -897,7 +897,7 @@
         createdAt: serverTimestamp(),
         ratingTotal: 0,
         ratingCount: 0,
-        commentCount: 0,
+        chirpCount: 0,
         ownerDeviceId: deviceId
       });
       if (!storedUploader && uploadedBy) {
@@ -1115,8 +1115,8 @@
       const myRating = localRatings[id];
       const rateLabel = myRating ? `You rated ${myRating}/10` : "Tap here to rate /10";
       const rateBtnHtml = isOwner ? `<button class="rate-btn" data-photo-id="${id}" disabled title="You can't rate your own post">Your post</button>` : `<button class="rate-btn" data-photo-id="${id}">${escapeHtml(rateLabel)}</button>`;
-      const commentCount = Number(data.commentCount || 0);
-      const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">Comments (${commentCount})</button>`;
+      const chirpCount = Number(data.chirpCount || 0);
+      const chirpsBtnHtml = `<button class="chirps-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">chirps (${chirpCount})</button>`;
       const card = document.createElement("article");
       card.className = "photo-card";
       card.dataset.photoId = id;
@@ -1145,7 +1145,7 @@
           <div class="card-footer-row">
             <div class="footer-actions-left">
               ${rateBtnHtml}
-              ${commentsBtnHtml}
+              ${chirpsBtnHtml}
             </div>
             <button class="delete-btn" data-photo-id="${id}">🗑 Delete</button>
           </div>
@@ -1210,22 +1210,22 @@
     saveLocalRatings();
   }
 
-  function openCommentsModal(photoId, birdName) {
-    closeCommentsModal();
-    commentsTargetPhotoId = photoId;
-    commentsTitle.textContent = `Comments · ${birdName || "Birb"}`;
-    commentsSubtitle.textContent = "Comments for this sighting (only visible when opened).";
-    commentInput.value = "";
-    commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
-    commentsModalBackdrop.classList.add("show");
-    const commentsCol = collection(db, "birdPhotos", photoId, "comments");
-    const q = query(commentsCol, orderBy("createdAt", "asc"));
-    commentsUnsub = onSnapshot(q, (snap) => {
+  function openchirpsModal(photoId, birdName) {
+    closechirpsModal();
+    chirpsTargetPhotoId = photoId;
+    chirpsTitle.textContent = `chirps · ${birdName || "Birb"}`;
+    chirpsSubtitle.textContent = "chirps for this sighting (only visible when opened).";
+    chirpInput.value = "";
+    chirpsList.innerHTML = `<div class="chirp-empty">Loading chirps…</div>`;
+    chirpsModalBackdrop.classList.add("show");
+    const chirpsCol = collection(db, "birdPhotos", photoId, "chirps");
+    const q = query(chirpsCol, orderBy("createdAt", "asc"));
+    chirpsUnsub = onSnapshot(q, (snap) => {
       const items = [];
       snap.forEach((d) => items.push({ id: d.id, data: d.data() }));
-      commentsList.innerHTML = "";
+      chirpsList.innerHTML = "";
       if (!items.length) {
-        commentsList.innerHTML = `<div class="comment-empty">No comments yet. Be the first.</div>`;
+        chirpsList.innerHTML = `<div class="chirp-empty">No chirps yet. Be the first.</div>`;
         return;
       }
       for (const item of items) {
@@ -1234,66 +1234,66 @@
         const stamp = dt ? toDDMMYY(dt) : "--/--/--";
         const canDelete = item.data.deviceId && item.data.deviceId === deviceId;
         const el = document.createElement("div");
-        el.className = "comment-item";
+        el.className = "chirp-item";
         el.innerHTML = `
-          <div class="comment-meta">
+          <div class="chirp-meta">
             <div class="time">${escapeHtml(stamp)}</div>
-            ${canDelete ? `<button class="comment-del" title="Delete comment" aria-label="Delete comment" data-comment-id="${item.id}">×</button>` : ``}
+            ${canDelete ? `<button class="chirp-del" title="Delete chirp" aria-label="Delete chirp" data-chirp-id="${item.id}">×</button>` : ``}
           </div>
-          <div class="comment-text">${escapeHtml(text)}</div>
+          <div class="chirp-text">${escapeHtml(text)}</div>
         `;
-        commentsList.appendChild(el);
+        chirpsList.appendChild(el);
       }
     }, (err) => {
-      console.error("Comments listener error:", err);
-      commentsList.innerHTML = `<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>`;
+      console.error("chirps listener error:", err);
+      chirpsList.innerHTML = `<div class="chirp-empty">Can't load chirps (Firestore permissions). Check Firestore Rules.</div>`;
     });
   }
 
-  function closeCommentsModal() {
-    if (commentsUnsub) { try { commentsUnsub(); } catch {} }
-    commentsUnsub = null;
-    commentsTargetPhotoId = null;
-    commentsModalBackdrop.classList.remove("show");
+  function closechirpsModal() {
+    if (chirpsUnsub) { try { chirpsUnsub(); } catch {} }
+    chirpsUnsub = null;
+    chirpsTargetPhotoId = null;
+    chirpsModalBackdrop.classList.remove("show");
   }
-  commentsClose.addEventListener("click", closeCommentsModal);
-  commentsModalBackdrop.addEventListener("click", (e) => { if (e.target === commentsModalBackdrop) closeCommentsModal(); });
+  chirpsClose.addEventListener("click", closechirpsModal);
+  chirpsModalBackdrop.addEventListener("click", (e) => { if (e.target === chirpsModalBackdrop) closechirpsModal(); });
 
-  commentSend.addEventListener("click", async () => {
+  chirpSend.addEventListener("click", async () => {
     hideError(); hideSuccess();
-    if (!commentsTargetPhotoId) return;
-    const text = (commentInput.value || "").trim();
+    if (!chirpsTargetPhotoId) return;
+    const text = (chirpInput.value || "").trim();
     if (!text) return;
-    commentSend.disabled = true;
-    commentSend.textContent = "Posting…";
+    chirpSend.disabled = true;
+    chirpSend.textContent = "Posting…";
     try {
-      const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
-      await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
-      await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(1) });
-      commentInput.value = "";
-      commentInput.focus();
+      const chirpsCol = collection(db, "birdPhotos", chirpsTargetPhotoId, "chirps");
+      await addDoc(chirpsCol, { text, createdAt: serverTimestamp(), deviceId });
+      await updateDoc(doc(db, "birdPhotos", chirpsTargetPhotoId), { chirpCount: increment(1) });
+      chirpInput.value = "";
+      chirpInput.focus();
     } catch (err) {
       console.error(err);
-      showError("Could not post comment. Check Firebase rules.");
+      showError("Could not post chirp. Check Firebase rules.");
     } finally {
-      commentSend.disabled = false;
-      commentSend.textContent = "Post comment";
+      chirpSend.disabled = false;
+      chirpSend.textContent = "Post chirp";
     }
   });
 
-  commentsList.addEventListener("click", async (e) => {
-    const btn = e.target.closest(".comment-del");
+  chirpsList.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".chirp-del");
     if (!btn) return;
-    if (!commentsTargetPhotoId) return;
-    const commentId = btn.dataset.commentId;
-    if (!commentId) return;
-    if (!confirm("Delete this comment?")) return;
+    if (!chirpsTargetPhotoId) return;
+    const chirpId = btn.dataset.chirpId;
+    if (!chirpId) return;
+    if (!confirm("Delete this chirp?")) return;
     try {
-      await deleteDoc(doc(db, "birdPhotos", commentsTargetPhotoId, "comments", commentId));
-      await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(-1) });
+      await deleteDoc(doc(db, "birdPhotos", chirpsTargetPhotoId, "chirps", chirpId));
+      await updateDoc(doc(db, "birdPhotos", chirpsTargetPhotoId), { chirpCount: increment(-1) });
     } catch (err) {
       console.error(err);
-      showError("Could not delete comment. Check Firebase rules.");
+      showError("Could not delete chirp. Check Firebase rules.");
     }
   });
 
@@ -1321,25 +1321,25 @@
       openRatingModal(photoId);
       return;
     }
-    const commentsBtn = e.target.closest(".comments-btn");
-    if (commentsBtn) {
-      const photoId = commentsBtn.dataset.photoId;
-      const birdName = commentsBtn.getAttribute("data-bird-name") || "Birb";
+    const chirpsBtn = e.target.closest(".chirps-btn");
+    if (chirpsBtn) {
+      const photoId = chirpsBtn.dataset.photoId;
+      const birdName = chirpsBtn.getAttribute("data-bird-name") || "Birb";
       if (!photoId) return;
-      openCommentsModal(photoId, birdName);
+      openchirpsModal(photoId, birdName);
       return;
     }
   });
 
-  async function deleteCommentsForPhoto(photoId) {
+  async function deletechirpsForPhoto(photoId) {
     try {
-      const commentsCol = collection(db, "birdPhotos", photoId, "comments");
-      const snap = await getDocs(commentsCol);
+      const chirpsCol = collection(db, "birdPhotos", photoId, "chirps");
+      const snap = await getDocs(chirpsCol);
       const deletions = [];
       snap.forEach((d) => deletions.push(deleteDoc(d.ref)));
       await Promise.all(deletions);
     } catch (e) {
-      console.error("Error deleting comments:", e);
+      console.error("Error deleting chirps:", e);
     }
   }
 
@@ -1353,7 +1353,7 @@
       try { await deleteObject(storageRef(storage, storagePath)); }
       catch (e) { console.error("Error deleting file from storage:", e); }
     }
-    await deleteCommentsForPhoto(photoId);
+    await deletechirpsForPhoto(photoId);
     delete localRatings[photoId];
     saveLocalRatings();
     await deleteDoc(docRef);
