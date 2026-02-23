@@ -62,7 +62,8 @@
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
     .title-block{display:flex;flex-direction:column;gap:8px}
     .title-row{display:flex;align-items:center;gap:12px}
-    .logo{height:122px;width:auto;border-radius:12px;object-fit:contain;background:rgba(15,23,42,.7);padding:4px 8px;border:1px solid rgba(148,163,184,.4)}
+    /* FIXED LOGO BACKGROUND FOR ALL THEMES */
+    .logo{height:122px;width:auto;border-radius:12px;object-fit:contain;background:var(--bg-elevated);padding:4px 8px;border:1px solid var(--border-subtle)}
     .title-pill{appearance:none;border:none;font-size:.78rem;text-transform:uppercase;letter-spacing:.17em;color:var(--text-main);background:rgba(255,255,255,.08);border-radius:999px;padding:4px 10px;border:1px solid rgba(255,255,255,.18);display:inline-flex;align-items:center;gap:6px;cursor:default;user-select:none}
     .title-pill.has-new{cursor:pointer}
     .title-pill:focus{outline:none;box-shadow:0 0 0 2px rgba(129,140,248,.35)}
@@ -424,7 +425,7 @@
     <div class="comment-compose">
       <textarea id="commentInput" class="comment-input" maxlength="500" placeholder="Add a chirp…"></textarea>
       <div class="modal-footer" style="justify-content:flex-end;">
-        <button id="commentSend" class="comment-send">Post Chirp</button>
+        <button id="commentSend" class="comment-send">Post chirp</button>
       </div>
     </div>
   </div>
@@ -1116,6 +1117,7 @@
       const rateLabel = myRating ? `You rated ${myRating}/10` : "Tap here to rate /10";
       const rateBtnHtml = isOwner ? `<button class="rate-btn" data-photo-id="${id}" disabled title="You can't rate your own post">Your post</button>` : `<button class="rate-btn" data-photo-id="${id}">${escapeHtml(rateLabel)}</button>`;
       const commentCount = Number(data.commentCount || 0);
+      /* CHIRP CHANGE */
       const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">chirps (${commentCount})</button>`;
       const card = document.createElement("article");
       card.className = "photo-card";
@@ -1172,12 +1174,6 @@
   function closeRatingModal(){ ratingTargetPhotoId = null; ratingModalBackdrop.classList.remove("show"); }
   ratingModalBackdrop.addEventListener("click", (e) => { if (e.target === ratingModalBackdrop) closeRatingModal(); });
 
-  /* FIXED: Rating Cancel button now works */
-  const ratingModalCancel = document.getElementById("ratingModalCancel");
-  if (ratingModalCancel) {
-    ratingModalCancel.addEventListener("click", closeRatingModal);
-  }
-
   ratingOptionButtons.forEach(btn => {
     btn.addEventListener("click", async () => {
       if (!ratingTargetPhotoId) return;
@@ -1210,13 +1206,14 @@
     saveLocalRatings();
   }
 
-  function opencommentsModal(photoId, birdName) {
-    closecommentsModal();
+  function openCommentsModal(photoId, birdName) {
+    closeCommentsModal();
     commentsTargetPhotoId = photoId;
+    /* CHIRP CHANGE */
     commentsTitle.textContent = `chirps · ${birdName || "Birb"}`;
     commentsSubtitle.textContent = "chirps for this sighting (only visible when opened).";
     commentInput.value = "";
-    commentsList.innerHTML = `<div class="comment-empty">Loading comments…</div>`;
+    commentsList.innerHTML = `<div class="comment-empty">No chirps yet. Be the first.</div>`;
     commentsModalBackdrop.classList.add("show");
     const commentsCol = collection(db, "birdPhotos", photoId, "comments");
     const q = query(commentsCol, orderBy("createdAt", "asc"));
@@ -1245,19 +1242,19 @@
         commentsList.appendChild(el);
       }
     }, (err) => {
-      console.error("comments listener error:", err);
+      console.error("Comments listener error:", err);
       commentsList.innerHTML = `<div class="comment-empty">Can't load comments (Firestore permissions). Check Firestore Rules.</div>`;
     });
   }
 
-  function closecommentsModal() {
+  function closeCommentsModal() {
     if (commentsUnsub) { try { commentsUnsub(); } catch {} }
     commentsUnsub = null;
     commentsTargetPhotoId = null;
     commentsModalBackdrop.classList.remove("show");
   }
-  commentsClose.addEventListener("click", closecommentsModal);
-  commentsModalBackdrop.addEventListener("click", (e) => { if (e.target === commentsModalBackdrop) closecommentsModal(); });
+  commentsClose.addEventListener("click", closeCommentsModal);
+  commentsModalBackdrop.addEventListener("click", (e) => { if (e.target === commentsModalBackdrop) closeCommentsModal(); });
 
   commentSend.addEventListener("click", async () => {
     hideError(); hideSuccess();
@@ -1265,7 +1262,7 @@
     const text = (commentInput.value || "").trim();
     if (!text) return;
     commentSend.disabled = true;
-    commentSend.textContent = "Posting…";
+    commentSend.textContent = "Post chirp";
     try {
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
@@ -1277,7 +1274,7 @@
       showError("Could not post comment. Check Firebase rules.");
     } finally {
       commentSend.disabled = false;
-      commentSend.textContent = "Post comment";
+      commentSend.textContent = "Post chirp";
     }
   });
 
@@ -1326,12 +1323,12 @@
       const photoId = commentsBtn.dataset.photoId;
       const birdName = commentsBtn.getAttribute("data-bird-name") || "Birb";
       if (!photoId) return;
-      opencommentsModal(photoId, birdName);
+      openCommentsModal(photoId, birdName);
       return;
     }
   });
 
-  async function deletecommentsForPhoto(photoId) {
+  async function deleteCommentsForPhoto(photoId) {
     try {
       const commentsCol = collection(db, "birdPhotos", photoId, "comments");
       const snap = await getDocs(commentsCol);
@@ -1353,7 +1350,7 @@
       try { await deleteObject(storageRef(storage, storagePath)); }
       catch (e) { console.error("Error deleting file from storage:", e); }
     }
-    await deletecommentsForPhoto(photoId);
+    await deleteCommentsForPhoto(photoId);
     delete localRatings[photoId];
     saveLocalRatings();
     await deleteDoc(docRef);
