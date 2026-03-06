@@ -11,6 +11,7 @@
     :root{
       --bg:#050816;--bg-elevated:#0d1022;--bg-panel:#131735;--bg-post:#1a1f42;--accent:#4f46e5;--accent-soft:rgba(79,70,229,.15);
       --accent-strong:rgba(129,140,248,.35);--text-main:#f9fafb;--text-muted:#9ca3af;
+      --checklist-seen:#bbf7d0;--checklist-unseen:#e5e7ebb0;
       --border-subtle:rgba(148,163,184,.25);--danger:#ef4444;--radius-lg:18px;--radius-md:12px;
       --shadow-soft:0 18px 45px rgba(15,23,42,.65);
     }
@@ -19,16 +20,19 @@
     html[data-theme="morning"] {
       --bg:#fff0e0;--bg-elevated:#fffaf0;--bg-panel:#fff6ea;--bg-post:#fffdf5;--accent:#ff7e5e;--accent-soft:rgba(255,126,94,.18);
       --accent-strong:rgba(255,150,100,.35);--text-main:#2c1f14;--text-muted:#6b5e4a;
+      --checklist-seen:#1b5e20;--checklist-unseen:#4e342e;
       --border-subtle:rgba(180,120,70,.25);
     }
     html[data-theme="day"] {
       --bg:#e0f2ff;--bg-elevated:#f8fbff;--bg-panel:#eef7ff;--bg-post:#fcfeff;--accent:#1e88e5;--accent-soft:rgba(30,136,229,.15);
       --accent-strong:rgba(66,165,245,.35);--text-main:#1a2a44;--text-muted:#546e7a;
+      --checklist-seen:#0d652d;--checklist-unseen:#37474f;
       --border-subtle:rgba(100,140,180,.25);
     }
     html[data-theme="afternoon"] {
       --bg:#ffe6c7;--bg-elevated:#fff5e0;--bg-panel:#ffeed6;--bg-post:#fff9eb;--accent:#f57c00;--accent-soft:rgba(245,124,0,.18);
       --accent-strong:rgba(255,160,50,.35);--text-main:#2c1f14;--text-muted:#6b5e4a;
+      --checklist-seen:#1b5e20;--checklist-unseen:#4e342e;
       --border-subtle:rgba(180,120,70,.25);
     }
 
@@ -209,8 +213,8 @@
     .species-close-btn{border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-main);font-size:.78rem;padding:4px 10px;cursor:pointer;white-space:nowrap}
     .species-close-btn:hover{background:rgba(15,23,42,1)}
     .species-tally{margin-top:6px;font-size:.8rem;color:var(--text-muted)}
-    .species-tally span.seen{color:#bbf7d0;font-weight:600}
-    .species-tally span.unseen{color:#e5e7ebb0}
+    .species-tally span.seen{color:var(--checklist-seen);font-weight:600}
+    .species-tally span.unseen{color:var(--checklist-unseen)}
     .species-search-row{margin-top:10px}
     .species-search-row input{width:100%;border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);padding:8px 12px;font-size:.9rem;color:var(--text-main);outline:none}
     .species-search-row input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:var(--bg-elevated)}
