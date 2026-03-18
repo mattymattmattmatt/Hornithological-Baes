@@ -15,6 +15,8 @@
       --border-subtle:rgba(148,163,184,.25);--danger:#ef4444;--radius-lg:18px;--radius-md:12px;
       --chip-bg:rgba(79,70,229,.2);--chip-text:#f9fafb;--chip-border:rgba(129,140,248,.55);
       --shadow-soft:0 18px 45px rgba(15,23,42,.65);
+      --chirp-surface:rgba(15,23,42,.9);--chirp-input-bg:rgba(15,23,42,.92);--chirp-input-focus-bg:rgba(15,23,42,.98);
+      --chirp-placeholder:#64748b;
     }
 
     /* TIME-BASED THEMES (Adelaide time) */
@@ -31,6 +33,8 @@
       --checklist-seen:#0d652d;--checklist-unseen:#37474f;
       --chip-bg:#c9e8ff;--chip-text:#123356;--chip-border:rgba(30,136,229,.45);
       --border-subtle:rgba(100,140,180,.25);
+      --chirp-surface:#eaf4ff;--chirp-input-bg:#edf6ff;--chirp-input-focus-bg:#f4f9ff;
+      --chirp-placeholder:#607d97;
     }
     html[data-theme="afternoon"] {
       --bg:#ffe6c7;--bg-elevated:#fff5e0;--bg-panel:#ffeed6;--bg-post:#fff9eb;--accent:#f57c00;--accent-soft:rgba(245,124,0,.18);
@@ -196,15 +200,16 @@
     .rating-option.selected{border-color:rgba(187,247,208,.85);background:rgba(34,197,94,.18);color:#dcfce7}
     .comments-list{margin-top:10px;max-height:40vh;overflow:auto;padding-right:4px;display:flex;flex-direction:column;gap:8px}
     .comment-empty{font-size:.82rem;color:var(--text-muted);padding:6px 2px}
-    .comment-item{border:1px solid var(--border-subtle);background:rgba(15,23,42,.9);border-radius:14px;padding:8px 10px}
+    .comment-item{border:1px solid var(--border-subtle);background:var(--chirp-surface);border-radius:14px;padding:8px 10px}
     .comment-meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
     .comment-meta .time{font-size:.75rem;color:var(--text-muted)}
     .comment-del{width:26px;height:26px;border-radius:999px;border:1px solid rgba(248,113,113,.55);background:rgba(239,68,68,.10);color:#fecaca;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
     .comment-del:hover{background:rgba(239,68,68,.20)}
     .comment-text{font-size:.88rem;color:var(--text-main);line-height:1.35;white-space:pre-wrap;word-break:break-word}
     .comment-compose{margin-top:10px;display:flex;flex-direction:column;gap:8px}
-    textarea.comment-input{width:100%;min-height:72px;resize:none;border-radius:14px;border:1px solid var(--border-subtle);background:rgba(15,23,42,.92);padding:10px 10px;color:var(--text-main);font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:.9rem;outline:none}
-    textarea.comment-input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:rgba(15,23,42,.98)}
+    textarea.comment-input{width:100%;min-height:72px;resize:none;border-radius:14px;border:1px solid var(--border-subtle);background:var(--chirp-input-bg);padding:10px 10px;color:var(--text-main);font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:.9rem;outline:none}
+    textarea.comment-input::placeholder{color:var(--chirp-placeholder);opacity:1}
+    textarea.comment-input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:var(--chirp-input-focus-bg)}
     .comment-send{align-self:flex-end;appearance:none;border:none;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:700;background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.45)}
     .comment-send:disabled{opacity:.6;cursor:default;box-shadow:none}
     .comment-send:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}
