@@ -2,7 +2,7 @@
   "name": "hornithological-baes-functions",
   "description": "Cloud Functions for Hornithological Baes — sends push notifications when a new birb is added.",
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "main": "index.js",
   "dependencies": {
