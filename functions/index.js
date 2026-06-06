@@ -8,7 +8,7 @@
  * Deploy with:  firebase deploy --only functions
  * (See SETUP-NOTIFICATIONS.md for the full walkthrough.)
  */
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
@@ -90,4 +90,76 @@ exports.notifyNewBirb = onDocumentCreated("birdPhotos/{photoId}", async (event) 
   );
 
   console.log(`Birb ${photoId}: delivered ${sent}/${tokens.length}, pruned ${invalidTokens.length} dead token(s).`);
+});
+
+// Notify the uploader when someone gives their photo a new rating.
+// Detects a fresh rating (not a re-rate) by checking if ratingCount increased.
+exports.notifyRating = onDocumentUpdated("birdPhotos/{photoId}", async (event) => {
+  const before = event.data.before.data() || {};
+  const after = event.data.after.data() || {};
+
+  const countBefore = Number(before.ratingCount || 0);
+  const countAfter = Number(after.ratingCount || 0);
+
+  // Only fire on new ratings, not re-rates or other field updates (comments etc).
+  if (countAfter <= countBefore) return;
+
+  const ownerDeviceId = after.ownerDeviceId;
+  if (!ownerDeviceId) return;
+
+  const db = getFirestore();
+  const tokensSnap = await db.collection("fcmTokens")
+    .where("deviceId", "==", ownerDeviceId)
+    .get();
+  if (tokensSnap.empty) return; // uploader hasn't opted in to notifications
+
+  const scoreGiven = Number(after.ratingTotal || 0) - Number(before.ratingTotal || 0);
+  const newAverage = countAfter > 0 ? (Number(after.ratingTotal || 0) / countAfter) : 0;
+  const birdName = (after.birdName || "your birb").toString().trim();
+  const parrots = "🦜".repeat(Math.max(1, Math.round(scoreGiven)));
+  const body = countAfter === 1
+    ? `First rating: ${scoreGiven}/10 ${parrots}`
+    : `${scoreGiven}/10 ${parrots} · new average ${newAverage.toFixed(1)}/10`;
+
+  const tokens = [];
+  const refByToken = new Map();
+  tokensSnap.forEach((d) => {
+    const t = d.get("token") || d.id;
+    if (t) { tokens.push(t); refByToken.set(t, d.ref); }
+  });
+  if (!tokens.length) return;
+
+  const message = {
+    data: {
+      title: `Someone rated ${birdName}!`,
+      body,
+      tag: "rating-" + event.params.photoId,
+      url: "./?source=rating",
+      image: (after.imageUrl || "").toString()
+    },
+    webpush: { headers: { Urgency: "normal", TTL: "43200" } }
+  };
+
+  const invalidTokens = [];
+  const res = await getMessaging().sendEachForMulticast({ ...message, tokens });
+  res.responses.forEach((r, idx) => {
+    if (r.success) return;
+    const code = r.error && r.error.code;
+    if (
+      code === "messaging/registration-token-not-registered" ||
+      code === "messaging/invalid-registration-token" ||
+      code === "messaging/invalid-argument"
+    ) {
+      invalidTokens.push(tokens[idx]);
+    }
+  });
+
+  await Promise.all(
+    invalidTokens.map((t) => {
+      const ref = refByToken.get(t);
+      return ref ? ref.delete().catch(() => {}) : Promise.resolve();
+    })
+  );
+
+  console.log(`Rating on ${event.params.photoId}: notified owner (${ownerDeviceId}), score=${scoreGiven}, avg=${newAverage.toFixed(1)}`);
 });
