@@ -1,0 +1,13 @@
+# Node dependencies (functions are installed at deploy time)
+node_modules/
+functions/node_modules/
+
+# Firebase / tooling
+.firebase/
+*.log
+firebase-debug.log
+ui-debug.log
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db

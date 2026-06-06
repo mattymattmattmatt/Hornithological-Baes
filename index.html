@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>Hornithological Baes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <!-- PWA: installable app + home-screen icon -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#050816" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Horni Baes" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -93,6 +101,12 @@
     .title-block p{margin:0;font-size:.9rem;color:var(--text-muted)}
     .days-since{margin-top:6px;font-size:0.85rem;color:var(--text-muted);font-weight:400;letter-spacing:.02em}
     .days-since.urgent{color:#f59e0b}
+    .notify-btn{margin-top:8px;appearance:none;font-size:.8rem;font-weight:600;color:var(--text-main);background:var(--accent-soft);border:1px solid var(--accent-strong);border-radius:999px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:transform .08s ease,background .15s ease,opacity .15s ease}
+    .notify-btn:hover{transform:translateY(-1px);background:var(--accent-strong)}
+    .notify-btn:focus{outline:none;box-shadow:0 0 0 2px rgba(129,140,248,.35)}
+    .notify-btn:disabled{cursor:default;opacity:.7;transform:none}
+    .notify-btn.is-on{background:rgba(52,211,153,.16);border-color:rgba(52,211,153,.45)}
+    .notify-btn.is-blocked{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.4)}
     .layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px}
     @media (max-width:900px){header{flex-direction:column;align-items:flex-start}.layout{grid-template-columns:minmax(0,1fr)}}
     .card{background:var(--bg-panel);border-radius:var(--radius-lg);padding:18px 18px 16px;box-shadow:var(--shadow-soft);border:2px solid var(--border-subtle)}
@@ -277,6 +291,7 @@
           </button>
           <h1>Hornithological Baes</h1>
           <div id="daysSince" class="days-since">Loading last sighting…</div>
+          <button type="button" id="notifyBtn" class="notify-btn" hidden>🔔 Get birb alerts</button>
         </div>
       </div>
       <p>Drop your birb pics, tag where and what they are, and let the flock rate your shots out of 10.</p>
@@ -532,11 +547,14 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
   import {
     getFirestore, collection, addDoc, onSnapshot, orderBy, query, doc, getDoc, getDocs,
-    updateDoc, deleteDoc, serverTimestamp, increment
+    updateDoc, deleteDoc, setDoc, serverTimestamp, increment
   } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
   import {
     getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject
   } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
+  import {
+    getMessaging, getToken, onMessage, isSupported as isMessagingSupported
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging.js";
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -956,6 +974,18 @@
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
 
   onSnapshot(qPhotos, (snapshot) => {
+    const isFirstSnapshot = !initialSnapshotHandled;
+    // Lite-layer alerts: notify about genuinely new birbs while the app is
+    // backgrounded (skips the very first load, your own uploads, and the
+    // foreground case where the on-page "NEW BIRB" pill already covers it).
+    if (!isFirstSnapshot) {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type !== "added") return;
+        const data = change.doc.data();
+        if (data?.ownerDeviceId === deviceId) return;
+        maybeShowLocalBirbAlert(change.doc.id, data);
+      });
+    }
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
     latestDocsForRankings = docs;
@@ -1630,6 +1660,169 @@
 
   // Initial days-since
   setTimeout(updateDaysSince, 1200);
+
+  /* ===================================================================
+   * PWA + NOTIFICATIONS
+   * -------------------------------------------------------------------
+   * Two layers:
+   *  1) LITE (works now, no setup): when a friend has the app open or
+   *     backgrounded, new birbs trigger an on-device notification via the
+   *     existing realtime listener above.
+   *  2) FULL PUSH (works even when the app is closed): Firebase Cloud
+   *     Messaging. Requires a VAPID key + a deployed Cloud Function — see
+   *     SETUP-NOTIFICATIONS.md. Until VAPID_KEY is filled in below, the app
+   *     gracefully runs on the LITE layer only.
+   * =================================================================== */
+
+  // ⬇️ PASTE YOUR FCM "Web Push certificate" key pair here (Firebase console →
+  //    Project settings → Cloud Messaging → Web Push certificates).
+  //    Leave as-is to run on the lite layer only. See SETUP-NOTIFICATIONS.md.
+  const VAPID_KEY = "PASTE_YOUR_VAPID_PUBLIC_KEY_HERE";
+
+  const notifyBtn = document.getElementById("notifyBtn");
+  let appShellReg = null;     // sw.js registration (app shell / offline)
+  let fcmSwReg = null;        // firebase-messaging-sw.js registration (push)
+  let messaging = null;
+  const notifyEnabledKey = "hb_notify_enabled_v1";
+
+  // --- Register the app-shell service worker (offline + installable) ---
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+      try {
+        appShellReg = await navigator.serviceWorker.register("sw.js", { scope: "./" });
+      } catch (e) {
+        console.warn("App-shell SW registration failed:", e);
+      }
+      initNotifications();
+    });
+  }
+
+  function vapidConfigured() {
+    return VAPID_KEY && !VAPID_KEY.startsWith("PASTE_");
+  }
+
+  async function initNotifications() {
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+      notifyBtn.hidden = true;
+      return;
+    }
+    notifyBtn.hidden = false;
+    updateNotifyBtn();
+    notifyBtn.addEventListener("click", onNotifyClick);
+
+    // If the user already granted permission on a previous visit, quietly
+    // re-arm the full-push token so it stays fresh.
+    if (Notification.permission === "granted" && localStorage.getItem(notifyEnabledKey) === "1") {
+      await setupFullPush().catch((e) => console.warn("Push re-arm failed:", e));
+    }
+  }
+
+  function updateNotifyBtn() {
+    notifyBtn.classList.remove("is-on", "is-blocked");
+    notifyBtn.disabled = false;
+    const perm = ("Notification" in window) ? Notification.permission : "denied";
+    if (perm === "granted") {
+      notifyBtn.textContent = "🔔 Alerts on";
+      notifyBtn.classList.add("is-on");
+      notifyBtn.disabled = true;
+    } else if (perm === "denied") {
+      notifyBtn.textContent = "🔔 Alerts blocked";
+      notifyBtn.classList.add("is-blocked");
+      notifyBtn.title = "Notifications are blocked. Enable them for this site in your browser settings.";
+    } else {
+      notifyBtn.textContent = "🔔 Get birb alerts";
+    }
+  }
+
+  async function onNotifyClick() {
+    if (!("Notification" in window)) return;
+    if (Notification.permission === "denied") {
+      alert("Notifications are blocked for this site.\n\nTo turn them back on, open your browser's site settings for this page and allow Notifications.");
+      return;
+    }
+    notifyBtn.disabled = true;
+    notifyBtn.textContent = "🔔 Asking…";
+    let perm = Notification.permission;
+    if (perm === "default") {
+      try { perm = await Notification.requestPermission(); }
+      catch { perm = Notification.permission; }
+    }
+    if (perm === "granted") {
+      localStorage.setItem(notifyEnabledKey, "1");
+      await setupFullPush().catch((e) => console.warn("Full push setup failed (lite layer still works):", e));
+      // Friendly confirmation so they know it worked.
+      try {
+        const reg = fcmSwReg || appShellReg || await navigator.serviceWorker.ready;
+        reg.showNotification("Birb alerts are on! 🦜", {
+          body: "You'll get a ping when a new birb is added.",
+          icon: "icons/icon-192.png",
+          badge: "icons/icon-192.png",
+          tag: "hb-welcome"
+        });
+      } catch {}
+    }
+    updateNotifyBtn();
+  }
+
+  // --- FULL PUSH: register FCM SW, get token, store it for the Cloud Function ---
+  async function setupFullPush() {
+    if (!vapidConfigured()) return; // lite layer only until VAPID key is set
+    const supported = await isMessagingSupported().catch(() => false);
+    if (!supported) return;
+    if (!messaging) messaging = getMessaging(app);
+
+    if (!fcmSwReg) {
+      fcmSwReg = await navigator.serviceWorker.register("firebase-messaging-sw.js", {
+        scope: "./firebase-cloud-messaging-push-scope"
+      });
+    }
+
+    const token = await getToken(messaging, {
+      vapidKey: VAPID_KEY,
+      serviceWorkerRegistration: fcmSwReg
+    });
+    if (!token) return;
+
+    // Store under the token id so re-registers de-dupe rather than pile up.
+    await setDoc(doc(db, "fcmTokens", token), {
+      token,
+      deviceId,
+      uploadedBy: storedUploader || null,
+      userAgent: navigator.userAgent,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    // Foreground messages: the page is already live-updating, so we don't pop a
+    // duplicate notification here — the realtime listener + "NEW BIRB" pill cover it.
+    onMessage(messaging, () => { /* no-op: handled by the live UI */ });
+  }
+
+  // --- LITE LAYER: show a local notification for a new birb (called from the
+  //     realtime listener). Only fires when the tab is hidden so we don't nag
+  //     someone who's actively looking at the gallery. ---
+  let liteAlertReady = false;
+  async function maybeShowLocalBirbAlert(photoId, data) {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    if (document.visibilityState === "visible") return; // they can already see it
+    try {
+      const reg = fcmSwReg || appShellReg || await navigator.serviceWorker.ready;
+      const who = (data?.uploadedBy || "").trim();
+      const what = (data?.birdName || "A new birb").trim();
+      reg.showNotification("New birb! 🦜", {
+        body: who ? `${who} added ${what}.` : `${what} was just added.`,
+        icon: "icons/icon-192.png",
+        badge: "icons/icon-192.png",
+        image: data?.imageUrl || undefined,
+        tag: "birb-" + photoId,   // shared with push payload → no double alerts
+        renotify: false,
+        data: { url: "./?source=alert" }
+      });
+    } catch (e) {
+      // Fallback for browsers without SW notification support.
+      try { new Notification("New birb! 🦜", { body: (data?.birdName || "A new sighting") + " was just added." }); } catch {}
+    }
+    liteAlertReady = true;
+  }
 </script>
 </body>
 </html>
