@@ -127,9 +127,11 @@
     .chip-dot{width:6px;height:6px;border-radius:999px;background:#38bdf8}
     .hidden-input{display:none}
     .preview{margin-top:10px;display:flex;gap:10px;align-items:center}
-    .preview img{width:70px;height:70px;object-fit:cover;border-radius:14px;border:1px solid var(--border-subtle)}
-    .preview-text{font-size:.82rem;color:var(--text-muted)}
-    .preview-text strong{color:var(--text-main)}
+    .preview img{width:70px;height:70px;object-fit:cover;border-radius:14px;border:1px solid var(--border-subtle);cursor:pointer}
+    .preview-text{font-size:.82rem;color:var(--text-muted);min-width:0;flex:1}
+    .edit-photo-btn{flex:none;border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.16);color:var(--text-main);font-size:.8rem;font-weight:600;padding:7px 12px;cursor:pointer;white-space:nowrap}
+    .edit-photo-btn:hover{background:rgba(79,70,229,.26)}
+    .preview-text strong{color:var(--text-main);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .form-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:12px}
     .field{display:flex;flex-direction:column;gap:4px}
     .field label{font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted)}
@@ -285,6 +287,87 @@
     .toast.is-clickable{cursor:pointer}
     .toast.is-error{border-color:rgba(239,68,68,.55)}
     @media (prefers-reduced-motion: reduce){.toast{transition:none}.photo-card.is-highlighted{animation:none}}
+
+    /* PHOTO EDITOR */
+    .editor-backdrop{position:fixed;inset:0;z-index:100;background:rgba(3,6,16,.78);display:none;align-items:center;justify-content:center;padding:20px}
+    .editor-backdrop.show{display:flex}
+    .editor{width:100%;max-width:1120px;height:min(780px,calc(100vh - 40px));display:flex;flex-direction:column;background:var(--bg-elevated);color:var(--text-main);border:1px solid var(--border-subtle);border-radius:22px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+    .editor-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border-subtle)}
+    .editor-top h3{margin:0 0 0 6px;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);font-weight:600}
+    .editor-top-left,.editor-tools{display:flex;align-items:center;gap:2px}
+    .editor-icon-btn{width:38px;height:38px;flex:none;border-radius:999px;border:none;background:transparent;color:var(--text-main);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+    .editor-icon-btn:hover:not(:disabled),.editor-icon-btn.is-on{background:var(--accent-soft)}
+    .editor-icon-btn:disabled{opacity:.3;cursor:default}
+    .editor-icon-btn svg,.editor-tab svg,.editor-action svg{width:19px;height:19px;flex:none}
+    .editor-text-btn{appearance:none;border:none;background:transparent;color:var(--text-main);font:inherit;font-size:.86rem;padding:8px 10px;border-radius:999px;cursor:pointer}
+    .editor-text-btn:hover{background:var(--accent-soft)}
+    .editor-done{appearance:none;border:none;border-radius:999px;padding:8px 18px;font:inherit;font-size:.88rem;font-weight:700;background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;cursor:pointer;min-width:76px}
+    .editor-done:disabled{opacity:.6;cursor:default}
+    .editor-body{flex:1;min-height:0;display:flex}
+    .editor-stage{position:relative;flex:1;min-width:0;min-height:0;background:#0a0c18;overflow:hidden}
+    .editor-stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;display:block}
+    .editor-stage canvas.is-dragging{cursor:grabbing}
+    .editor-hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);max-width:calc(100% - 24px);padding:6px 12px;border-radius:999px;background:rgba(10,12,24,.78);color:#e5e7eb;font-size:.76rem;pointer-events:none;transition:opacity .35s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .editor-hint.is-hidden{opacity:0}
+    .editor-badge{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:999px;background:rgba(10,12,24,.8);color:#f9fafb;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;pointer-events:none}
+    .editor-busy{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:.9rem;background:#0a0c18}
+    .editor-busy[hidden],.editor-badge[hidden]{display:none}
+    .editor-side{width:340px;flex:none;display:flex;flex-direction:column;min-height:0;border-left:1px solid var(--border-subtle);background:var(--bg-panel)}
+    .editor-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:8px;border-bottom:1px solid var(--border-subtle)}
+    .editor-tab{appearance:none;border:none;background:transparent;color:var(--text-muted);font:inherit;font-size:.74rem;font-weight:600;padding:7px 4px;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+    .editor-tab[aria-selected="true"]{background:var(--accent-soft);color:var(--text-main)}
+    .editor-panel{padding:14px;overflow:auto;flex:1;min-height:0}
+    .editor-panel[hidden]{display:none}
+    .editor-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:var(--text-muted);margin:16px 0 8px}
+    .editor-panel>.editor-label:first-child{margin-top:0}
+    .editor-chips{display:flex;gap:6px;flex-wrap:wrap}
+    .editor-chip{appearance:none;font:inherit;font-size:.78rem;padding:6px 11px;border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-main);cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+    .editor-chip:hover{border-color:var(--accent-strong)}
+    .editor-chip.is-on{background:var(--accent);border-color:transparent;color:#fff}
+    .editor-chip.has-value::after{content:"";width:5px;height:5px;border-radius:999px;background:currentColor;opacity:.8}
+    .editor-slider-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:16px 0 4px;font-size:.84rem}
+    .editor-slider-head output{font-variant-numeric:tabular-nums;color:var(--text-muted);font-size:.8rem;cursor:pointer}
+    input.editor-range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:30px;background:transparent;margin:0;cursor:pointer;touch-action:pan-y}
+    input.editor-range:focus{outline:none}
+    input.editor-range::-webkit-slider-runnable-track{height:4px;border-radius:999px;background:var(--range-bg,var(--border-subtle))}
+    input.editor-range::-moz-range-track{height:4px;border-radius:999px;background:var(--range-bg,var(--border-subtle))}
+    input.editor-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--accent);margin-top:-8px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    input.editor-range::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    input.editor-range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px var(--accent-soft)}
+    .editor-row{display:flex;gap:8px;margin-top:16px}
+    .editor-action{flex:1;appearance:none;font:inherit;font-size:.78rem;padding:9px 6px;border-radius:14px;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-main);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .editor-action:hover,.editor-action.is-on{border-color:var(--accent-strong);background:var(--accent-soft)}
+    .editor-looks{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+    .editor-look{appearance:none;border:2px solid transparent;border-radius:14px;padding:0 0 6px;background:var(--bg-elevated);color:var(--text-main);font:inherit;font-size:.74rem;cursor:pointer;overflow:hidden;display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:center}
+    .editor-look canvas{width:100%;aspect-ratio:1;display:block;background:#111827}
+    .editor-look.is-on{border-color:var(--accent)}
+    .editor-mock-card{content-visibility:visible;contain:none;min-height:0;pointer-events:none;max-width:320px}
+    .photo-thumb canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .editor-mock-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;max-width:320px}
+    .editor-mock-tiles>*{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--bg-elevated);border-radius:4px}
+    .editor-mock-tiles>canvas{outline:2px solid var(--accent);outline-offset:1px}
+    .editor-preview-full{display:block;max-width:100%;border-radius:10px;background:#0a0c18}
+    .editor-note{font-size:.8rem;color:var(--text-muted);line-height:1.45;margin:10px 0 0}
+    @media (max-width:760px){
+      .editor-backdrop{padding:0}
+      .editor{height:100%;max-width:none;border-radius:0;border:none}
+      .editor-top{padding:calc(6px + env(safe-area-inset-top)) 8px 6px}
+      .editor-top h3{display:none}
+      .editor-body{flex-direction:column}
+      .editor-side{width:auto;border-left:none;border-top:1px solid var(--border-subtle)}
+      .editor-tabs{order:2;border-bottom:none;border-top:1px solid var(--border-subtle);padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+      .editor-panel{order:1;flex:none;max-height:36vh;padding:12px 14px}
+      .editor-label{margin-top:12px}
+      .editor-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px}
+      .editor-chips::-webkit-scrollbar{display:none}
+      .editor-looks{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px}
+      .editor-looks::-webkit-scrollbar{display:none}
+      .editor-look{flex:none;width:76px}
+      .editor-row{margin-top:10px}
+      .editor-slider-head{margin-top:10px}
+      .editor[data-tab="preview"] .editor-panel{max-height:58vh}
+      .editor-mock-card,.editor-mock-tiles{max-width:260px}
+    }
   </style>
 </head>
 <body>
@@ -323,16 +406,17 @@
           </svg>
         </div>
         <strong>Drop a birb photo</strong>
-        <p>or click to browse – JPG, PNG, HEIC etc.</p>
+        <p>or click to browse – then crop, tweak &amp; preview before posting</p>
         <div class="chip"><span class="chip-dot"></span>Tip: keep the bird centred & in focus — it helps you score higher</div>
         <input id="fileInput" class="hidden-input" type="file" accept="image/*" />
       </div>
       <div id="preview" class="preview" style="display:none;">
-        <img id="previewImg" alt="Preview" />
+        <img id="previewImg" alt="Preview" title="Edit &amp; preview" />
         <div class="preview-text">
           <div><strong id="previewName"></strong></div>
-          <div style="margin-top:2px;">Ready to upload (will be downscaled)</div>
+          <div id="previewStatus" style="margin-top:2px;">Ready to upload (will be downscaled)</div>
         </div>
+        <button type="button" id="editPhotoBtn" class="edit-photo-btn">✎ Edit &amp; preview</button>
       </div>
       <div class="form-grid">
         <div class="field">
@@ -541,6 +625,79 @@
   <img id="imageFullscreenImg" src="" alt="Full-size birb">
 </div>
 
+<div id="editorBackdrop" class="editor-backdrop">
+  <div class="editor" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+    <div class="editor-top">
+      <div class="editor-top-left">
+        <button type="button" id="editorCancel" class="editor-text-btn">Cancel</button>
+        <h3 id="editorTitle">Edit photo</h3>
+      </div>
+      <div class="editor-tools">
+        <button type="button" id="editorUndo" class="editor-icon-btn" aria-label="Undo" title="Undo (Ctrl+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+        <button type="button" id="editorRedo" class="editor-icon-btn" aria-label="Redo" title="Redo (Ctrl+Shift+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+        <button type="button" id="editorCompare" class="editor-icon-btn" aria-label="Hold to compare with the original" title="Hold to compare with the original"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+        <button type="button" id="editorReset" class="editor-text-btn">Reset</button>
+      </div>
+      <button type="button" id="editorDone" class="editor-done">Done</button>
+    </div>
+    <div class="editor-body">
+      <div id="editorStage" class="editor-stage">
+        <canvas id="editorCanvas" aria-label="Photo crop area. Drag to reposition, pinch or scroll to zoom."></canvas>
+        <div id="editorCompareBadge" class="editor-badge" hidden>Original</div>
+        <div id="editorHint" class="editor-hint">Drag to reposition · pinch or scroll to zoom</div>
+        <div id="editorBusy" class="editor-busy">Opening photo…</div>
+      </div>
+      <div class="editor-side">
+        <div class="editor-tabs" role="tablist" aria-label="Editing tools">
+          <button type="button" class="editor-tab" role="tab" data-tab="crop" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>Crop</button>
+          <button type="button" class="editor-tab" role="tab" data-tab="adjust" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Adjust</button>
+          <button type="button" class="editor-tab" role="tab" data-tab="looks" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><circle cx="15" cy="15" r="6"/></svg>Looks</button>
+          <button type="button" class="editor-tab" role="tab" data-tab="preview" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Preview</button>
+        </div>
+        <div class="editor-panel" role="tabpanel" data-panel="crop">
+          <div class="editor-label">Aspect</div>
+          <div id="editorAspects" class="editor-chips"></div>
+          <div class="editor-slider-head"><span>Zoom</span><output id="editorZoomOut" title="Tap to reset">1.0×</output></div>
+          <input id="editorZoom" class="editor-range" type="range" min="100" max="600" step="1" value="100" aria-label="Zoom" />
+          <div class="editor-slider-head"><span>Straighten</span><output id="editorAngleOut" title="Tap to reset">0°</output></div>
+          <input id="editorAngle" class="editor-range" type="range" min="-30" max="30" step="0.5" value="0" aria-label="Straighten" />
+          <div class="editor-row">
+            <button type="button" id="editorRotateLeft" class="editor-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Rotate left</button>
+            <button type="button" id="editorRotateRight" class="editor-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Rotate right</button>
+            <button type="button" id="editorFlip" class="editor-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M8 7 3 12l5 5z"/><path d="m16 7 5 5-5 5z"/></svg>Flip</button>
+            <button type="button" id="editorGuide" class="editor-action" aria-pressed="true" title="Show what the gallery card shows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18"/><path d="M7 8l-4 4 4 4"/><path d="m17 8 4 4-4 4"/></svg>Card guide</button>
+          </div>
+        </div>
+        <div class="editor-panel" role="tabpanel" data-panel="adjust" hidden>
+          <div id="editorAdjustChips" class="editor-chips"></div>
+          <div class="editor-slider-head"><span id="editorAdjustLabel">Brightness</span><output id="editorAdjustOut" title="Tap to reset">0</output></div>
+          <input id="editorAdjust" class="editor-range" type="range" min="-100" max="100" step="1" value="0" aria-labelledby="editorAdjustLabel" />
+        </div>
+        <div class="editor-panel" role="tabpanel" data-panel="looks" hidden>
+          <div id="editorLooks" class="editor-looks"></div>
+        </div>
+        <div class="editor-panel" role="tabpanel" data-panel="preview" hidden>
+          <div class="editor-label">Gallery card</div>
+          <article class="photo-card editor-mock-card" aria-hidden="true">
+            <div class="photo-thumb"><canvas id="editorPreviewCard"></canvas><div id="editorPreviewRarity"></div></div>
+            <div class="photo-body">
+              <div class="photo-title" id="editorPreviewTitle">Your birb</div>
+              <div class="photo-uploaded-by" id="editorPreviewBy">Uploaded by you</div>
+              <div class="photo-location" id="editorPreviewWhere"></div>
+              <div class="rating-text">Not rated yet – be first.</div>
+            </div>
+          </article>
+          <div class="editor-label">Gallery collage</div>
+          <div id="editorPreviewTiles" class="editor-mock-tiles"><canvas id="editorPreviewTile"></canvas></div>
+          <div class="editor-label">Full screen</div>
+          <canvas id="editorPreviewFull" class="editor-preview-full"></canvas>
+          <p id="editorPreviewNote" class="editor-note"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;display:none"></canvas>
@@ -675,6 +832,8 @@
   const preview = document.getElementById("preview");
   const previewImg = document.getElementById("previewImg");
   const previewName = document.getElementById("previewName");
+  const previewStatus = document.getElementById("previewStatus");
+  const editPhotoBtn = document.getElementById("editPhotoBtn");
   const birdNameInput = document.getElementById("birdName");
   const locationInput = document.getElementById("location");
   const uploadedByInput = document.getElementById("uploadedBy");
@@ -815,6 +974,8 @@
 
   let selectedFile = null;
   let selectedObjectUrl = "";
+  let editedPhoto = null;   // { blob, url, width, height } from the photo editor
+  let editorState = null;   // editor settings, so "Edit" reopens where you left off
   let ratingTargetPhotoId = null;
   let currentSeenSpecies = new Set();
   let commentsTargetPhotoId = null;
@@ -892,13 +1053,39 @@
     const file = files[0];
     if (!file.type.startsWith("image/")) return showError("Please upload an image file.");
     selectedFile = file;
+    editorState = null;
     if (selectedObjectUrl) URL.revokeObjectURL(selectedObjectUrl);
     selectedObjectUrl = URL.createObjectURL(file);
-    previewImg.src = selectedObjectUrl;
+    setEditedPhoto(null);
     previewName.textContent = file.name;
     preview.style.display = "flex";
     hideError(); hideSuccess();
+    openEditorForSelected();
   }
+
+  async function openEditorForSelected() {
+    const file = selectedFile;
+    if (!file) return;
+    const outcome = await photoEditor.open(file, editorState);
+    if (file !== selectedFile || !outcome) return; // cancelled, or a different photo was picked
+    if (outcome.error) {
+      showToast("Couldn't open that photo in the editor. You can still post it as is.", { error: true });
+      return;
+    }
+    editorState = outcome.state;
+    setEditedPhoto(outcome.edited);
+  }
+
+  function setEditedPhoto(edited) {
+    if (editedPhoto) URL.revokeObjectURL(editedPhoto.url);
+    editedPhoto = edited ? { ...edited, url: URL.createObjectURL(edited.blob) } : null;
+    previewImg.src = editedPhoto ? editedPhoto.url : selectedObjectUrl;
+    previewStatus.textContent = editedPhoto
+      ? `✓ Edited · ${editedPhoto.width}×${editedPhoto.height}`
+      : "Ready to upload (will be downscaled)";
+  }
+  editPhotoBtn.addEventListener("click", openEditorForSelected);
+  previewImg.addEventListener("click", openEditorForSelected);
   dropzone.addEventListener("click", () => fileInput.click());
   dropzone.addEventListener("dragover", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.add("dragover"); });
   dropzone.addEventListener("dragleave", (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove("dragover"); });
@@ -947,6 +1134,824 @@
     return { blob, mime: mimeOut, width: outW, height: outH };
   }
 
+  /* ===================================================================
+   * PHOTO EDITOR
+   * -------------------------------------------------------------------
+   * Opens when a photo is picked: crop (aspect presets, drag / pinch /
+   * scroll zoom, straighten, rotate, flip), adjust (brightness, contrast,
+   * highlights, shadows, saturation, warmth, fade, sharpen, vignette, auto),
+   * one-tap looks, and a preview of how the post will look in the gallery.
+   * Non-destructive: the original file is kept and the settings re-applied
+   * when you reopen it. The final JPEG (max 2048px, as before) is only
+   * rendered when you tap Done.
+   * =================================================================== */
+  const EDIT_MAX_OUTPUT = 2048;  // longest side of the uploaded photo (same as before)
+  const EDIT_MAX_SOURCE = 4096;  // extra detail kept so zoomed-in crops stay sharp
+  const EDIT_PROXY_SIZE = 1600;  // smaller copy for drawing the live stage quickly
+  const CARD_RATIO = 1 / 0.66;   // .photo-thumb is padding-top:66% with object-fit:cover
+  const EDIT_ASPECTS = [
+    { id: "original", label: "Original" },
+    { id: "card", label: "Card fit", ratio: CARD_RATIO },
+    { id: "1:1", label: "Square", ratio: 1 },
+    { id: "4:5", label: "Portrait 4:5", ratio: 4 / 5 },
+    { id: "16:9", label: "Wide 16:9", ratio: 16 / 9 }
+  ];
+  const EDIT_ADJUSTMENTS = [
+    { key: "brightness", label: "Brightness", min: -100 },
+    { key: "contrast", label: "Contrast", min: -100 },
+    { key: "highlights", label: "Highlights", min: -100 },
+    { key: "shadows", label: "Shadows", min: -100 },
+    { key: "saturation", label: "Saturation", min: -100 },
+    { key: "warmth", label: "Warmth", min: -100 },
+    { key: "fade", label: "Fade", min: 0 },
+    { key: "sharpen", label: "Sharpen", min: 0 },
+    { key: "vignette", label: "Vignette", min: 0 }
+  ];
+  const ZERO_ADJ = Object.fromEntries(EDIT_ADJUSTMENTS.map((a) => [a.key, 0]));
+  const EDIT_LOOKS = [
+    { id: "none", label: "Original", adj: {} },
+    { id: "vivid", label: "Vivid", adj: { saturation: 35, contrast: 15, sharpen: 20 } },
+    { id: "crisp", label: "Crisp", adj: { contrast: 22, highlights: -20, shadows: 18, sharpen: 45 } },
+    { id: "warm", label: "Warm", adj: { warmth: 35, saturation: 10, brightness: 5 } },
+    { id: "golden", label: "Golden hour", adj: { warmth: 50, highlights: -15, shadows: 12, saturation: 15, vignette: 25 } },
+    { id: "cool", label: "Cool", adj: { warmth: -30, contrast: 8, saturation: 5 } },
+    { id: "drama", label: "Drama", adj: { contrast: 35, highlights: -35, shadows: 25, saturation: 10, vignette: 35, sharpen: 20 } },
+    { id: "fade", label: "Faded", adj: { fade: 45, saturation: -15, contrast: -10, warmth: 8 } },
+    { id: "mono", label: "Mono", adj: { saturation: -100, contrast: 20 } },
+    { id: "noir", label: "Noir", adj: { saturation: -100, contrast: 50, shadows: -15, vignette: 45 } }
+  ];
+
+  function defaultEditState() {
+    return { aspect: "original", zoom: 1, cx: 0, cy: 0, rot: 0, flip: false, angle: 0, auto: null, look: "none", adj: { ...ZERO_ADJ } };
+  }
+  function editClamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+  function hasEditAdjustments(st) {
+    return Boolean(st.auto) || EDIT_ADJUSTMENTS.some((a) => st.adj[a.key]);
+  }
+  function isDefaultEdit(st) {
+    return st.aspect === "original" && st.zoom === 1 && st.rot === 0 && !st.flip && st.angle === 0 &&
+      Math.abs(st.cx) < 0.5 && Math.abs(st.cy) < 0.5 && !hasEditAdjustments(st);
+  }
+
+  // Crop maths. Everything lives in "oriented photo" pixels (after quarter-turns
+  // and flip), centred on the photo. The crop frame has aspect `a`, is tilted by
+  // the straighten angle, and is shrunk by `zoom`; (cx, cy) is where its centre sits.
+  function editGeometry(st, srcW, srcH) {
+    const W = st.rot % 2 ? srcH : srcW;
+    const H = st.rot % 2 ? srcW : srcH;
+    const preset = EDIT_ASPECTS.find((x) => x.id === st.aspect);
+    const a = preset && preset.ratio ? preset.ratio : W / H;
+    const t = st.angle * Math.PI / 180;
+    const cos = Math.abs(Math.cos(t)), sin = Math.abs(Math.sin(t));
+    // Largest frame of this aspect that still fits inside the straightened photo.
+    const baseW = Math.min(W / (cos + sin / a), H / (sin + cos / a));
+    const fw = baseW / st.zoom, fh = fw / a;
+    // An axis-aligned photo contains the tilted frame exactly when it contains
+    // the frame's bounding box, so clamping the centre to this box is exact.
+    const ex = (fw * cos + fh * sin) / 2, ey = (fw * sin + fh * cos) / 2;
+    return { W, H, a, t, fw, fh, maxX: Math.max(0, W / 2 - ex), maxY: Math.max(0, H / 2 - ey) };
+  }
+  function clampEditCenter(st, srcW, srcH) {
+    const g = editGeometry(st, srcW, srcH);
+    st.cx = editClamp(st.cx, -g.maxX, g.maxX);
+    st.cy = editClamp(st.cy, -g.maxY, g.maxY);
+  }
+
+  // Draw the photo so the crop frame lands on the w-wide rect at (x, y).
+  // `el` may be a smaller proxy of the source; it's drawn at full-size coordinates.
+  function drawEditedPhoto(ctx, st, g, src, el, x, y, w) {
+    const k = w / g.fw;
+    ctx.save();
+    ctx.translate(x + w / 2, y + (g.fh * k) / 2);
+    ctx.rotate(g.t);
+    ctx.scale(k, k);
+    ctx.translate(-st.cx, -st.cy);
+    if (st.flip) ctx.scale(-1, 1);
+    ctx.rotate(st.rot * Math.PI / 2);
+    ctx.drawImage(el, -src.w / 2, -src.h / 2, src.w, src.h);
+    ctx.restore();
+  }
+
+  // Tone curve shared by R, G and B: auto levels → brightness (gamma, so it
+  // never clips) → shadows / highlights → contrast → fade.
+  function buildToneLut(adj, auto) {
+    const lut = new Uint8ClampedArray(256);
+    const bp = auto ? auto.bp : 0, wp = auto ? auto.wp : 1;
+    const gamma = Math.pow(2, -adj.brightness / 100);
+    const sh = adj.shadows / 100, hi = adj.highlights / 100;
+    const c = adj.contrast / 100;
+    const cf = c >= 0 ? 1 + c * 1.2 : 1 + c * 0.8;
+    const fade = adj.fade / 100;
+    for (let i = 0; i < 256; i++) {
+      let x = editClamp((i / 255 - bp) / (wp - bp), 0, 1);
+      x = Math.pow(x, gamma);
+      x += sh * 2 * x * (1 - x) * (1 - x) + hi * 2 * x * x * (1 - x);
+      x = editClamp(x, 0, 1);
+      x = (x - 0.5) * cf + 0.5;
+      x = fade * 0.16 + editClamp(x, 0, 1) * (1 - fade * 0.24);
+      lut[i] = Math.round(x * 255);
+    }
+    return lut;
+  }
+
+  function applyEditAdjustments(img, st) {
+    const a = st.adj, d = img.data, w = img.width, h = img.height;
+    const lut = buildToneLut(a, st.auto);
+    const warm = a.warmth * 0.3;
+    const sat = 1 + a.saturation / 100;
+    const vig = a.vignette / 100;
+    for (let y = 0; y < h; y++) {
+      const ny = ((y + 0.5) / h) * 2 - 1;
+      let i = y * w * 4;
+      for (let x = 0; x < w; x++, i += 4) {
+        let r = lut[d[i]], g = lut[d[i + 1]], b = lut[d[i + 2]];
+        if (warm) { r += warm; g += warm * 0.15; b -= warm; }
+        if (sat !== 1) {
+          const l = 0.299 * r + 0.587 * g + 0.114 * b;
+          r = l + (r - l) * sat; g = l + (g - l) * sat; b = l + (b - l) * sat;
+        }
+        if (vig) {
+          const nx = ((x + 0.5) / w) * 2 - 1;
+          const t = editClamp((Math.sqrt((nx * nx + ny * ny) / 2) - 0.3) / 0.7, 0, 1);
+          const f = 1 - vig * 0.85 * t * t * (3 - 2 * t);
+          r *= f; g *= f; b *= f;
+        }
+        d[i] = r; d[i + 1] = g; d[i + 2] = b; // Uint8ClampedArray clamps + rounds
+      }
+    }
+    if (a.sharpen > 0) sharpenPixels(img, a.sharpen / 100);
+  }
+
+  // Unsharp-style sharpen with a 4-neighbour Laplacian.
+  function sharpenPixels(img, amount) {
+    const { width: w, height: h, data: d } = img;
+    const src = new Uint8ClampedArray(d);
+    const k = amount * 0.9, row = w * 4;
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1; x < w - 1; x++) {
+        const i = (y * w + x) * 4;
+        for (let c = 0; c < 3; c++) {
+          const j = i + c;
+          d[j] = src[j] * (1 + 4 * k) - k * (src[j - 4] + src[j + 4] + src[j - row] + src[j + row]);
+        }
+      }
+    }
+  }
+
+  // Auto: stretch the brightness range to the 0.5th–99.5th percentile.
+  function computeAutoLevels(img) {
+    const hist = new Uint32Array(256), d = img.data;
+    for (let i = 0; i < d.length; i += 4) hist[Math.round(0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2])]++;
+    const total = d.length / 4, cut = total * 0.005;
+    let lo = 0, hi = 255, acc = 0;
+    while (lo < 255 && (acc += hist[lo]) <= cut) lo++;
+    acc = 0;
+    while (hi > 0 && (acc += hist[hi]) <= cut) hi--;
+    const bp = editClamp(lo / 255, 0, 0.25), wp = editClamp(hi / 255, 0.75, 1);
+    return wp - bp > 0.3 ? { bp, wp } : { bp: 0, wp: 1 };
+  }
+
+  // Render the edited crop to a new canvas, longest side ≤ maxSide (never upscaled).
+  function renderEditedCanvas(st, src, el, maxSide, withAdjustments = true) {
+    const g = editGeometry(st, src.w, src.h);
+    const scale = Math.min(1, maxSide / Math.max(g.fw, g.fh));
+    const w = Math.max(1, Math.round(g.fw * scale)), h = Math.max(1, Math.round(g.fh * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d", { alpha: false });
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    drawEditedPhoto(ctx, st, g, src, el, 0, 0, w);
+    if (withAdjustments && hasEditAdjustments(st)) {
+      const img = ctx.getImageData(0, 0, w, h);
+      applyEditAdjustments(img, st);
+      ctx.putImageData(img, 0, 0);
+    }
+    return canvas;
+  }
+
+  function scaledCanvas(el, w, h) {
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const ctx = c.getContext("2d");
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(el, 0, 0, w, h);
+    return c;
+  }
+
+  // Decode via <img> so phone photos come out the right way up (EXIF orientation).
+  async function loadEditSource(file) {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+    try { await img.decode(); }
+    catch (e) { URL.revokeObjectURL(url); throw e; }
+    let w = img.naturalWidth, h = img.naturalHeight, full = img;
+    if (!w || !h) { URL.revokeObjectURL(url); throw new Error("Empty image"); }
+    const longest = Math.max(w, h);
+    if (longest > EDIT_MAX_SOURCE) {
+      const s = EDIT_MAX_SOURCE / longest;
+      w = Math.round(w * s); h = Math.round(h * s);
+      full = scaledCanvas(img, w, h);
+    }
+    const ps = Math.min(1, EDIT_PROXY_SIZE / Math.max(w, h));
+    const proxy = ps < 1 ? scaledCanvas(full, Math.round(w * ps), Math.round(h * ps)) : full;
+    return { file, url, w, h, full, proxy, proxyW: ps < 1 ? proxy.width : w };
+  }
+
+  function canvasToJpeg(canvas, quality) {
+    return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("Export failed"))), "image/jpeg", quality));
+  }
+
+  function createPhotoEditor() {
+    const $ = (id) => document.getElementById(id);
+    const backdrop = $("editorBackdrop");
+    const stage = $("editorStage");
+    const canvas = $("editorCanvas");
+    const ctx = canvas.getContext("2d");
+    const hint = $("editorHint");
+    const busy = $("editorBusy");
+    const compareBadge = $("editorCompareBadge");
+    const undoBtn = $("editorUndo"), redoBtn = $("editorRedo"), compareBtn = $("editorCompare");
+    const resetBtn = $("editorReset"), cancelBtn = $("editorCancel"), doneBtn = $("editorDone");
+    const tabs = backdrop.querySelectorAll(".editor-tab");
+    const panels = backdrop.querySelectorAll(".editor-panel");
+    const aspectChips = $("editorAspects");
+    const zoomRange = $("editorZoom"), zoomOut = $("editorZoomOut");
+    const angleRange = $("editorAngle"), angleOut = $("editorAngleOut");
+    const guideBtn = $("editorGuide");
+    const adjustChips = $("editorAdjustChips");
+    const adjustRange = $("editorAdjust"), adjustLabel = $("editorAdjustLabel"), adjustOut = $("editorAdjustOut");
+    const looksGrid = $("editorLooks");
+
+    let src = null;               // decoded photo (see loadEditSource)
+    let st = defaultEditState();  // current edit settings
+    let openedWith = "";          // settings when opened, to spot unsaved changes
+    let resolveOpen = null;
+    let activeTab = "crop", activeAdjust = "brightness";
+    let undoStack = [], undoIndex = -1;
+    let comparing = false, interacting = false, straightening = false, showGuide = true;
+    let frame = { x: 0, y: 0, w: 1, h: 1 }; // crop frame on the stage, in canvas px
+    let pxRatio = 1, renderQueued = false, previewTimer = 0, wheelTimer = 0, hintTimer = 0;
+    let looksKey = "";
+    const pointers = new Map();
+    const resizeObserver = "ResizeObserver" in window ? new ResizeObserver(() => sizeCanvas()) : null;
+
+    // --- Build the chip rows once ---
+    for (const a of EDIT_ASPECTS) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "editor-chip"; b.dataset.aspect = a.id; b.textContent = a.label;
+      if (a.id === "card") b.title = "Fills the gallery card exactly";
+      aspectChips.appendChild(b);
+    }
+    const autoChip = document.createElement("button");
+    autoChip.type = "button"; autoChip.className = "editor-chip"; autoChip.dataset.auto = "1"; autoChip.textContent = "✨ Auto";
+    autoChip.title = "Balance brightness automatically";
+    adjustChips.appendChild(autoChip);
+    for (const a of EDIT_ADJUSTMENTS) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "editor-chip"; b.dataset.adjust = a.key; b.textContent = a.label;
+      adjustChips.appendChild(b);
+    }
+    for (const look of EDIT_LOOKS) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "editor-look"; b.dataset.look = look.id;
+      b.innerHTML = `<canvas width="1" height="1"></canvas><span>${escapeHtml(look.label)}</span>`;
+      looksGrid.appendChild(b);
+    }
+
+    // --- Stage ---
+    function sizeCanvas() {
+      const r = stage.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      // Cap the backing store (~1.6MP) so live adjustments stay smooth.
+      pxRatio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(1.6e6 / (r.width * r.height)));
+      canvas.width = Math.round(r.width * pxRatio);
+      canvas.height = Math.round(r.height * pxRatio);
+      render();
+    }
+    function requestRender() {
+      if (renderQueued) return;
+      renderQueued = true;
+      requestAnimationFrame(render);
+    }
+    function render() {
+      renderQueued = false;
+      const cw = canvas.width, ch = canvas.height;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = "#0a0c18";
+      ctx.fillRect(0, 0, cw, ch);
+      if (!src) return;
+      const g = editGeometry(st, src.w, src.h);
+      const pad = Math.round((cw / pxRatio < 600 ? 18 : 30) * pxRatio);
+      const fw = Math.max(10, Math.min(cw - pad * 2, (ch - pad * 2) * g.a));
+      frame = { x: (cw - fw) / 2, y: (ch - fw / g.a) / 2, w: fw, h: fw / g.a };
+      const k = fw / g.fw;
+      const el = k * src.w <= src.proxyW * 1.05 ? src.proxy : src.full;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      drawEditedPhoto(ctx, st, g, src, el, frame.x, frame.y, fw);
+      if (!comparing && hasEditAdjustments(st)) {
+        // Round outwards so the frame's partly-covered edge pixels get adjusted too.
+        const x = Math.max(0, Math.floor(frame.x)), y = Math.max(0, Math.floor(frame.y));
+        const w = Math.min(cw, Math.ceil(frame.x + frame.w)) - x, h = Math.min(ch, Math.ceil(frame.y + frame.h)) - y;
+        if (w > 0 && h > 0) {
+          const img = ctx.getImageData(x, y, w, h);
+          applyEditAdjustments(img, st);
+          ctx.putImageData(img, x, y);
+        }
+      }
+      // Dim what gets cropped away.
+      ctx.fillStyle = "rgba(6, 8, 18, 0.68)";
+      ctx.beginPath();
+      ctx.rect(0, 0, cw, ch);
+      ctx.rect(frame.x, frame.y, frame.w, frame.h);
+      ctx.fill("evenodd");
+      const r = pxRatio;
+      // Grid while moving things (finer while straightening, to line up horizons).
+      if (interacting || straightening) {
+        const n = straightening ? 6 : 3;
+        ctx.strokeStyle = "rgba(255,255,255,0.35)";
+        ctx.lineWidth = r;
+        ctx.beginPath();
+        for (let i = 1; i < n; i++) {
+          const gx = frame.x + (frame.w * i) / n, gy = frame.y + (frame.h * i) / n;
+          ctx.moveTo(gx, frame.y); ctx.lineTo(gx, frame.y + frame.h);
+          ctx.moveTo(frame.x, gy); ctx.lineTo(frame.x + frame.w, gy);
+        }
+        ctx.stroke();
+      }
+      // What the gallery card will show, when it's not the whole crop.
+      if (showGuide && Math.abs(g.a - CARD_RATIO) / CARD_RATIO > 0.02) {
+        let gw = frame.w, gh = frame.h;
+        if (g.a > CARD_RATIO) gw = frame.h * CARD_RATIO; else gh = frame.w / CARD_RATIO;
+        const gx = frame.x + (frame.w - gw) / 2, gy = frame.y + (frame.h - gh) / 2;
+        ctx.setLineDash([7 * r, 5 * r]);
+        ctx.strokeStyle = "rgba(255,255,255,0.8)";
+        ctx.lineWidth = 1.25 * r;
+        ctx.strokeRect(gx, gy, gw, gh);
+        ctx.setLineDash([]);
+        ctx.font = `600 ${11 * r}px Inter, system-ui, sans-serif`;
+        const label = "Gallery card";
+        const tw = ctx.measureText(label).width;
+        ctx.fillStyle = "rgba(10,12,24,0.78)";
+        ctx.fillRect(gx + 6 * r, gy + 6 * r, tw + 12 * r, 18 * r);
+        ctx.fillStyle = "#f9fafb";
+        ctx.textBaseline = "middle";
+        ctx.fillText(label, gx + 12 * r, gy + 15 * r);
+      }
+      // Frame + corner handles.
+      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx.lineWidth = 1.25 * r;
+      ctx.strokeRect(frame.x, frame.y, frame.w, frame.h);
+      const L = Math.min(22 * r, frame.w / 4, frame.h / 4), t = 3 * r;
+      ctx.fillStyle = "#fff";
+      for (const [cx, cy, sx, sy] of [[frame.x, frame.y, 1, 1], [frame.x + frame.w, frame.y, -1, 1], [frame.x, frame.y + frame.h, 1, -1], [frame.x + frame.w, frame.y + frame.h, -1, -1]]) {
+        ctx.fillRect(cx - (sx < 0 ? t : 0), cy - (sy < 0 ? t : 0), L * sx, t * sy);
+        ctx.fillRect(cx - (sx < 0 ? t : 0), cy - (sy < 0 ? t : 0), t * sx, L * sy);
+      }
+    }
+
+    // --- Gestures: drag to pan, pinch / wheel to zoom about the pointer ---
+    function toFrame(clientX, clientY) {
+      const r = canvas.getBoundingClientRect();
+      const s = canvas.width / r.width;
+      return { x: (clientX - r.left) * s - (frame.x + frame.w / 2), y: (clientY - r.top) * s - (frame.y + frame.h / 2) };
+    }
+    function pan(dx, dy) {
+      const g = editGeometry(st, src.w, src.h);
+      const k = frame.w / g.fw, c = Math.cos(g.t), s = Math.sin(g.t);
+      st.cx -= (dx * c + dy * s) / k;
+      st.cy -= (-dx * s + dy * c) / k;
+      clampEditCenter(st, src.w, src.h);
+    }
+    function zoomAt(p, factor) {
+      const g = editGeometry(st, src.w, src.h);
+      const zoom = editClamp(st.zoom * factor, 1, 6);
+      if (zoom === st.zoom) return;
+      const k1 = frame.w / g.fw;
+      st.zoom = zoom;
+      const k2 = frame.w / editGeometry(st, src.w, src.h).fw;
+      // Keep the photo point under the pointer where it is.
+      const c = Math.cos(g.t), s = Math.sin(g.t), f = 1 / k1 - 1 / k2;
+      st.cx += (p.x * c + p.y * s) * f;
+      st.cy += (-p.x * s + p.y * c) * f;
+      clampEditCenter(st, src.w, src.h);
+    }
+    canvas.addEventListener("pointerdown", (e) => {
+      if (!src) return;
+      try { canvas.setPointerCapture(e.pointerId); } catch {}
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      interacting = true;
+      canvas.classList.add("is-dragging");
+      hideHint();
+      requestRender();
+    });
+    canvas.addEventListener("pointermove", (e) => {
+      if (!pointers.has(e.pointerId)) return;
+      const before = [...pointers.values()].map((p) => ({ ...p }));
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      const after = [...pointers.values()];
+      const s = canvas.width / canvas.getBoundingClientRect().width;
+      if (after.length === 1) {
+        pan((after[0].x - before[0].x) * s, (after[0].y - before[0].y) * s);
+      } else if (after.length >= 2) {
+        const mid = (ps) => ({ x: (ps[0].x + ps[1].x) / 2, y: (ps[0].y + ps[1].y) / 2 });
+        const dist = (ps) => Math.hypot(ps[0].x - ps[1].x, ps[0].y - ps[1].y) || 1;
+        const m0 = mid(before), m1 = mid(after);
+        zoomAt(toFrame(m1.x, m1.y), dist(after) / dist(before));
+        pan((m1.x - m0.x) * s, (m1.y - m0.y) * s);
+      }
+      syncCropControls();
+      requestRender();
+    });
+    function endPointer(e) {
+      if (!pointers.delete(e.pointerId)) return;
+      if (pointers.size) return;
+      interacting = false;
+      canvas.classList.remove("is-dragging");
+      commit();
+      requestRender();
+    }
+    canvas.addEventListener("pointerup", endPointer);
+    canvas.addEventListener("pointercancel", endPointer);
+    canvas.addEventListener("wheel", (e) => {
+      if (!src) return;
+      e.preventDefault();
+      hideHint();
+      // Trackpad pinch arrives as ctrl+wheel with small deltas.
+      zoomAt(toFrame(e.clientX, e.clientY), Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0015)));
+      syncCropControls();
+      requestRender();
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(commit, 350);
+    }, { passive: false });
+
+    // --- Controls ---
+    function paintRange(input) {
+      const min = Number(input.min), max = Number(input.max), v = Number(input.value);
+      const from = min < 0 ? (-min / (max - min)) * 100 : 0;
+      const to = ((v - min) / (max - min)) * 100;
+      const lo = Math.min(from, to), hi = Math.max(from, to);
+      input.style.setProperty("--range-bg", `linear-gradient(90deg, var(--border-subtle) ${lo}%, var(--accent) ${lo}%, var(--accent) ${hi}%, var(--border-subtle) ${hi}%)`);
+    }
+    function fmtSigned(v) { return v > 0 ? `+${v}` : String(v); }
+    function syncCropControls() {
+      zoomRange.value = String(Math.round(st.zoom * 100));
+      zoomOut.textContent = `${st.zoom.toFixed(1)}×`;
+      angleRange.value = String(st.angle);
+      angleOut.textContent = `${fmtSigned(Math.round(st.angle * 10) / 10)}°`;
+      paintRange(zoomRange); paintRange(angleRange);
+    }
+    function syncControls() {
+      aspectChips.querySelectorAll(".editor-chip").forEach((b) => b.classList.toggle("is-on", b.dataset.aspect === st.aspect));
+      syncCropControls();
+      guideBtn.setAttribute("aria-pressed", String(showGuide));
+      guideBtn.classList.toggle("is-on", showGuide);
+      autoChip.classList.toggle("is-on", Boolean(st.auto));
+      adjustChips.querySelectorAll("[data-adjust]").forEach((b) => {
+        b.classList.toggle("is-on", b.dataset.adjust === activeAdjust);
+        b.classList.toggle("has-value", Boolean(st.adj[b.dataset.adjust]));
+      });
+      const def = EDIT_ADJUSTMENTS.find((a) => a.key === activeAdjust);
+      adjustRange.min = String(def.min);
+      adjustRange.value = String(st.adj[activeAdjust]);
+      adjustLabel.textContent = def.label;
+      adjustOut.textContent = fmtSigned(st.adj[activeAdjust]);
+      paintRange(adjustRange);
+      looksGrid.querySelectorAll(".editor-look").forEach((b) => b.classList.toggle("is-on", b.dataset.look === st.look));
+      undoBtn.disabled = undoIndex <= 0;
+      redoBtn.disabled = undoIndex >= undoStack.length - 1;
+    }
+    function changed({ commitNow = true } = {}) {
+      syncControls();
+      requestRender();
+      schedulePreview();
+      if (commitNow) commit();
+    }
+
+    aspectChips.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-aspect]");
+      if (!b || !src) return;
+      st.aspect = b.dataset.aspect;
+      clampEditCenter(st, src.w, src.h);
+      changed();
+    });
+    zoomRange.addEventListener("input", () => {
+      if (!src) return;
+      zoomAt({ x: 0, y: 0 }, Number(zoomRange.value) / 100 / st.zoom);
+      changed({ commitNow: false });
+    });
+    angleRange.addEventListener("input", () => {
+      if (!src) return;
+      st.angle = Number(angleRange.value);
+      straightening = true;
+      clampEditCenter(st, src.w, src.h);
+      changed({ commitNow: false });
+    });
+    for (const r of [zoomRange, angleRange, adjustRange]) {
+      r.addEventListener("change", () => { straightening = false; commit(); requestRender(); });
+    }
+    zoomOut.addEventListener("click", () => { if (!src) return; st.zoom = 1; clampEditCenter(st, src.w, src.h); changed(); });
+    angleOut.addEventListener("click", () => { if (!src) return; st.angle = 0; clampEditCenter(st, src.w, src.h); changed(); });
+    function rotate(dir) {
+      if (!src) return;
+      // Turning the picture clockwise is a turn the other way once it's mirrored.
+      st.rot = (st.rot + (st.flip ? -dir : dir) + 4) % 4;
+      [st.cx, st.cy] = dir > 0 ? [-st.cy, st.cx] : [st.cy, -st.cx];
+      clampEditCenter(st, src.w, src.h);
+      changed();
+    }
+    $("editorRotateLeft").addEventListener("click", () => rotate(-1));
+    $("editorRotateRight").addEventListener("click", () => rotate(1));
+    $("editorFlip").addEventListener("click", () => {
+      if (!src) return;
+      st.flip = !st.flip;
+      st.cx = -st.cx;
+      st.angle = -st.angle; // keep a straightened horizon level
+      clampEditCenter(st, src.w, src.h);
+      changed();
+    });
+    guideBtn.addEventListener("click", () => { showGuide = !showGuide; syncControls(); requestRender(); });
+
+    adjustChips.addEventListener("click", (e) => {
+      const b = e.target.closest(".editor-chip");
+      if (!b || !src) return;
+      if (b.dataset.auto) {
+        if (st.auto) st.auto = null;
+        else {
+          const base = renderEditedCanvas({ ...st, auto: null, adj: { ...ZERO_ADJ } }, src, src.proxy, 256);
+          st.auto = computeAutoLevels(base.getContext("2d").getImageData(0, 0, base.width, base.height));
+          if (st.auto.bp === 0 && st.auto.wp === 1) flashHint("Already nicely balanced ✓");
+        }
+        changed();
+        return;
+      }
+      activeAdjust = b.dataset.adjust;
+      syncControls();
+    });
+    adjustRange.addEventListener("input", () => {
+      st.adj[activeAdjust] = Number(adjustRange.value);
+      changed({ commitNow: false });
+    });
+    adjustOut.addEventListener("click", () => { st.adj[activeAdjust] = 0; changed(); });
+
+    looksGrid.addEventListener("click", (e) => {
+      const b = e.target.closest(".editor-look");
+      if (!b || !src) return;
+      const look = EDIT_LOOKS.find((l) => l.id === b.dataset.look);
+      st.look = look.id;
+      st.adj = { ...ZERO_ADJ, ...look.adj };
+      changed();
+    });
+
+    tabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.tab)));
+    function setTab(name) {
+      activeTab = name;
+      backdrop.firstElementChild.dataset.tab = name;
+      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === name)));
+      panels.forEach((p) => { p.hidden = p.dataset.panel !== name; });
+      // The side panel can change height on phones; re-fit the stage.
+      sizeCanvas();
+      if (name === "looks") renderLookThumbs();
+      if (name === "preview") updatePreview();
+    }
+
+    // --- Undo / redo / reset / compare ---
+    function commit() {
+      const snap = JSON.stringify(st);
+      if (snap === undoStack[undoIndex]) return;
+      undoStack = undoStack.slice(0, undoIndex + 1);
+      undoStack.push(snap);
+      if (undoStack.length > 80) undoStack.shift();
+      undoIndex = undoStack.length - 1;
+      syncControls();
+    }
+    function restore(i) {
+      if (i < 0 || i >= undoStack.length) return;
+      undoIndex = i;
+      st = JSON.parse(undoStack[i]);
+      syncControls();
+      requestRender();
+      schedulePreview();
+    }
+    undoBtn.addEventListener("click", () => restore(undoIndex - 1));
+    redoBtn.addEventListener("click", () => restore(undoIndex + 1));
+    resetBtn.addEventListener("click", () => {
+      if (!src) return;
+      st = defaultEditState();
+      changed();
+    });
+    function setComparing(on) {
+      if (comparing === on) return;
+      comparing = on;
+      compareBadge.hidden = !on;
+      compareBtn.classList.toggle("is-on", on);
+      requestRender();
+    }
+    compareBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); setComparing(true); });
+    for (const ev of ["pointerup", "pointerleave", "pointercancel"]) compareBtn.addEventListener(ev, () => setComparing(false));
+    compareBtn.addEventListener("keydown", (e) => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); setComparing(true); } });
+    compareBtn.addEventListener("keyup", () => setComparing(false));
+    compareBtn.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    // --- Looks thumbnails (rendered from your current crop) ---
+    function renderLookThumbs() {
+      if (!src) return;
+      const key = JSON.stringify([st.aspect, st.zoom, st.cx, st.cy, st.rot, st.flip, st.angle, st.auto]);
+      if (key === looksKey) return;
+      looksKey = key;
+      const size = Math.round(88 * Math.min(window.devicePixelRatio || 1, 2));
+      const base = renderEditedCanvas({ ...st, auto: null, adj: { ...ZERO_ADJ } }, src, src.proxy, size * 2, false);
+      const sq = document.createElement("canvas");
+      sq.width = sq.height = size;
+      const sctx = sq.getContext("2d");
+      const s = Math.max(size / base.width, size / base.height);
+      sctx.drawImage(base, (size - base.width * s) / 2, (size - base.height * s) / 2, base.width * s, base.height * s);
+      const baseData = sctx.getImageData(0, 0, size, size);
+      looksGrid.querySelectorAll(".editor-look").forEach((b) => {
+        const look = EDIT_LOOKS.find((l) => l.id === b.dataset.look);
+        const c = b.querySelector("canvas");
+        c.width = c.height = size;
+        const img = new ImageData(new Uint8ClampedArray(baseData.data), size, size);
+        const lookState = { ...st, adj: { ...ZERO_ADJ, ...look.adj } };
+        if (hasEditAdjustments(lookState)) applyEditAdjustments(img, lookState);
+        c.getContext("2d").putImageData(img, 0, 0);
+      });
+    }
+
+    // --- Preview: the post as it'll appear in the gallery ---
+    function schedulePreview() {
+      if (activeTab !== "preview") return;
+      clearTimeout(previewTimer);
+      previewTimer = setTimeout(updatePreview, 120);
+    }
+    function drawCover(target, img, cssW, cssH) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(1, Math.round(cssW * dpr)), h = Math.max(1, Math.round(cssH * dpr));
+      target.width = w; target.height = h;
+      const c = target.getContext("2d");
+      c.imageSmoothingQuality = "high";
+      const s = Math.max(w / img.width, h / img.height);
+      c.drawImage(img, (w - img.width * s) / 2, (h - img.height * s) / 2, img.width * s, img.height * s);
+      return c;
+    }
+    function updatePreview() {
+      if (!src || activeTab !== "preview") return;
+      const out = renderEditedCanvas(st, src, src.proxy, 900);
+      const cardCanvas = $("editorPreviewCard");
+      const cr = cardCanvas.getBoundingClientRect();
+      drawCover(cardCanvas, out, cr.width, cr.height);
+      const tile = $("editorPreviewTile");
+      const tr = tile.getBoundingClientRect();
+      drawCover(tile, out, tr.width, tr.width);
+      // Full screen view shows the whole photo; outline what the card shows.
+      const full = $("editorPreviewFull");
+      const pw = full.parentElement.clientWidth - 28;
+      const ia = out.width / out.height;
+      let fh = Math.min(pw / ia, 300), fwCss = fh * ia;
+      if (fwCss > pw) { fwCss = pw; fh = pw / ia; }
+      full.style.width = `${Math.round(fwCss)}px`;
+      full.style.height = `${Math.round(fh)}px`;
+      const fctx = drawCover(full, out, fwCss, fh);
+      const w = full.width, h = full.height;
+      let gw = w, gh = h;
+      if (ia > CARD_RATIO) gw = h * CARD_RATIO; else gh = w / CARD_RATIO;
+      const fills = Math.abs(ia - CARD_RATIO) / CARD_RATIO <= 0.02;
+      if (!fills) {
+        fctx.fillStyle = "rgba(6,8,18,0.55)";
+        fctx.beginPath();
+        fctx.rect(0, 0, w, h);
+        fctx.rect((w - gw) / 2, (h - gh) / 2, gw, gh);
+        fctx.fill("evenodd");
+        fctx.setLineDash([6, 4]);
+        fctx.strokeStyle = "rgba(255,255,255,0.85)";
+        fctx.lineWidth = 1.5;
+        fctx.strokeRect((w - gw) / 2, (h - gh) / 2, gw, gh);
+      }
+      // Card text, from what's filled in on the form.
+      const species = birdNameInput.value.trim();
+      const rarity = species ? getRarityForSpecies(species) : null;
+      $("editorPreviewTitle").textContent = species || "Your birb";
+      $("editorPreviewBy").textContent = `Uploaded by ${storedUploader || uploadedByInput.value.trim() || "you"}`;
+      $("editorPreviewWhere").textContent = locationInput.value.trim() || "Where you spotted it";
+      $("editorPreviewRarity").innerHTML = rarity
+        ? `<div class="rarity-badge-wrap"><img class="rarity-badge" src="${rarity}.png" alt="${escapeHtml(rarityLabel(rarity))} badge" /></div>`
+        : "";
+      // Collage: your post goes first, next to the latest two.
+      const tiles = $("editorPreviewTiles");
+      tiles.querySelectorAll("img").forEach((n) => n.remove());
+      for (const p of currentPhotos.slice(0, 2)) {
+        if (!p.data?.imageUrl) continue;
+        const img = document.createElement("img");
+        img.src = p.data.imageUrl; img.alt = ""; img.loading = "lazy";
+        tiles.appendChild(img);
+      }
+      $("editorPreviewNote").textContent = fills
+        ? "Your crop fills the gallery card exactly. Tapping ⤢ on the card shows the same photo full screen."
+        : "The card shows the middle of your photo; the shaded parts are cut off there but still appear full screen. Pick “Card fit” under Crop to choose exactly what the card shows.";
+    }
+
+    // --- Hints ---
+    function hideHint() { hint.classList.add("is-hidden"); }
+    function flashHint(text, ms = 2200) {
+      hint.textContent = text;
+      hint.classList.remove("is-hidden");
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(hideHint, ms);
+    }
+
+    // --- Open / close ---
+    function onKey(e) {
+      if (e.key === "Escape") { e.preventDefault(); cancel(); return; }
+      const mod = e.ctrlKey || e.metaKey;
+      if (mod && e.key.toLowerCase() === "z") { e.preventDefault(); restore(e.shiftKey ? undoIndex + 1 : undoIndex - 1); }
+      else if (mod && e.key.toLowerCase() === "y") { e.preventDefault(); restore(undoIndex + 1); }
+    }
+    function close(result) {
+      backdrop.classList.remove("show");
+      document.documentElement.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      if (resizeObserver) resizeObserver.disconnect(); else window.removeEventListener("resize", sizeCanvas);
+      pointers.clear();
+      interacting = straightening = false;
+      setComparing(false);
+      const r = resolveOpen;
+      resolveOpen = null;
+      if (r) r(result);
+    }
+    function cancel() {
+      if (src && JSON.stringify(st) !== openedWith && !confirm("Discard your edits?")) return;
+      close(null);
+    }
+    async function done() {
+      if (!src) return;
+      if (isDefaultEdit(st)) { close({ state: null, edited: null }); return; }
+      doneBtn.disabled = true;
+      doneBtn.textContent = "Saving…";
+      try {
+        const out = renderEditedCanvas(st, src, src.full, EDIT_MAX_OUTPUT);
+        const blob = await canvasToJpeg(out, 0.85);
+        close({ state: JSON.parse(JSON.stringify(st)), edited: { blob, width: out.width, height: out.height } });
+      } catch (err) {
+        console.error("Photo export failed:", err);
+        showToast("Couldn't save your edits. Please try again.", { error: true });
+      } finally {
+        doneBtn.disabled = false;
+        doneBtn.textContent = "Done";
+      }
+    }
+    cancelBtn.addEventListener("click", cancel);
+    doneBtn.addEventListener("click", done);
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) cancel(); });
+
+    // Resolves to null (cancelled), { error } (couldn't decode), or
+    // { state, edited } where edited is null when nothing was changed.
+    async function open(file, savedState) {
+      if (resolveOpen) close(null);
+      st = savedState ? JSON.parse(JSON.stringify(savedState)) : defaultEditState();
+      openedWith = JSON.stringify(st);
+      looksKey = "";
+      backdrop.classList.add("show");
+      document.documentElement.style.overflow = "hidden";
+      document.addEventListener("keydown", onKey);
+      if (resizeObserver) resizeObserver.observe(stage); else window.addEventListener("resize", sizeCanvas);
+      const result = new Promise((resolve) => { resolveOpen = resolve; });
+      setTab(activeTab === "preview" ? "crop" : activeTab);
+      if (!src || src.file !== file) {
+        busy.hidden = false;
+        if (src) { URL.revokeObjectURL(src.url); src = null; }
+        try {
+          const loaded = await loadEditSource(file);
+          if (src) URL.revokeObjectURL(src.url);
+          src = loaded;
+        } catch (err) {
+          console.error("Could not open photo for editing:", err);
+          busy.hidden = true;
+          if (resolveOpen) close({ error: true });
+          return result;
+        }
+        if (!resolveOpen) return result; // cancelled while the photo was loading
+      }
+      busy.hidden = true;
+      undoStack = [openedWith];
+      undoIndex = 0;
+      syncControls();
+      sizeCanvas();
+      hint.textContent = "Drag to reposition · pinch or scroll to zoom";
+      hint.classList.remove("is-hidden");
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(hideHint, 4000);
+      doneBtn.focus({ preventScroll: true });
+      return result;
+    }
+
+    return { open };
+  }
+  const photoEditor = createPhotoEditor();
+
   uploadBtn.addEventListener("click", async () => {
     hideError(); hideSuccess();
     const birdName = birdNameInput.value.trim();
@@ -962,9 +1967,14 @@
     }
     uploadBtn.disabled = true;
     uploadBtn.textContent = "Uploading…";
-    statusText.textContent = "Downscaling image (for speed) and saving to the database…";
+    statusText.textContent = editedPhoto
+      ? "Saving your edited photo to the database…"
+      : "Downscaling image (for speed) and saving to the database…";
     try {
-      const down = await downscaleImageFile(selectedFile, 2048, 0.82);
+      // The editor already produced a downscaled JPEG; don't re-encode it.
+      const down = editedPhoto
+        ? { blob: editedPhoto.blob, mime: "image/jpeg" }
+        : await downscaleImageFile(selectedFile, 2048, 0.82);
       const fileId = `${Date.now()}_${Math.random().toString(16).slice(2)}.jpg`;
       const storagePath = `birdPhotos/${fileId}`;
       const imgRef = storageRef(storage, storagePath);
@@ -997,6 +2007,8 @@
 
   function resetForm() {
     selectedFile = null;
+    editorState = null;
+    if (editedPhoto) { URL.revokeObjectURL(editedPhoto.url); editedPhoto = null; }
     fileInput.value = "";
     birdNameInput.value = "";
     locationInput.value = "";
