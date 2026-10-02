@@ -4,7 +4,14 @@ Your site is now a **Progressive Web App (PWA)**. That means friends can
 "install" it to their home screen and it opens like a real app — full screen,
 its own icon, no browser bars — just by visiting the URL. No App Store needed.
 
-There are **two layers of notifications**:
+There are **two kinds of alerts**:
+
+- **New birb** — everyone (except the uploader) gets pinged when a sighting is added.
+- **Someone rated your birb** — the uploader gets pinged with the score they
+  were given, e.g. *"Someone rated your Galah! They gave it 8/10 · average now
+  7.5/10"*. Tapping it opens the app straight to that post.
+
+…delivered through **two layers**:
 
 | Layer | Works when… | Setup needed |
 |-------|-------------|--------------|
@@ -27,6 +34,11 @@ real "ping my phone" reliability. Here's how to finish it.
      > Screen and open it from that icon (Apple's rule). Just bookmarking the
      > page is not enough.
 4. They open the app and tap **🔔 Get birb alerts** in the header to allow notifications.
+   If the app doesn't know their name yet, it asks for the name they post
+   under. That's how rating alerts find them, even on a different device from
+   the one they uploaded with. (If they skipped it, the button says
+   **"Alerts on · add your name for rating alerts"**. Tap it to set the name.)
+   > 💡 The name must match the "Uploaded by" name on their posts (case doesn't matter).
 
 That's it for sharing. The rest of this doc enables notifications when the
 app is **completely closed**.
@@ -89,8 +101,14 @@ cd path/to/Hornithological-Baes
 firebase deploy --only functions
 ```
 
-When it finishes you'll see `notifyNewBirb` listed as deployed. That function
-watches for new birbs and pushes to everyone who opted in.
+When it finishes you'll see **`notifyNewBirb`** and **`notifyRating`** listed
+as deployed. `notifyNewBirb` watches for new birbs and pushes to everyone who
+opted in; `notifyRating` pings the uploader whenever someone gives their birb a
+new rating.
+
+> 🔁 **Re-run `firebase deploy --only functions` whenever `functions/index.js`
+> changes.** Pushing to GitHub only updates the website; it doesn't update the
+> functions running in Firebase.
 
 ### Step 4 — Allow friends' devices to register (Firestore rule)
 
@@ -102,14 +120,17 @@ Firebase console → **Firestore Database → Rules**. Inside your existing
 
 ```
 match /fcmTokens/{token} {
-  // Anyone can register/update their own push token.
-  allow read, write: if true;
-  // The Cloud Function reads/cleans these up with admin rights regardless.
+  // Devices can register/update their own push token, but nobody can read the
+  // list back (it holds names + device ids). The Cloud Functions read and
+  // clean it up with admin rights regardless.
+  allow create, update: if true;
+  allow read, delete: if false;
 }
 ```
 
-> This mirrors how your `birdPhotos` collection is already open. If you later
-> lock things down with auth, tighten this too. Click **Publish**.
+> If you already have `allow read, write: if true;` here, it still works, but
+> the version above stops anyone from downloading everyone's names and device
+> ids. Click **Publish**.
 
 ---
 
@@ -121,8 +142,15 @@ match /fcmTokens/{token} {
 3. On another device (or ask a friend), upload a new birb.
 4. Your phone should buzz with **"New birb! 🦜"** within a few seconds.
 
+**Rating alerts:** with the app closed on your phone, have someone else rate
+one of *your* birbs. You should get **"Someone rated your …!"** with their
+score. If the app is open, you'll see a toast at the bottom of the screen
+instead. Tap it to jump to the post.
+
 If foreground/open-app alerts work but closed-app ones don't, re-check Steps
-1–3 (usually the VAPID key wasn't pushed, or the function didn't deploy).
+1–3 (usually the VAPID key wasn't pushed, or the functions didn't deploy).
+If new-birb alerts work but rating alerts don't, make sure `notifyRating` is
+deployed and that your name in the app matches the name on your posts.
 
 ---
 
@@ -132,10 +160,16 @@ If foreground/open-app alerts work but closed-app ones don't, re-check Steps
 - **`sw.js`** — the app-shell service worker: offline support + faster loads.
 - **`firebase-messaging-sw.js`** — receives push messages when the app is
   closed and shows the notification.
-- **`functions/index.js`** — the `notifyNewBirb` Cloud Function: on every new
-  birb, sends a push to all saved tokens (and prunes dead ones).
+- **`functions/index.js`** — two Cloud Functions:
+  - `notifyNewBirb`: on every new birb, sends a push to all saved tokens
+    except the uploader's (and prunes dead ones).
+  - `notifyRating`: when a birb's rating count goes up, finds the uploader's
+    devices (by the device they posted from, or by their name) and pushes the
+    score they were given plus the new average. Changing an existing rating
+    doesn't send an alert.
 - **`index.html`** — registers the service workers, shows the **🔔** button,
-  saves each device's token to `fcmTokens`, and fires the instant *lite* alerts.
+  saves each device's token (plus your name) to `fcmTokens`, and fires the
+  instant *lite* alerts and the in-app rating toast.
 
 ## Costs, in plain terms
 

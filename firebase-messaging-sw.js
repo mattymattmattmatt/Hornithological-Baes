@@ -1,7 +1,8 @@
 /* Hornithological Baes — Firebase Cloud Messaging service worker.
  * Receives push messages when the app is in the background or fully closed,
- * and renders the "new birb" notification. Registered from index.html at a
- * dedicated narrow scope so it never collides with the app-shell sw.js.
+ * and renders the "new birb" / "someone rated your birb" notifications.
+ * Registered from index.html at a dedicated narrow scope so it never collides
+ * with the app-shell sw.js.
  */
 importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js");
@@ -30,18 +31,25 @@ messaging.onBackgroundMessage((payload) => {
     image: d.image || undefined,
     tag: d.tag || "new-birb",
     renotify: false,
-    data: { url: d.url || "./?source=push" }
+    data: { url: d.url || "./?source=push", photoId: d.photoId || "" }
   });
 });
 
+// Tap → bring the app forward and jump to the photo. This worker's scope is
+// narrow, so it never *controls* the app window (client.navigate() would fail);
+// instead we message the open window, or open a fresh one at the deep link.
+// Only match windows of this app: every GitHub Pages site on the account
+// shares one origin.
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = (event.notification.data && event.notification.data.url) || "./";
+  const data = event.notification.data || {};
+  const url = data.url || "./";
+  const appRoot = new URL("./", self.location.href).href;
   event.waitUntil(
     clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
       for (const client of list) {
-        if ("focus" in client) {
-          client.navigate && client.navigate(url);
+        if (client.url.startsWith(appRoot) && "focus" in client) {
+          if (data.photoId) client.postMessage({ type: "hb-open-photo", photoId: data.photoId });
           return client.focus();
         }
       }

@@ -4,7 +4,7 @@
  *
  * Bump CACHE_VERSION whenever you ship changes so clients refresh.
  */
-const CACHE_VERSION = "hb-v1";
+const CACHE_VERSION = "hb-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -53,16 +53,36 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   // HTML navigations: network-first so content updates are seen immediately,
-  // falling back to cache when offline.
+  // falling back to cache when offline. Only cache good responses so a 404 or
+  // error page never becomes the offline copy of the app.
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put("./index.html", copy));
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put("./index.html", copy));
+          }
           return res;
         })
         .catch(() => caches.match("./index.html").then((r) => r || caches.match("./")))
+    );
+    return;
+  }
+
+  // Species list: network-first too, so checklist edits reach installed apps
+  // without needing a CACHE_VERSION bump.
+  if (url.pathname.endsWith("/species-au.json")) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req))
     );
     return;
   }
@@ -78,6 +98,27 @@ self.addEventListener("fetch", (event) => {
         }
         return res;
       });
+    })
+  );
+});
+
+// Tapping a lite alert that was shown through this registration (used when
+// full push isn't available). This worker controls the page, so it can message
+// the open window or open a fresh one at the deep link.
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const data = event.notification.data || {};
+  const url = data.url || "./";
+  const appRoot = new URL("./", self.location.href).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+      for (const client of list) {
+        if (client.url.startsWith(appRoot) && "focus" in client) {
+          if (data.photoId) client.postMessage({ type: "hb-open-photo", photoId: data.photoId });
+          return client.focus();
+        }
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(url);
     })
   );
 });

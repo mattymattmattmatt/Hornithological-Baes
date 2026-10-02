@@ -109,6 +109,8 @@
     .notify-btn.is-blocked{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.4)}
     .layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:20px}
     @media (max-width:900px){header{flex-direction:column;align-items:flex-start}.layout{grid-template-columns:minmax(0,1fr)}}
+    /* Phones: the full-size logo + title is wider than the screen and made the whole page scroll sideways. */
+    @media (max-width:520px){.logo{height:84px;padding:3px 5px}.title-row{align-items:flex-start}.title-row>div{min-width:0}.title-block h1{font-size:1.4rem}.title-pill{letter-spacing:.12em}}
     .card{background:var(--bg-panel);border-radius:var(--radius-lg);padding:18px 18px 16px;box-shadow:var(--shadow-soft);border:2px solid var(--border-subtle)}
     .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
     .card-header h2{margin:0;font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-main)}
@@ -128,13 +130,13 @@
     .preview img{width:70px;height:70px;object-fit:cover;border-radius:14px;border:1px solid var(--border-subtle)}
     .preview-text{font-size:.82rem;color:var(--text-muted)}
     .preview-text strong{color:var(--text-main)}
-    .form-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+    .form-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:12px}
     .field{display:flex;flex-direction:column;gap:4px}
     .field label{font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-muted)}
     .field input{border-radius:999px;border:1px solid var(--border-subtle);background:var(--bg-elevated);padding:8px 12px;font-size:.9rem;color:var(--text-main);outline:none;transition:border .15s ease,box-shadow .15s ease,background .15s ease}
     .field input:focus{border-color:#a5b4fc;box-shadow:0 0 0 1px rgba(129,140,248,.55);background:var(--bg-elevated)}
     .species-input-row{display:flex;gap:8px;align-items:center}
-    .species-input-row input{flex:1;cursor:pointer}
+    .species-input-row input{flex:1;min-width:0;cursor:pointer}
     .checklist-btn{border-radius:999px;border:1px solid rgba(129,140,248,.7);background:rgba(79,70,229,.16);color:var(--text-main);font-size:.78rem;padding:6px 10px;cursor:pointer;white-space:nowrap}
     .checklist-btn:hover{background:rgba(79,70,229,.26)}
     .actions-row{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -276,6 +278,13 @@
     @media (hover:none) and (pointer:coarse){body{background:var(--bg)}.card{backdrop-filter:none;box-shadow:none}.rarity-badge-wrap{backdrop-filter:none;box-shadow:none}.dropzone-icon{box-shadow:none}.btn-primary{box-shadow:none}.photo-thumb img{transition:none}}
     @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto !important}.photo-thumb img{transition:none !important}.btn-primary{transition:none !important}.dropzone{transition:none !important}.parrot{transition:none !important}.title-pill-dot.live-new{animation:none !important}}
     .photo-card{content-visibility:auto;contain:layout paint;contain-intrinsic-size:280px 260px}
+    @keyframes cardHighlight{0%,60%{box-shadow:0 0 0 3px var(--accent),0 8px 25px rgba(0,0,0,.08)}100%{box-shadow:0 0 0 0 transparent,0 8px 25px rgba(0,0,0,.08)}}
+    .photo-card.is-highlighted{border-color:var(--accent);animation:cardHighlight 2.4s ease-out forwards}
+    .toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translate(-50%,20px);max-width:min(440px,calc(100vw - 32px));width:max-content;padding:10px 16px;border-radius:16px;background:var(--bg-elevated);color:var(--text-main);border:1px solid var(--accent-strong);box-shadow:0 18px 45px rgba(15,23,42,.45);font-size:.88rem;line-height:1.3;text-align:center;opacity:0;pointer-events:none;z-index:200;transition:opacity .2s ease,transform .2s ease}
+    .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+    .toast.is-clickable{cursor:pointer}
+    .toast.is-error{border-color:rgba(239,68,68,.55)}
+    @media (prefers-reduced-motion: reduce){.toast{transition:none}.photo-card.is-highlighted{animation:none}}
   </style>
 </head>
 <body>
@@ -532,6 +541,8 @@
   <img id="imageFullscreenImg" src="" alt="Full-size birb">
 </div>
 
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;display:none"></canvas>
 
 <script type="module">
@@ -579,6 +590,20 @@
   let newSinceLastSeenCount = 0;
   let initialSnapshotHandled = false;
   let newestPhotoId = null;
+  // Last-seen rating totals per photo, so we can tell when one of your posts gets rated.
+  const ratingStateById = new Map();
+
+  // Deep link from a notification tap (./?photo=<id>): jump to that birb once loaded.
+  let pendingFocusPhotoId = null;
+  try {
+    const params = new URLSearchParams(location.search);
+    pendingFocusPhotoId = params.get("photo");
+    if (pendingFocusPhotoId) {
+      params.delete("photo");
+      const qs = params.toString();
+      history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
+    }
+  } catch { pendingFocusPhotoId = null; }
 
   let SPECIES = [];
   let SPECIES_INDEX = new Map();
@@ -702,6 +727,24 @@
     uploadedByInput.readOnly = true;
   }
 
+  // Remember this device's uploader name, lock the field, and tag the push token
+  // with it so rating alerts reach you on every device you've set the name on.
+  function setStoredUploader(name) {
+    const clean = (name || "").trim();
+    if (!clean || clean === storedUploader) return;
+    storedUploader = clean;
+    try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
+    uploadedByInput.value = storedUploader;
+    uploadedByInput.readOnly = true;
+    updateNotifyBtn();
+    syncPushTokenProfile().catch((e) => console.warn("Could not update push token name:", e));
+  }
+
+  function isMyPost(data) {
+    if (data?.ownerDeviceId && data.ownerDeviceId === deviceId) return true;
+    return Boolean(storedUploader) && normalizeName(data?.uploadedBy) === normalizeName(storedUploader);
+  }
+
   function setLiveIndicator(hasNew) {
     if (hasNew) {
       liveDot.classList.add("live-new");
@@ -741,7 +784,7 @@
     if (!(newSinceLastSeenCount > 0) || !newestTs) return;
     setSortMode("newest");
     requestAnimationFrame(() => {
-      const target = newestPhotoId ? document.querySelector(`.photo-card[data-photo-id="${newestPhotoId}"]`) : null;
+      const target = newestPhotoId ? document.querySelector(`.photo-card[data-photo-id="${CSS.escape(newestPhotoId)}"]`) : null;
       if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
       else document.getElementById("galleryCard")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -939,12 +982,7 @@
         commentCount: 0,
         ownerDeviceId: deviceId
       });
-      if (!storedUploader && uploadedBy) {
-        storedUploader = uploadedBy;
-        try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
-        uploadedByInput.value = storedUploader;
-        uploadedByInput.readOnly = true;
-      }
+      if (!storedUploader && uploadedBy) setStoredUploader(uploadedBy);
       showSuccess("Sighting saved. Check the gallery on the right.");
       resetForm();
     } catch (err) {
@@ -971,21 +1009,27 @@
   function showSuccess(msg){ successMsg.textContent = msg; successMsg.style.display = "block"; setTimeout(()=>successMsg.style.display="none",3500); }
   function hideSuccess(){ successMsg.textContent = ""; successMsg.style.display = "none"; }
 
+  // Floating message that's visible wherever you are on the page (the upload
+  // card's error line is off-screen when you're down in the gallery on mobile).
+  const toastEl = document.getElementById("toast");
+  let toastTimer = null;
+  let toastOnClick = null;
+  function showToast(message, { error = false, onClick = null, duration = 4500 } = {}) {
+    toastEl.textContent = message;
+    toastEl.classList.toggle("is-error", error);
+    toastEl.classList.toggle("is-clickable", Boolean(onClick));
+    toastOnClick = onClick;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, duration);
+  }
+  function hideToast(){ toastEl.classList.remove("show"); toastOnClick = null; }
+  toastEl.addEventListener("click", () => { const fn = toastOnClick; hideToast(); if (fn) fn(); });
+
   const qPhotos = query(photosCol, orderBy("createdAt", "desc"));
 
   onSnapshot(qPhotos, (snapshot) => {
     const isFirstSnapshot = !initialSnapshotHandled;
-    // Lite-layer alerts: notify about genuinely new birbs while the app is
-    // backgrounded (skips the very first load, your own uploads, and the
-    // foreground case where the on-page "NEW BIRB" pill already covers it).
-    if (!isFirstSnapshot) {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type !== "added") return;
-        const data = change.doc.data();
-        if (data?.ownerDeviceId === deviceId) return;
-        maybeShowLocalBirbAlert(change.doc.id, data);
-      });
-    }
     const docs = [];
     snapshot.forEach(docSnap => docs.push({ id: docSnap.id, data: docSnap.data() }));
     latestDocsForRankings = docs;
@@ -993,15 +1037,26 @@
     if (collageModalBackdrop.classList.contains("show")) renderCollage();
     if (!storedUploader) {
       const mine = docs.find(x => x?.data?.ownerDeviceId === deviceId && (x?.data?.uploadedBy || "").trim());
-      if (mine) {
-        storedUploader = (mine.data.uploadedBy || "").trim();
-        if (storedUploader) {
-          try { localStorage.setItem(uploaderKey, storedUploader); } catch {}
-          uploadedByInput.value = storedUploader;
-          uploadedByInput.readOnly = true;
-        }
-      }
+      if (mine) setStoredUploader(mine.data.uploadedBy);
     }
+    // Lite-layer alerts: new birbs while the app is backgrounded (skips the very
+    // first load, your own uploads, and the foreground case where the on-page
+    // "NEW BIRB" pill already covers it), plus new ratings on your own posts.
+    if (!isFirstSnapshot) {
+      snapshot.docChanges().forEach((change) => {
+        const data = change.doc.data();
+        if (change.type === "added") {
+          if (data?.ownerDeviceId !== deviceId) maybeShowLocalBirbAlert(change.doc.id, data);
+        } else if (change.type === "modified") {
+          if (!change.doc.metadata.hasPendingWrites) maybeAnnounceRating(change.doc.id, data);
+        }
+      });
+    }
+    ratingStateById.clear();
+    docs.forEach(({ id, data }) => ratingStateById.set(id, {
+      total: Number(data.ratingTotal || 0),
+      count: Number(data.ratingCount || 0)
+    }));
     let maxTs = 0;
     let maxId = null;
     let countNew = 0;
@@ -1013,7 +1068,8 @@
         maxTs = t;
         maxId = id;
       }
-      if (lastSeenTs && t > lastSeenTs) countNew++;
+      // Your own uploads shouldn't light up the "NEW BIRB!" pill.
+      if (lastSeenTs && t > lastSeenTs && data.ownerDeviceId !== deviceId) countNew++;
     });
     if (!initialSnapshotHandled) {
       initialSnapshotHandled = true;
@@ -1034,6 +1090,14 @@
       renderRankings(buildRankings(latestDocsForRankings));
     }
     renderGallery();
+    if (pendingFocusPhotoId) {
+      const id = pendingFocusPhotoId;
+      pendingFocusPhotoId = null;
+      focusPhoto(id);
+    }
+  }, (err) => {
+    console.error("Photos listener error:", err);
+    galleryCountLabel.textContent = "Couldn't load sightings. Check your connection or Firestore rules.";
   });
 
   function getCreatedDate(data) {
@@ -1063,42 +1127,15 @@
     speciesTallyEl.innerHTML = `<span class="seen">Seen: ${seen}</span> · <span class="unseen">Unseen: ${unseen}</span>`;
   }
 
-  function renderGallery() {
-    galleryGrid.innerHTML = "";
-    galleryEmpty.style.display = "none";
-    const total = currentPhotos.length;
-    if (!total) {
-      galleryEmpty.style.display = "block";
-      galleryCountLabel.textContent = "No sightings yet.";
-      currentSeenSpecies = new Set();
-      updateSpeciesTally();
-      pager.style.display = "none";
-      return;
-    }
-    totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    galleryCountLabel.textContent = `${total} sighting${total > 1 ? "s" : ""} · Showing ${PAGE_SIZE} per page`;
-    const speciesCounts = {};
-    currentPhotos.forEach(({ data }) => {
-      const name = (data.birdName || "Unknown birb").trim();
-      if (!name) return;
-      speciesCounts[name] = (speciesCounts[name] || 0) + 1;
-    });
-    currentSeenSpecies = new Set(Object.keys(speciesCounts));
-    updateSpeciesTally();
-    const rankingRows = buildRankings(currentPhotos);
-    const leadingUploader = rankingRows.length ? rankingRows[0].name : null;
-    const docs = currentPhotos.slice();
+  // Sorted copy of the photos in the current sort mode (what the gallery pages through).
+  function sortPhotos(photos) {
     const rarityOrder = { super_rare: 0, rare: 1, uncommon: 2, common: 3, very_common: 4, none: 5 };
     function avgRatingOf(data) {
       const total = Number(data.ratingTotal || 0);
       const count = Number(data.ratingCount || 0);
       return count > 0 ? total / count : 0;
     }
-    function multiplierForSpeciesInternal(speciesName){
-      const rarity = getRarityForSpecies(speciesName);
-      return POINTS_BY_RARITY[rarity] ?? 1;
-    }
-    docs.sort((a, b) => {
+    return photos.slice().sort((a, b) => {
       const da = a.data;
       const db = b.data;
       const dateA = getCreatedDate(da);
@@ -1107,8 +1144,8 @@
       const tsB = dateB ? dateB.getTime() : 0;
       const avgA = avgRatingOf(da);
       const avgB = avgRatingOf(db);
-      const multA = multiplierForSpeciesInternal(da.birdName || "");
-      const multB = multiplierForSpeciesInternal(db.birdName || "");
+      const multA = multiplierForSpecies(da.birdName || "");
+      const multB = multiplierForSpecies(db.birdName || "");
       const valA = avgA * multA;
       const valB = avgB * multB;
       const rA = getRarityForSpecies(da.birdName || "") || "none";
@@ -1137,6 +1174,33 @@
       }
       return tsB - tsA;
     });
+  }
+
+  function renderGallery() {
+    galleryGrid.innerHTML = "";
+    galleryEmpty.style.display = "none";
+    const total = currentPhotos.length;
+    if (!total) {
+      galleryEmpty.style.display = "block";
+      galleryCountLabel.textContent = "No sightings yet.";
+      currentSeenSpecies = new Set();
+      updateSpeciesTally();
+      pager.style.display = "none";
+      return;
+    }
+    totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    galleryCountLabel.textContent = `${total} sighting${total > 1 ? "s" : ""} · Showing ${PAGE_SIZE} per page`;
+    const speciesCounts = {};
+    currentPhotos.forEach(({ data }) => {
+      const name = (data.birdName || "Unknown birb").trim();
+      if (!name) return;
+      speciesCounts[name] = (speciesCounts[name] || 0) + 1;
+    });
+    currentSeenSpecies = new Set(Object.keys(speciesCounts));
+    updateSpeciesTally();
+    const rankingRows = buildRankings(currentPhotos);
+    const leadingUploader = rankingRows.length ? rankingRows[0].name : null;
+    const docs = sortPhotos(currentPhotos);
     const start = currentPage * PAGE_SIZE;
     const pageDocs = docs.slice(start, start + PAGE_SIZE);
     pager.style.display = totalPages > 1 ? "flex" : "none";
@@ -1170,18 +1234,22 @@
       const isOwner = data.ownerDeviceId && data.ownerDeviceId === deviceId;
       const myRating = localRatings[id];
       const rateLabel = myRating ? `You rated ${myRating}/10` : "Tap here to rate /10";
-      const rateBtnHtml = isOwner ? `<button class="rate-btn" data-photo-id="${id}" disabled title="You can't rate your own post">Your post</button>` : `<button class="rate-btn" data-photo-id="${id}">${escapeHtml(rateLabel)}</button>`;
+      // Firestore is world-writable, so escape everything that lands in markup —
+      // including the image URL and doc id — to keep a crafted doc from injecting HTML.
+      const safeId = escapeHtml(id);
+      const safeImgUrl = escapeHtml(imgUrl);
+      const rateBtnHtml = isOwner ? `<button class="rate-btn" data-photo-id="${safeId}" disabled title="You can't rate your own post">Your post</button>` : `<button class="rate-btn" data-photo-id="${safeId}">${escapeHtml(rateLabel)}</button>`;
       const commentCount = Number(data.commentCount || 0);
       /* CHIRP CHANGE */
-      const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${id}" data-bird-name="${escapeHtml(birdName)}">Chirps (${commentCount})</button>`;
+      const commentsBtnHtml = `<button class="comments-btn" data-photo-id="${safeId}" data-bird-name="${escapeHtml(birdName)}">Chirps (${commentCount})</button>`;
       const card = document.createElement("article");
       card.className = "photo-card";
       card.dataset.photoId = id;
       card.innerHTML = `
         <div class="photo-thumb">
-          <img src="${imgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" decoding="async" />
+          <img src="${safeImgUrl}" alt="${escapeHtml(birdName)}" loading="lazy" decoding="async" />
           ${rarityHtml}
-          <button type="button" class="fullscreen-btn" data-full-url="${imgUrl}" title="View full screen" aria-label="View full screen">⤢</button>
+          <button type="button" class="fullscreen-btn" data-full-url="${safeImgUrl}" title="View full screen" aria-label="View full screen">⤢</button>
         </div>
         <div class="photo-body">
           <div class="photo-title">${escapeHtml(birdName)}</div>
@@ -1204,7 +1272,7 @@
               ${rateBtnHtml}
               ${commentsBtnHtml}
             </div>
-            <button class="delete-btn" data-photo-id="${id}">🗑 Delete</button>
+            <button class="delete-btn" data-photo-id="${safeId}">🗑 Delete</button>
           </div>
         </div>
       `;
@@ -1215,6 +1283,24 @@
 
   prevPageBtn.addEventListener("click", () => { if (currentPage > 0) { currentPage -= 1; renderGallery(); } });
   nextPageBtn.addEventListener("click", () => { if (currentPage < totalPages - 1) { currentPage += 1; renderGallery(); } });
+
+  // Show one birb: flip to the page it's on in the current sort, then scroll to
+  // it and flash a highlight. Used by notification taps and the rating toast.
+  function focusPhoto(photoId) {
+    if (!photoId) return;
+    if (!initialSnapshotHandled) { pendingFocusPhotoId = photoId; return; }
+    const idx = sortPhotos(currentPhotos).findIndex((p) => p.id === photoId);
+    if (idx < 0) return;
+    currentPage = Math.floor(idx / PAGE_SIZE);
+    renderGallery();
+    requestAnimationFrame(() => {
+      const card = galleryGrid.querySelector(`.photo-card[data-photo-id="${CSS.escape(photoId)}"]`);
+      if (!card) return;
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("is-highlighted");
+      setTimeout(() => card.classList.remove("is-highlighted"), 2600);
+    });
+  }
 
   function openRatingModal(photoId){
     ratingTargetPhotoId = photoId;
@@ -1236,7 +1322,7 @@
       if (value === 10) launchConfetti();
       if (!value) return;
       try { await ratePhoto(ratingTargetPhotoId, value); }
-      catch (err) { console.error(err); showError("Could not save rating. Check Firebase rules."); }
+      catch (err) { console.error(err); showToast("Could not save rating. Check your connection or Firebase rules.", { error: true }); }
       finally { closeRatingModal(); }
     });
   });
@@ -1247,18 +1333,27 @@
     if (!snap.exists()) return;
     const data = snap.data();
     if (data.ownerDeviceId && data.ownerDeviceId === deviceId) return;
-    let ratingTotal = data.ratingTotal || 0;
-    let ratingCount = data.ratingCount || 0;
-    const prevRating = localRatings[photoId];
-    if (!prevRating) {
-      ratingTotal += ratingValue;
-      ratingCount += 1;
-    } else {
-      ratingTotal = ratingTotal - prevRating + ratingValue;
-    }
-    await updateDoc(docRef, { ratingTotal, ratingCount });
+    const prevRating = Number(localRatings[photoId]) || 0;
+    if (prevRating === ratingValue) return;
+    // Atomic increments, so two people rating at once can't overwrite each
+    // other — and the uploader's notification can read the exact score given.
+    const update = prevRating
+      ? { ratingTotal: increment(ratingValue - prevRating) }
+      : { ratingTotal: increment(ratingValue), ratingCount: increment(1) };
+    // Record it before writing: Firestore re-renders the gallery from its local
+    // snapshot before updateDoc resolves, so the button would otherwise still say
+    // "Tap here to rate" (and a quick second tap would count as a new rating).
     localRatings[photoId] = ratingValue;
     saveLocalRatings();
+    try {
+      await updateDoc(docRef, update);
+    } catch (err) {
+      if (prevRating) localRatings[photoId] = prevRating;
+      else delete localRatings[photoId];
+      saveLocalRatings();
+      renderGallery();
+      throw err;
+    }
   }
 
   function openCommentsModal(photoId, birdName) {
@@ -1290,7 +1385,7 @@
         el.innerHTML = `
           <div class="comment-meta">
             <div class="time">${escapeHtml(stamp)}</div>
-            ${canDelete ? `<button class="comment-del" title="Delete comment" aria-label="Delete comment" data-comment-id="${item.id}">×</button>` : ``}
+            ${canDelete ? `<button class="comment-del" title="Delete comment" aria-label="Delete comment" data-comment-id="${escapeHtml(item.id)}">×</button>` : ``}
           </div>
           <div class="comment-text">${escapeHtml(text)}</div>
         `;
@@ -1312,12 +1407,11 @@
   commentsModalBackdrop.addEventListener("click", (e) => { if (e.target === commentsModalBackdrop) closeCommentsModal(); });
 
   commentSend.addEventListener("click", async () => {
-    hideError(); hideSuccess();
     if (!commentsTargetPhotoId) return;
     const text = (commentInput.value || "").trim();
     if (!text) return;
     commentSend.disabled = true;
-    commentSend.textContent = "Post Chirp";
+    commentSend.textContent = "Posting…";
     try {
       const commentsCol = collection(db, "birdPhotos", commentsTargetPhotoId, "comments");
       await addDoc(commentsCol, { text, createdAt: serverTimestamp(), deviceId });
@@ -1326,7 +1420,7 @@
       commentInput.focus();
     } catch (err) {
       console.error(err);
-      showError("Could not post comment. Check Firebase rules.");
+      showToast("Could not post Chirp. Check your connection or Firebase rules.", { error: true });
     } finally {
       commentSend.disabled = false;
       commentSend.textContent = "Post Chirp";
@@ -1345,7 +1439,7 @@
       await updateDoc(doc(db, "birdPhotos", commentsTargetPhotoId), { commentCount: increment(-1) });
     } catch (err) {
       console.error(err);
-      showError("Could not delete comment. Check Firebase rules.");
+      showToast("Could not delete Chirp. Check your connection or Firebase rules.", { error: true });
     }
   });
 
@@ -1362,7 +1456,7 @@
       if (!photoId) return;
       if (!window.confirm("Delete this sighting? This cannot be undone.")) return;
       try { await deletePhoto(photoId); }
-      catch (err) { console.error(err); showError("Could not delete sighting. Check Firebase rules."); }
+      catch (err) { console.error(err); showToast("Could not delete sighting. Check your connection or Firebase rules.", { error: true }); }
       return;
     }
     const rateBtn = e.target.closest(".rate-btn");
@@ -1595,8 +1689,9 @@
 
   // === ADELAIDE TIME THEME SWITCHER ===
   function setAdelaideTheme() {
-    const adelaideTime = new Date().toLocaleString("en-US", { timeZone: "Australia/Adelaide" });
-    const hour = new Date(adelaideTime).getHours();
+    // Ask Intl for the Adelaide hour directly rather than re-parsing a locale
+    // string with new Date(), which isn't a standard format browsers must accept.
+    const hour = parseInt(new Intl.DateTimeFormat("en-GB", { timeZone: "Australia/Adelaide", hour: "numeric", hourCycle: "h23" }).format(new Date()), 10);
     let theme = "dark";
     if (hour >= 5 && hour < 10) theme = "morning";
     else if (hour >= 10 && hour < 15) theme = "day";
@@ -1666,10 +1761,10 @@
    * -------------------------------------------------------------------
    * Two layers:
    *  1) LITE (works now, no setup): when a friend has the app open or
-   *     backgrounded, new birbs trigger an on-device notification via the
-   *     existing realtime listener above.
+   *     backgrounded, new birbs (and new ratings on your own posts) trigger
+   *     an on-device notification via the existing realtime listener above.
    *  2) FULL PUSH (works even when the app is closed): Firebase Cloud
-   *     Messaging. Requires a VAPID key + a deployed Cloud Function — see
+   *     Messaging. Requires a VAPID key + deployed Cloud Functions — see
    *     SETUP-NOTIFICATIONS.md. Until VAPID_KEY is filled in below, the app
    *     gracefully runs on the LITE layer only.
    * =================================================================== */
@@ -1683,7 +1778,8 @@
   let appShellReg = null;     // sw.js registration (app shell / offline)
   let fcmSwReg = null;        // firebase-messaging-sw.js registration (push)
   let messaging = null;
-  const notifyEnabledKey = "hb_notify_enabled_v1";
+  let pushToken = null;       // this device's FCM token, once registered
+  let foregroundHandlerSet = false;
 
   // --- Register the app-shell service worker (offline + installable) ---
   if ("serviceWorker" in navigator) {
@@ -1695,6 +1791,13 @@
       }
       initNotifications();
     });
+
+    // Tapping a notification while the app is already open: the service worker
+    // focuses this window and tells it which birb to show.
+    navigator.serviceWorker.addEventListener("message", (e) => {
+      if (e.data && e.data.type === "hb-open-photo") focusPhoto(e.data.photoId);
+    });
+    if (navigator.serviceWorker.startMessages) navigator.serviceWorker.startMessages();
   }
 
   function vapidConfigured() {
@@ -1710,9 +1813,9 @@
     updateNotifyBtn();
     notifyBtn.addEventListener("click", onNotifyClick);
 
-    // If the user already granted permission on a previous visit, quietly
-    // re-arm the full-push token so it stays fresh.
-    if (Notification.permission === "granted" && localStorage.getItem(notifyEnabledKey) === "1") {
+    // If the user already granted permission, quietly re-arm the full-push
+    // token so it stays fresh (and gets registered if it never was).
+    if (Notification.permission === "granted") {
       await setupFullPush().catch((e) => console.warn("Push re-arm failed:", e));
     }
   }
@@ -1720,11 +1823,18 @@
   function updateNotifyBtn() {
     notifyBtn.classList.remove("is-on", "is-blocked");
     notifyBtn.disabled = false;
+    notifyBtn.title = "";
     const perm = ("Notification" in window) ? Notification.permission : "denied";
     if (perm === "granted") {
-      notifyBtn.textContent = "🔔 Alerts on";
       notifyBtn.classList.add("is-on");
-      notifyBtn.disabled = true;
+      if (storedUploader) {
+        notifyBtn.textContent = "🔔 Alerts on";
+        notifyBtn.title = `New birbs, plus ratings on ${storedUploader}'s posts.`;
+        notifyBtn.disabled = true;
+      } else {
+        // Rating alerts find you by the name you post under, so offer to set it.
+        notifyBtn.textContent = "🔔 Alerts on · add your name for rating alerts";
+      }
     } else if (perm === "denied") {
       notifyBtn.textContent = "🔔 Alerts blocked";
       notifyBtn.classList.add("is-blocked");
@@ -1740,6 +1850,7 @@
       alert("Notifications are blocked for this site.\n\nTo turn them back on, open your browser's site settings for this page and allow Notifications.");
       return;
     }
+    const wasAlreadyOn = Notification.permission === "granted";
     notifyBtn.disabled = true;
     notifyBtn.textContent = "🔔 Asking…";
     let perm = Notification.permission;
@@ -1748,23 +1859,49 @@
       catch { perm = Notification.permission; }
     }
     if (perm === "granted") {
-      localStorage.setItem(notifyEnabledKey, "1");
+      if (!storedUploader) askForUploaderName();
       await setupFullPush().catch((e) => console.warn("Full push setup failed (lite layer still works):", e));
       // Friendly confirmation so they know it worked.
-      try {
-        const reg = fcmSwReg || appShellReg || await navigator.serviceWorker.ready;
-        reg.showNotification("Birb alerts are on! 🦜", {
-          body: "You'll get a ping when a new birb is added.",
-          icon: "icons/icon-192.png",
-          badge: "icons/icon-192.png",
-          tag: "hb-welcome"
-        });
-      } catch {}
+      if (!wasAlreadyOn) {
+        try {
+          const reg = fcmSwReg || appShellReg || await navigator.serviceWorker.ready;
+          reg.showNotification("Birb alerts are on! 🦜", {
+            body: storedUploader
+              ? "You'll get a ping when a new birb is added, and when someone rates yours."
+              : "You'll get a ping when a new birb is added.",
+            icon: "icons/icon-192.png",
+            badge: "icons/icon-192.png",
+            tag: "hb-welcome"
+          });
+        } catch {}
+      }
     }
     updateNotifyBtn();
   }
 
-  // --- FULL PUSH: register FCM SW, get token, store it for the Cloud Function ---
+  // The name links this device to your posts, so rating alerts reach you even on
+  // a device you didn't upload from (e.g. the installed iPhone app, which keeps
+  // separate storage from Safari).
+  function askForUploaderName() {
+    const name = prompt(
+      "What name do you post your birbs under?\n\nWe'll ping you when someone rates them. Use the same name that's on your posts (leave blank to skip).",
+      uploadedByInput.value || ""
+    );
+    if (name && name.trim()) setStoredUploader(name);
+  }
+
+  // Only include the name once it's known, so a page load that hasn't worked out
+  // the name yet never wipes the one already saved on the token.
+  function pushTokenProfile() {
+    return storedUploader ? { uploadedBy: storedUploader, uploaderKey: normalizeName(storedUploader) } : {};
+  }
+
+  async function syncPushTokenProfile() {
+    if (!pushToken || !storedUploader) return;
+    await setDoc(doc(db, "fcmTokens", pushToken), { ...pushTokenProfile(), updatedAt: serverTimestamp() }, { merge: true });
+  }
+
+  // --- FULL PUSH: register FCM SW, get token, store it for the Cloud Functions ---
   async function setupFullPush() {
     if (!vapidConfigured()) return; // lite layer only until VAPID key is set
     const supported = await isMessagingSupported().catch(() => false);
@@ -1782,25 +1919,29 @@
       serviceWorkerRegistration: fcmSwReg
     });
     if (!token) return;
+    pushToken = token;
 
     // Store under the token id so re-registers de-dupe rather than pile up.
     await setDoc(doc(db, "fcmTokens", token), {
       token,
       deviceId,
-      uploadedBy: storedUploader || null,
+      ...pushTokenProfile(),
       userAgent: navigator.userAgent,
       updatedAt: serverTimestamp()
     }, { merge: true });
 
     // Foreground messages: the page is already live-updating, so we don't pop a
-    // duplicate notification here — the realtime listener + "NEW BIRB" pill cover it.
-    onMessage(messaging, () => { /* no-op: handled by the live UI */ });
+    // duplicate notification here — the realtime listener covers it ("NEW BIRB"
+    // pill for new birbs, a toast for ratings on your posts).
+    if (!foregroundHandlerSet) {
+      foregroundHandlerSet = true;
+      onMessage(messaging, () => { /* no-op: handled by the live UI */ });
+    }
   }
 
   // --- LITE LAYER: show a local notification for a new birb (called from the
   //     realtime listener). Only fires when the tab is hidden so we don't nag
   //     someone who's actively looking at the gallery. ---
-  let liteAlertReady = false;
   async function maybeShowLocalBirbAlert(photoId, data) {
     if (!("Notification" in window) || Notification.permission !== "granted") return;
     if (document.visibilityState === "visible") return; // they can already see it
@@ -1815,13 +1956,57 @@
         image: data?.imageUrl || undefined,
         tag: "birb-" + photoId,   // shared with push payload → no double alerts
         renotify: false,
-        data: { url: "./?source=alert" }
+        data: { url: "./?photo=" + encodeURIComponent(photoId), photoId }
       });
     } catch (e) {
       // Fallback for browsers without SW notification support.
       try { new Notification("New birb! 🦜", { body: (data?.birdName || "A new sighting") + " was just added." }); } catch {}
     }
-    liteAlertReady = true;
+  }
+
+  // --- New rating on one of YOUR posts (called from the realtime listener).
+  //     Looking at the app → a toast you can tap to jump to the post.
+  //     App in the background → a lite notification with the same tag as the
+  //     push from the notifyRating Cloud Function, so you only get one. ---
+  async function maybeAnnounceRating(photoId, data) {
+    const prev = ratingStateById.get(photoId);
+    const count = Number(data?.ratingCount || 0);
+    if (!prev || count <= prev.count || !isMyPost(data)) return;
+    const total = Number(data?.ratingTotal || 0);
+    const newRatings = count - prev.count;
+    const delta = total - prev.total;
+    const score = (newRatings === 1 && Number.isInteger(delta) && delta >= 1 && delta <= 10) ? delta : null;
+    const birdName = String(data?.birdName || "birb").trim();
+    const average = (total / count).toFixed(1);
+
+    if (document.visibilityState === "visible") {
+      const msg = score === null
+        ? `🦜 Your ${birdName} got ${newRatings} new ratings · avg now ${average}/10`
+        : `🦜 Someone gave your ${birdName} ${score}/10` + (count === 1 ? " · first rating!" : ` · avg now ${average}/10`);
+      showToast(msg, { onClick: () => focusPhoto(photoId), duration: 7000 });
+      return;
+    }
+
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    let body;
+    if (score === null) {
+      body = `${newRatings} new rating${newRatings === 1 ? "" : "s"} · average now ${average}/10`;
+    } else {
+      body = `They gave it ${score}/10 ${"🦜".repeat(score)}`;
+      body += count === 1 ? " · first rating!" : ` · average now ${average}/10`;
+    }
+    try {
+      const reg = fcmSwReg || appShellReg || await navigator.serviceWorker.ready;
+      reg.showNotification(`Someone rated your ${birdName}!`, {
+        body,
+        icon: "icons/icon-192.png",
+        badge: "icons/icon-192.png",
+        image: data?.imageUrl || undefined,
+        tag: `rating-${photoId}-${count}`,   // shared with push payload → no double alerts
+        renotify: false,
+        data: { url: "./?photo=" + encodeURIComponent(photoId), photoId }
+      });
+    } catch {}
   }
 </script>
 </body>
